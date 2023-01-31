@@ -31,7 +31,7 @@ const HomePage = () => {
                     src={require("./images/headshot.jpg")}
                     sx={{ width: 200, height: 200 }}
                 />
-                <Typography variant="body1```">
+                <Typography variant="body1">
                     I'm a student at Victoria University of Wellington currently studying Computer Science and Data Science.
 
                     I started programming in 2017 through school and have been using and learning it ever since. I really enjoy learning new things, and I'm always looking to improve my skills.
