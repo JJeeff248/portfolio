@@ -1,25 +1,34 @@
-import logo from './logo.svg';
+import React, { useState, useCallback } from "react";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import Navbar from "./Navbar";
+
+const darkTheme = createTheme({
+    palette: {
+        mode: "dark",
+    },
+});
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
+    const [page, setPage] = useState(0);
+
+    const handlePageChange = useCallback(
+        (newPage) => {
+            setPage(newPage);
+        },
+        [setPage]
+    );
+
+    return (
+        <ThemeProvider theme={darkTheme}>
+            <CssBaseline />
+            <Navbar page={page} handlePageChange={handlePageChange} />
+            
+
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+        
+        </ThemeProvider>
+    );
 }
 
 export default App;
