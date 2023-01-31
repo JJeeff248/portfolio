@@ -5,12 +5,24 @@ import { isMobile } from "react-device-detect";
 const Navbar = (props) => {
     const { page, handlePageChange } = props;
 
-    const handleChange = useCallback ((event, newValue) => { handlePageChange(newValue); }, [handlePageChange]);
+    const handleChange = useCallback(
+        (event, newValue) => {
+            handlePageChange(newValue);
+        },
+        [handlePageChange]
+    );
 
     return (
-        <AppBar position={isMobile ? "fixed" : "static"} sx={isMobile ? { top: 'auto', bottom: 0 } : null}>
+        <AppBar
+            position={isMobile ? "fixed" : "static"}
+            sx={isMobile ? { top: "auto", bottom: 0 } : null}
+        >
             <Toolbar>
-                <Tabs value={page} onChange={handleChange} aria-label="nav tabs example">
+                <Tabs
+                    value={page}
+                    onChange={handleChange}
+                    aria-label="nav tabs example"
+                >
                     <Tab label="Home" />
                     <Tab label="Programming" />
                     <Tab label="Photography" />
@@ -18,6 +30,6 @@ const Navbar = (props) => {
             </Toolbar>
         </AppBar>
     );
-}
+};
 
 export default Navbar;

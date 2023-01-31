@@ -27,11 +27,10 @@ function App() {
         <ThemeProvider theme={darkTheme}>
             <CssBaseline />
             <Navbar page={page} handlePageChange={handlePageChange} />
-            
+
             {page === 0 && <HomePage />}
             {page === 1 && <DevPage />}
             {page === 2 && <PhotographyPage />}
-        
         </ThemeProvider>
     );
 }
