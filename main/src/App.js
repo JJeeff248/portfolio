@@ -2,6 +2,7 @@ import React, { useState, useCallback } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Navbar from "./Navbar";
+import HomePage from "./HomePage";
 
 const darkTheme = createTheme({
     palette: {
@@ -25,7 +26,7 @@ function App() {
             <Navbar page={page} handlePageChange={handlePageChange} />
             
 
-        </p>
+        {page === 0 && <HomePage />}
         
         </ThemeProvider>
     );
