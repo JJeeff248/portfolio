@@ -1,12 +1,10 @@
-import { Avatar, Container, Grid, Typography, Card, CardContent, CardActionArea, CardActions, Button, SvgIcon } from "@mui/material";
+import { Avatar, Container, Grid, Typography, Card, CardContent, CardActionArea, SvgIcon } from "@mui/material";
 
 // Icons
 import EmailIcon from '@mui/icons-material/Email';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import TwitterIcon from '@mui/icons-material/Twitter';
-
-
 
 const HomePage = () => {
 
@@ -23,25 +21,25 @@ const HomePage = () => {
     return (
         <>
             <Container maxWidth="md" sx={{ mt: 8, mb: 4 }} style={flexCenter}>
-                <Typography variant="h2">
+                <Typography variant="h2" sx={{ mb: 2 }}>
                     About Me
                 </Typography>
                 <Avatar
                     alt="Chris sitting with a meerkat on his lap"
                     src={require("./images/headshot.jpg")}
-                    sx={{ width: 200, height: 200 }}
+                    sx={{ width: 150, height: 150, mb: 3 }}
                 />
-                <Typography variant="body1">
+                <Typography variant="body1" fontSize={20} sx={{ mb: 2 }}>
                     I'm a student at Victoria University of Wellington currently studying Computer Science and Data Science.
 
-                    I started programming in 2017 through school and have been using and learning it ever since. I really enjoy learning new things, and I'm always looking to improve my skills.
+                    I started programming in 2017 through school and have beening and learning it ever since. I really enjoy learning new things, and I'm always looking to improve my skills.
 
                     When I'm not coding, I'm usually playing video games, taking photos or just hanging out with my friends.
                 </Typography>
             </Container>
             
             <Container maxWidth="md" sx={{ mt: 8, mb: 4 }} style={flexCenter}>
-                <Typography variant="h2">
+                <Typography variant="h2" sx={{ mb: 2 }}>
                     Contact
                 </Typography>
                 <Grid container spacing={2}>
