@@ -1,9 +1,12 @@
-import { Alert, Button, TextField } from "@mui/material";
+import { Alert, Button, IconButton, TextField } from "@mui/material";
 import { Container } from "@mui/system";
 import React from "react";
 import { isMobile } from "react-device-detect";
 
-// define regex for input validation
+import InstagramIcon from "@mui/icons-material/Instagram";
+import FacebookIcon from "@mui/icons-material/Facebook";
+
+// RegEx for input validation
 const nameRegex = /^[a-zA-Z ]{2,30}$/;
 const emailRegex =
     /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|".+")@((\[\d{1,3}\.\d]{1,3}\.\d{1,3}\.\d{1,3}])|(([a-zA-Z\-\d]+\.)+[a-zA-Z]{2,}))$/;
@@ -155,6 +158,29 @@ const Contact = () => {
                             Message failed to send.
                         </Alert>
                     ))}
+                <Container
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "center",
+                    }}
+                    sx={{ mt: 2 }}
+                >
+                    <IconButton
+                        href="https://www.instagram.com/CSPhotographyNZ"
+                        target="_blank"
+                        size="large"
+                    >
+                        <InstagramIcon />
+                    </IconButton>
+                    <IconButton
+                        href="https://www.facebook.com/CSPhotographyNZ"
+                        target="_blank"
+                        size="large"
+                    >
+                        <FacebookIcon />
+                    </IconButton>
+                </Container>
             </Container>
         </Container>
     );
