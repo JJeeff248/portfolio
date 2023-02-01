@@ -1,7 +1,7 @@
 import React from "react";
 import { Avatar, Typography } from "@mui/material";
 import { Container, keyframes } from "@mui/system";
-import logo from "./logo.svg";
+import logo from "../logo.svg";
 
 const spin = keyframes`
     from {

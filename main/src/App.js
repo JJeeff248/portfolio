@@ -4,8 +4,8 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 import Navbar from "./Navbar";
 import HomePage from "./HomePage";
-import DevPage from "./DevPage";
-import PhotographyPage from "./PhotographyPage";
+import DevPage from "./dev/DevPage";
+import PhotographyPage from "./photography/PhotographyPage";
 
 const darkTheme = createTheme({
     palette: {
