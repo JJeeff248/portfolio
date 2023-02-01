@@ -1,62 +1,41 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback } from "react";
+import { Tabs, Tab } from "@mui/material";
 import { Container } from "@mui/system";
-import {
-    ImageList,
-    ImageListItem
-} from "@mui/material";
-import LargeImage from "./LargeImage";
+import Gallery from "./Gallery";
+import About from "./About";
+import Contact from "./Contact";
 
 const PhotographyPage = () => {
-    const [selectedImg, setSelectedImg] = React.useState(null);
-    const [altText, setAltText] = React.useState("");
+    const [selectedTab, setSelectedTab] = React.useState(0);
 
-    const flexCenter = {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-    };
-
-    const handleImageClick = useCallback(
-        (event) => {
-            setSelectedImg(event.target.src);
-            setAltText(event.target.alt);
+    const handleChange = useCallback(
+        (event, newValue) => {
+            setSelectedTab(newValue);
         },
-        [setSelectedImg, setAltText]
+        [setSelectedTab]
     );
 
-    const images = useMemo(() => {
-        let imageDir = require.context(
-            "./images/my_gallery",
-            false,
-            /\.jpg$/
-        );
-        let images = [];
-        imageDir.keys().forEach((key) => {
-            key = key.replace(/^.*[\\/]/, "");
-            let alt_text = key.replace(/\.jpg$/, "").replace(/_/g, " ");
-            images.push(
-                <ImageListItem key={key} onClick={handleImageClick}>
-                    <img
-                        src={require(`./images/my_gallery/${key}`)}
-                        alt={alt_text}
-                    />
-                </ImageListItem>
-            );
-        });
-        images.sort(() => Math.random() - 0.5);
-        return images;
-    }, [handleImageClick]);
-
     return (
-        <Container maxWidth={"md"} style={flexCenter} sx={{ mt: 2 }}>
-            {selectedImg !== null ? (
-                <LargeImage selectedImg={selectedImg} altText={altText} setSelectedImg={setSelectedImg} setAltText={setAltText} />
-            ) : (
-                <ImageList variant="masonry" cols={3} gap={8}>
-                    {images}
-                </ImageList>
-            )}
-        </Container>
+        <>
+            <Container
+                maxWidth={"lg"}
+                sx={{ mt: 4, flexGrow: 1, display: "flex" }}
+            >
+                <Tabs
+                    orientation="vertical"
+                    value={selectedTab}
+                    onChange={handleChange}
+                    sx={{ borderRight: 1, borderColor: "divider" }}
+                >
+                    <Tab label="Gallery" />
+                    <Tab label="About" />
+                    <Tab label="Contact" />
+                </Tabs>
+                {selectedTab === 0 && <Gallery />}
+                {selectedTab === 1 && <About />}
+                {selectedTab === 2 && <Contact />}
+            </Container>
+        </>
     );
 };
 

@@ -109,7 +109,9 @@ const Contact = () => {
                     label="Name"
                     variant="outlined"
                     sx={{ mt: 3 }}
-                    onChange={(e) => { validateName(e.target.value); }}
+                    onChange={(e) => {
+                        validateName(e.target.value);
+                    }}
                     error={nameError !== ""}
                     helperText={nameError !== "" ? nameError : ""}
                 />
@@ -117,7 +119,9 @@ const Contact = () => {
                     label="Email"
                     variant="outlined"
                     sx={{ mt: 3 }}
-                    onChange={(e) => { validateEmail(e.target.value); }}
+                    onChange={(e) => {
+                        validateEmail(e.target.value);
+                    }}
                     error={emailError !== ""}
                     helperText={emailError !== "" ? emailError : ""}
                 />
