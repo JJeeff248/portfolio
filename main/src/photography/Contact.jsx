@@ -34,7 +34,6 @@ const Contact = () => {
 
     const validateEmail = (value) => {
         setEmail(value);
-        // eslint-disable-next-line no-useless-escape
         let valid = email.match(emailRegex);
         valid
             ? setEmailError("")
@@ -97,7 +96,14 @@ const Contact = () => {
     };
 
     return (
-        <Container maxWidth={"lg"} sx={{ mt: 2 }} style={{ display: "flex" }}>
+        <Container
+            maxWidth={"lg"}
+            sx={{ mt: 2}}
+            style={{
+                display: "flex",
+                flexDirection: isMobile ? "column" : "row",
+            }}
+        >
             <img
                 src={require("./images/contact.jpg")}
                 alt="Close up of fly on a tree"

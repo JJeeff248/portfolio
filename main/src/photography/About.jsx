@@ -5,10 +5,21 @@ import { isMobile } from "react-device-detect";
 
 const About = () => {
     return (
-        <Container maxWidth={"lg"} sx={{ mt: 2 }} style={{ display: "flex" }}>
-            <img src={require("./images/about.jpg")} alt="Donkey at a petting zoo" loading="lazy"
-                style={{ maxHeight: isMobile ? "100vh" : "80vh" }} />
-            <Box component="div" sx={{ width: "45%", padding: 2 }}>
+        <Container
+            maxWidth={"lg"}
+            sx={{ mt: 2 }}
+            style={{
+                display: "flex",
+                flexDirection: isMobile ? "column" : "row",
+            }}
+        >
+            <img
+                src={require("./images/about.jpg")}
+                alt="Donkey at a petting zoo"
+                loading="lazy"
+                style={{ maxHeight: isMobile ? "100vh" : "80vh" }}
+            />
+            <Box component="div" sx={{ padding: 2 }}>
                 <Typography variant="body1" sx={{ mt: 2 }}>
                     Photography has been a passion of mine since I was about
                     nine years old, walking around behind the official

@@ -19,7 +19,7 @@ const PhotographyPage = () => {
         <>
             <Container
                 maxWidth={"lg"}
-                sx={{ mt: 4, flexGrow: 1, display: "flex" }}
+                sx={{ mt: 4, mb:10, flexGrow: 1, display: "flex" }}
             >
                 <Tabs
                     orientation="vertical"
