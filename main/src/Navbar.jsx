@@ -21,7 +21,8 @@ const Navbar = (props) => {
                 <Tabs
                     value={page}
                     onChange={handleChange}
-                    aria-label="nav tabs example"
+                    variant="fullWidth"
+                    sx={{ width: "100%" }}
                 >
                     <Tab label="Home" />
                     <Tab label="Programming" />
