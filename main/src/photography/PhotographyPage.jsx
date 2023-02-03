@@ -51,7 +51,15 @@ const PhotographyPage = () => {
                     handlePageChange={setSelectedTab}
                 />
 
-                {selectedTab === 0 && <Gallery images={images} selectedImg={selectedImg} setSelectedImg={setSelectedImg} setAltText={setAltText} altText={altText} />}
+                {selectedTab === 0 && (
+                    <Gallery
+                        images={images}
+                        selectedImg={selectedImg}
+                        setSelectedImg={setSelectedImg}
+                        setAltText={setAltText}
+                        altText={altText}
+                    />
+                )}
                 {selectedTab === 1 && <About />}
                 {selectedTab === 2 && <Contact />}
             </Container>
