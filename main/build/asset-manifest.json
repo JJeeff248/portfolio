@@ -1,0 +1,33 @@
+{
+  "files": {
+    "main.js": "/static/js/main.d4860e2b.js",
+    "static/media/Crab_chilling_under_some_water.jpg": "/static/media/Crab_chilling_under_some_water.9b799aae3d9ec95598a5.jpg",
+    "static/media/Fly_on_a_tree.jpg": "/static/media/Fly_on_a_tree.ece1dbee8f6384d8e9c6.jpg",
+    "static/media/Stunning_seagull.jpg": "/static/media/Stunning_seagull.161424a522405af9dcb4.jpg",
+    "static/media/Donkey_at_a_petting_zoo.jpg": "/static/media/Donkey_at_a_petting_zoo.2d73a55cdf6ff9caebc1.jpg",
+    "static/media/about.jpg": "/static/media/about.2d73a55cdf6ff9caebc1.jpg",
+    "static/media/Train_Platform.jpg": "/static/media/Train_Platform.8b1d55bb185466792263.jpg",
+    "static/media/Fruit_Splash.jpg": "/static/media/Fruit_Splash.63f6eccdf6072202d14c.jpg",
+    "static/media/Is_there_a_ghost.jpg": "/static/media/Is_there_a_ghost.5744be2a2e97c90d6644.jpg",
+    "static/media/Otters_sleeping.jpg": "/static/media/Otters_sleeping.2c3bde29a1c5e1851a22.jpg",
+    "static/media/Huka_falls.jpg": "/static/media/Huka_falls.6091a2d86c04ccb2532c.jpg",
+    "static/media/Wood_fire_burning_hot.jpg": "/static/media/Wood_fire_burning_hot.fcf177ab7097832ac4a3.jpg",
+    "static/media/Happy_otter_napping.jpg": "/static/media/Happy_otter_napping.06592b42eb4d864123a1.jpg",
+    "static/media/A_leaf.jpg": "/static/media/A_leaf.a0c0d56c655d64d302dd.jpg",
+    "static/media/Gas_burner_in_love.jpg": "/static/media/Gas_burner_in_love.a5780f0b7bb755d2a176.jpg",
+    "static/media/Tui_hanging_upside_down_in_a_kowhai_tree.jpg": "/static/media/Tui_hanging_upside_down_in_a_kowhai_tree.6f3bc0f2ecfed291aa33.jpg",
+    "static/media/contact.jpg": "/static/media/contact.818c954d594dc020406c.jpg",
+    "static/media/The_glowing_man.jpg": "/static/media/The_glowing_man.6e46afd8b23cfd73111c.jpg",
+    "static/media/Capybara_at_Wellington_zoo.jpg": "/static/media/Capybara_at_Wellington_zoo.f5aa5e429990dcbe38fe.jpg",
+    "static/media/Bee_sitting_on_a_purple_flower.jpg": "/static/media/Bee_sitting_on_a_purple_flower.a1ed14fa61d3df337785.jpg",
+    "static/media/headshot.jpg": "/static/media/headshot.2f7f24c7424f50a31bca.jpg",
+    "static/media/Sunset_over_Makara_hills_with_windmill_silhouettes.jpg": "/static/media/Sunset_over_Makara_hills_with_windmill_silhouettes.2d161e3dc251a5fdfa5c.jpg",
+    "static/media/Morning_frost_on_a_green_wooden_railing.jpg": "/static/media/Morning_frost_on_a_green_wooden_railing.35422203719fe56edeba.jpg",
+    "static/media/logo.svg": "/static/media/logo.a324a928212bd37aa526529b82038a2c.svg",
+    "index.html": "/index.html",
+    "main.d4860e2b.js.map": "/static/js/main.d4860e2b.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.d4860e2b.js"
+  ]
+}
