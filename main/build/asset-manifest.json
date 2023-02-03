@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.js": "/static/js/main.2fc81668.js",
+    "main.js": "/static/js/main.d4860e2b.js",
     "static/media/Crab_chilling_under_some_water.jpg": "/static/media/Crab_chilling_under_some_water.9b799aae3d9ec95598a5.jpg",
     "static/media/Fly_on_a_tree.jpg": "/static/media/Fly_on_a_tree.ece1dbee8f6384d8e9c6.jpg",
     "static/media/Stunning_seagull.jpg": "/static/media/Stunning_seagull.161424a522405af9dcb4.jpg",
@@ -25,9 +25,9 @@
     "static/media/Morning_frost_on_a_green_wooden_railing.jpg": "/static/media/Morning_frost_on_a_green_wooden_railing.35422203719fe56edeba.jpg",
     "static/media/logo.svg": "/static/media/logo.a324a928212bd37aa526529b82038a2c.svg",
     "index.html": "/index.html",
-    "main.2fc81668.js.map": "/static/js/main.2fc81668.js.map"
+    "main.d4860e2b.js.map": "/static/js/main.d4860e2b.js.map"
   },
   "entrypoints": [
-    "static/js/main.2fc81668.js"
+    "static/js/main.d4860e2b.js"
   ]
 }

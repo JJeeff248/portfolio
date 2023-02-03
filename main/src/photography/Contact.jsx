@@ -7,10 +7,10 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 
 // RegEx for input validation
-const nameRegex = /^[a-zA-Z ]{2,30}$/;
+const nameRegex = /^[a-zA-Z -]{2,30}$/;
 const emailRegex =
     /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|".+")@((\[\d{1,3}\.\d]{1,3}\.\d{1,3}\.\d{1,3}])|(([a-zA-Z\-\d]+\.)+[a-zA-Z]{2,}))$/;
-const messageRegex = /^[a-zA-Z ]{10,300}$/;
+const messageRegex = /^.{10,300}$/;
 
 const Contact = () => {
     const [name, setName] = React.useState("");
@@ -28,7 +28,7 @@ const Contact = () => {
         let valid = name.match(nameRegex);
         valid
             ? setNameError("")
-            : setNameError("Name must be between 2 and 30 characters");
+            : setNameError("Name must be between 2-30 characters and only contain letters, spaces, and hyphens");
         return valid;
     };
 
