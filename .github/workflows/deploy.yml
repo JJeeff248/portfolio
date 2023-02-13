@@ -13,23 +13,23 @@ env:
       contents: read
 
 jobs:
-  name: Build-and-upload-S3
-  runs-on: ubuntu-latest
-  
-  steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    - name: Setup Node
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-    - name: Build
-      run: cd main
-      run: npm build
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        role-to-assume: arn:aws:iam::618566478002:role/GithubActionDevPortfolio
-        aws-region: ${{ env.AWS_REGION }}
-    - name: Upload to S3
-      run: aws s3 sync ./main/build s3://${{ env.BUCKET_NAME }}/ --delete
+  Build-and-upload-S3:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Build
+        run: cd main
+        run: npm build
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::618566478002:role/GithubActionDevPortfolio
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Upload to S3
+        run: aws s3 sync ./main/build s3://${{ env.BUCKET_NAME }}/ --delete
