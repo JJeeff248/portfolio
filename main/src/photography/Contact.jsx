@@ -71,7 +71,6 @@ const Contact = () => {
         };
 
         Axios.post("https://api.chris-sa.com/contact", data).then((response) => {
-            console.log(response);
             if (response.status === 200) {
                 setMessageSent(true);
                 setAlertOpen(true);
@@ -87,7 +86,6 @@ const Contact = () => {
                 setAlertOpen(false);
             }, 3000);
         }).catch((error) => {
-            console.log(error);
             setMessageSent(false);
             setAlertOpen(true);
 
