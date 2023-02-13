@@ -65,16 +65,9 @@ const Contact = () => {
         }
 
         const data = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            mode: "cors",
-            body: JSON.stringify({
-                name: name,
-                email: email,
-                message: message,
-            }),
+            name: name,
+            email: email,
+            message: message,
         };
 
         Axios.post("https://api.chris-sa.com/contact", data).then((response) => {
