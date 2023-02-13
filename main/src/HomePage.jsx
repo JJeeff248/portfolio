@@ -40,11 +40,11 @@ const HomePage = () => {
                 <Typography variant="body1" fontSize={20} sx={{ mb: 2 }}>
                     I'm a student at Victoria University of Wellington currently
                     studying Computer Science and Data Science. I started
-                    programming in 2017 through school and have beening and
-                    learning it ever since. I really enjoy learning new things,
-                    and I'm always looking to improve my skills. When I'm not
-                    coding, I'm usually playing video games, taking photos or
-                    just hanging out with my friends.
+                    programming in 2017 through school and have been learning
+                    and loving it ever since. I enjoy learning new
+                    things, and I'm always looking to improve my skills. When
+                    I'm not coding, I'm usually playing video games, taking
+                    photos or just hanging out with my friends.
                 </Typography>
             </Container>
 
