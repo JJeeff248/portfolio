@@ -15,7 +15,7 @@ env:
 jobs:
   Build-and-upload-S3:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -24,8 +24,7 @@ jobs:
         with:
           node-version: '18'
       - name: Build
-        run: cd main
-        run: npm build
+        run: cd main | npm run build
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
