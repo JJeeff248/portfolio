@@ -120,6 +120,7 @@ const Contact = () => {
                     label="Name"
                     variant="outlined"
                     sx={{ mt: 3 }}
+                    value={name}
                     onChange={(e) => {
                         validateName(e.target.value);
                     }}
@@ -130,6 +131,7 @@ const Contact = () => {
                     label="Email"
                     variant="outlined"
                     sx={{ mt: 3 }}
+                    value={email}
                     onChange={(e) => {
                         validateEmail(e.target.value);
                     }}
@@ -140,6 +142,7 @@ const Contact = () => {
                     label="Message"
                     variant="outlined"
                     sx={{ mt: 3 }}
+                    value={message}
                     multiline
                     rows={5}
                     onChange={(e) => {
