@@ -20,7 +20,7 @@ AWS_REGION = "ap-southeast-2"
 
 
 def lambda_handler(event, context):
-    body = json.loads(event['body'])
+    body = json.loads(event["body"])
     name = body['name']
     email = body['email']
     message = body['message']
@@ -98,16 +98,6 @@ def lambda_handler(event, context):
 
     client = boto3.client('ses', region_name=AWS_REGION)
 
-    if event['headers']['origin'] != 'https://csphotography.chris-sa.com':
-        return {
-            'statusCode': '400',
-            'headers': {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json'
-            },
-            'body': 'Origin not allowed'
-        }
-
     try:
         response = client.send_email(
             Destination={
@@ -155,5 +145,5 @@ def lambda_handler(event, context):
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json'
             },
-            'body': 'Email sent! Message ID: ' + response['MessageId']
+            'body': 'Email sent!'
         }
