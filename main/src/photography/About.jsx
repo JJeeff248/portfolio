@@ -17,7 +17,7 @@ const About = () => {
                 src={require("./images/about.jpg")}
                 alt="Donkey at a petting zoo"
                 loading="lazy"
-                style={{ maxHeight: isMobile ? "100vh" : "80vh" }}
+                style={{ maxWidth: 500 }}
             />
             <Box component="div" sx={{ padding: 2 }}>
                 <Typography variant="body1" sx={{ mt: 2 }}>

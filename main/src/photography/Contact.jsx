@@ -108,7 +108,7 @@ const Contact = () => {
                 src={require("./images/contact.jpg")}
                 alt="Close up of fly on a tree"
                 loading="lazy"
-                style={{ maxHeight: isMobile ? "100vh" : "50vh" }}
+                style={{ maxWidth: 500 }}
             />
             <Container
                 sx={{ mt: 2 }}
