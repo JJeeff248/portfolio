@@ -71,7 +71,6 @@ const Contact = () => {
         };
 
         Axios.post("https://api.chris-sa.com/contact", data).then((response) => {
-            console.log(response);
             if (response.status === 200) {
                 setMessageSent(true);
                 setAlertOpen(true);
@@ -87,7 +86,6 @@ const Contact = () => {
                 setAlertOpen(false);
             }, 3000);
         }).catch((error) => {
-            console.log(error);
             setMessageSent(false);
             setAlertOpen(true);
 
@@ -120,6 +118,7 @@ const Contact = () => {
                     label="Name"
                     variant="outlined"
                     sx={{ mt: 3 }}
+                    value={name}
                     onChange={(e) => {
                         validateName(e.target.value);
                     }}
@@ -130,6 +129,7 @@ const Contact = () => {
                     label="Email"
                     variant="outlined"
                     sx={{ mt: 3 }}
+                    value={email}
                     onChange={(e) => {
                         validateEmail(e.target.value);
                     }}
@@ -140,6 +140,7 @@ const Contact = () => {
                     label="Message"
                     variant="outlined"
                     sx={{ mt: 3 }}
+                    value={message}
                     multiline
                     rows={5}
                     onChange={(e) => {
