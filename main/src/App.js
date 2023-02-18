@@ -16,7 +16,7 @@ const darkTheme = createTheme({
 
 function App() {
     const location = useLocation();
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
 
     const handlePageChange = useCallback(
         (newPage) => {
@@ -29,7 +29,7 @@ function App() {
         const queryParams = new URLSearchParams(location.search);
         const urlPage = queryParams.get("page");
 
-        setPage(urlPage ? parseInt(urlPage) : 1);
+        setPage(urlPage ? parseInt(urlPage) : 0);
 
         queryParams.delete("page");
         window.history.replaceState({}, "", `${location.pathname}`);
