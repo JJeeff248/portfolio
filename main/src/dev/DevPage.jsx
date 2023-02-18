@@ -80,7 +80,7 @@ const DevPage = () => {
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, justifyContent: "center" }}>
                     <AwardCard title="AWS Certified Cloud Practitioner" img={require("./images/aws-logo.png")} link="https://www.credly.com/badges/abd5711a-990c-4b6b-a43e-bf6cf300bb03/public_url" />
                     <AwardCard title="Certificate of Approval (Security Guard)" img={require("./images/moj-logo.png")} link="https://forms.justice.govt.nz/search/PSPLA/" addition="ID: 21-082641" />
-                    <AwardCard title="Queen Scout Award" img={require("./images/scouts-logo.png")} link="https://www.aotearoa.org/awards/queens-scout-award" />
+                    <AwardCard title="Queen Scout Award" img={require("./images/scouts-logo.png")} />
                 </Box>
             </Box>
             <Box id="projects" mt={5} width="100%">
