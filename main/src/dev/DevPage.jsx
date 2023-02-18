@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Container, Divider, Typography } from "@mui/material";
-import { Container, keyframes } from "@mui/system";
-import logo from "../logo.svg";
+import languages from "./Languages.js";
+import ProgrammingCard from "./ProgrammingCard";
 
 const DevPage = () => {
     return (
@@ -54,15 +54,30 @@ const DevPage = () => {
                     laoreet suspendisse interdum consectetur.
                 </Typography>
             </Box>
-            />
-            <Typography
-                variant="h3"
-                component="h1"
-                fontFamily={"Courier New, monospace"}
-                fontWeight="bold"
-            >
-                Big things coming soon!
-            </Typography>
+            <Box id="languages-tools" mt={5} width="100%">
+                <Typography variant="h3" textAlign="left" mb={1}>
+                    Languages and Tools
+                </Typography>
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+                    {languages.map((language) => (
+                        <ProgrammingCard
+                            key={language.title}
+                            title={language.title}
+                            level={language.level}
+                            description={language.description}
+                        />
+                    ))}
+                </Box>
+            </Box>
+            <Box id="projects" mt={5} width="100%">
+                <Typography variant="h3" textAlign="left" mb={1}>
+                    Projects
+                </Typography>
+                <Divider sx={{ mb: 5, borderBottomWidth: 3 }} />
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+                    
+                </Box>
+            </Box>
         </Container>
     );
 };
