@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Container, Divider, Typography } from "@mui/material";
 import languages from "./Languages.js";
 import ProgrammingCard from "./ProgrammingCard";
+import AwardCard from "./AwardCard.jsx";
 
 const DevPage = () => {
     return (
@@ -19,6 +20,7 @@ const DevPage = () => {
                 <Typography variant="h3" textAlign="left" mb={1}>
                     How did I get here?
                 </Typography>
+                <Divider sx={{ mb: 2, borderBottomWidth: 3 }} />
                 <Typography variant="body1" mb={3}>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                     do eiusmod tempor incididunt ut labore et dolore magna
@@ -58,7 +60,8 @@ const DevPage = () => {
                 <Typography variant="h3" textAlign="left" mb={1}>
                     Languages and Tools
                 </Typography>
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+                <Divider sx={{ mb: 2, borderBottomWidth: 3 }} />
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, justifyContent: "center" }}>
                     {languages.map((language) => (
                         <ProgrammingCard
                             key={language.title}
@@ -69,12 +72,23 @@ const DevPage = () => {
                     ))}
                 </Box>
             </Box>
+            <Box id="awards-certifications" mt={5} width="100%">
+                <Typography variant="h3" textAlign="left" mb={1}>
+                    Awards and Certifications
+                </Typography>
+                <Divider sx={{ mb: 2, borderBottomWidth: 3 }} />
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, justifyContent: "center" }}>
+                    <AwardCard title="AWS Certified Cloud Practitioner" img={require("./images/aws-logo.png")} link="https://www.credly.com/badges/abd5711a-990c-4b6b-a43e-bf6cf300bb03/public_url" />
+                    <AwardCard title="Certificate of Approval (Security Guard)" img={require("./images/moj-logo.png")} link="https://forms.justice.govt.nz/search/PSPLA/" addition="ID: 21-082641" />
+                    <AwardCard title="Queen Scout Award" img={require("./images/scouts-logo.png")} link="https://www.aotearoa.org/awards/queens-scout-award" />
+                </Box>
+            </Box>
             <Box id="projects" mt={5} width="100%">
                 <Typography variant="h3" textAlign="left" mb={1}>
                     Projects
                 </Typography>
-                <Divider sx={{ mb: 5, borderBottomWidth: 3 }} />
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+                <Divider sx={{ mb: 2, borderBottomWidth: 3 }} />
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, justifyContent: "center" }}>
                     
                 </Box>
             </Box>
