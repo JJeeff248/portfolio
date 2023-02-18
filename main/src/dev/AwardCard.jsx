@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Button, Card, CardActions, CardContent, CardMedia, Chip, Typography } from "@mui/material";
+import LaunchIcon from '@mui/icons-material/Launch';
 
 const AwardCard = (props) => {
     const { title, img, link, addition } = props;
@@ -13,7 +14,7 @@ const AwardCard = (props) => {
             <CardActions sx={{ justifyContent: "space-between" }}>
                 {addition && <Chip label={addition} />}
                 {!addition && <Box sx={{ flexGrow: 1 }} />}
-                <Button size="small" href={link} target="_blank">Learn More</Button>
+                <Button size="small" href={link} target="_blank" disabled={!link}>View<LaunchIcon fontSize="small" sx={{ml: 0.5}}/></Button>
             </CardActions>
         </Card>
     );
