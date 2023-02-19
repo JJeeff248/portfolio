@@ -3,6 +3,7 @@ import { Box, Container, Divider, Link, Typography } from "@mui/material";
 import languages from "./Languages.js";
 import ProgrammingCard from "./ProgrammingCard";
 import AwardCard from "./AwardCard.jsx";
+import ProjectCard from "./ProjectCard.jsx";
 
 const DevPage = () => {
     return (
@@ -61,7 +62,10 @@ const DevPage = () => {
                     the AWS Cloud Practitioner exam.
                 </Typography>
                 <Typography variant="body1">
-                    I am now pursuing a job working with AWS, being a full-stack web developer, or just developing using Python and Java. I would love a position where I can enjoy my work and help a community, big or small.
+                    I am now pursuing a job working with AWS, being a full-stack
+                    web developer, or just developing using Python and Java. I
+                    would love a position where I can enjoy my work and help a
+                    community, big or small.
                 </Typography>
             </Box>
             <Box id="languages-tools" mt={5} width="100%">
@@ -129,7 +133,13 @@ const DevPage = () => {
                         gap: 2,
                         justifyContent: "center",
                     }}
-                ></Box>
+                >
+                    <ProjectCard
+                        title="Teach Python"
+                        link={"./projects/teach-python"}
+                        tags={["Python", "HTML", "CSS", "JS"]}
+                    />
+                </Box>
             </Box>
         </Container>
     );
