@@ -136,12 +136,12 @@ const DevPage = () => {
                 >
                     <ProjectCard
                         title="Teach Python"
-                        link={"./projects/teach-python"}
+                        link={"/projects/teach-python/index.html"}
                         tags={["Python", "HTML", "CSS", "JS"]}
                     />
                     <ProjectCard
                         title="Cotiss Feedback"
-                        link={"./projects/cotiss"}
+                        link={"/projects/cotiss/index.html"}
                         github="https://github.com/jjeeff248/cotiss-project"
                         tags={["ElasticBeanstalk", "DynamoDB", "PHP", "CSS"]}
                     />
