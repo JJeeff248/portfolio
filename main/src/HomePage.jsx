@@ -48,7 +48,7 @@ const HomePage = () => {
                 </Typography>
             </Container>
 
-            <Container maxWidth="md" sx={{ mt: 8, mb: 4 }} style={flexCenter}>
+            <Container maxWidth="md" sx={{ mt: 8, mb: 6 }} style={flexCenter}>
                 <Typography variant="h2" sx={{ mb: 2 }}>
                     Contact
                 </Typography>
