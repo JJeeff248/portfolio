@@ -1,4 +1,4 @@
-import { Alert, Button, IconButton, TextField } from "@mui/material";
+import { Alert, Button, IconButton, TextField, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import React from "react";
 import { isMobile } from "react-device-detect";
@@ -114,6 +114,9 @@ const Contact = () => {
                 sx={{ mt: 2 }}
                 style={{ display: "flex", flexDirection: "column" }}
             >
+                <Typography variant="body1" fontWeight={500} textAlign="left">
+                    For use or inquiry of photos, please fill out this form
+                </Typography>
                 <TextField
                     label="Name"
                     variant="outlined"
