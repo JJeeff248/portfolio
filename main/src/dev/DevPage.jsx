@@ -12,9 +12,9 @@ const DevPage = () => {
             sx={{
                 display: "flex",
                 alignItems: "center",
-                height: "90vh",
                 flexDirection: "column",
                 mt: 5,
+                mb: 6,
             }}
         >
             <Box id="about" width="100%">

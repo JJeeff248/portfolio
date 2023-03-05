@@ -44,7 +44,7 @@ const PhotographyPage = () => {
         <>
             <Container
                 maxWidth={"lg"}
-                sx={{ mt: 4, flexGrow: 1, display: "flex" }}
+                sx={{ mt: 4, flexGrow: 1, display: "flex", mb: 6 }}
             >
                 <MobileNav
                     selectedTab={selectedTab}
