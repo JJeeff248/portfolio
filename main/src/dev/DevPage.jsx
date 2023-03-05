@@ -152,6 +152,12 @@ const DevPage = () => {
                         github="https://github.com/Twenty-Three-Fifty-Nine/grade-tracker"
                         tags={["React", "JS", "DynamoDB", "SES", "APIGateway"]}
                     />
+                    <ProjectCard
+                        title="Chap's Challenge"
+                        img={require("./images/chaps-challenge.png")}
+                        github="https://github.com/jjeeff248/chaps-challenge"
+                        tags={["Java", "XML", "GIT"]}
+                    />
                 </Box>
             </Box>
         </Container>
