@@ -56,7 +56,7 @@ const DevPage = () => {
                     team at NextWork provided the best content over several
                     weeks, with a real-world project in the mix too. This led me
                     to sit and{" "}
-                    <Box fontWeight="fontWeightMedium" display="inline">
+                    <Box fontWeight="fontWeightMedium" display="inline" component="span">
                         pass
                     </Box>{" "}
                     the AWS Cloud Practitioner exam.
