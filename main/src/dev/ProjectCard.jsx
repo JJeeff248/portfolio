@@ -9,7 +9,7 @@ const ProjectCard = (props) => {
     return (
         <Card variant="outlined" sx={{ width: 400, m: 1 }}>
             <CardMedia
-                component="iframe"
+                component={img ? "img" : "iframe"}
                 src={img ? img : link}
                 frameBorder="0"
                 allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
