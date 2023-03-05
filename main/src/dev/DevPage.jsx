@@ -146,11 +146,11 @@ const DevPage = () => {
                         tags={["ElasticBeanstalk", "DynamoDB", "PHP", "CSS"]}
                     />
                     <ProjectCard
-                        title="TwentyThreeFiftyNine"
+                        title="Twenty Three Fifty Nine"
                         img={require("./images/2359.png")}
                         link={"https://twentythreefiftynine.com"}
                         github="https://github.com/Twenty-Three-Fifty-Nine/grade-tracker"
-                        tags={["React", "JS", "DynamoDB", "SES", "APIGateway"]}
+                        tags={["ReactJS", "Lambdas", "DynamoDB", "SES", "APIGateway"]}
                     />
                     <ProjectCard
                         title="Chap's Challenge"
