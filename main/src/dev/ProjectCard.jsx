@@ -30,7 +30,7 @@ const ProjectCard = (props) => {
                 </Typography>
             </CardContent>
             <CardActions sx={{ justifyContent: "flex-end" }}>
-                <Button size="small" color="primary" href={link} target="_blank">View</Button>
+                {link && <Button size="small" color="primary" href={link} target="_blank">View</Button> }
                 {github && <Button size="small" color="primary" href={github} target="_blank"><GitHubIcon /></Button> }
             </CardActions>
         </Card>

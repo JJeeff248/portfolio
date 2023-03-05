@@ -145,6 +145,12 @@ const DevPage = () => {
                         github="https://github.com/jjeeff248/cotiss-project"
                         tags={["ElasticBeanstalk", "DynamoDB", "PHP", "CSS"]}
                     />
+                    <ProjectCard
+                        title="TwentyThreeFiftyNine"
+                        link={"https://twentythreefiftynine.com"}
+                        github="https://github.com/Twenty-Three-Fifty-Nine/grade-tracker"
+                        tags={["React", "JS", "DynamoDB", "SES", "APIGateway"]}
+                    />
                 </Box>
             </Box>
         </Container>
