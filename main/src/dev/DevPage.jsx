@@ -139,6 +139,11 @@ const DevPage = () => {
                         link={"./projects/teach-python"}
                         tags={["Python", "HTML", "CSS", "JS"]}
                     />
+                    <ProjectCard
+                        title="Cotiss Feedback"
+                        link={"./projects/cotiss"}
+                        tags={["PHP", "HTML", "CSS"]}
+                    />
                 </Box>
             </Box>
         </Container>
