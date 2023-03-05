@@ -147,6 +147,7 @@ const DevPage = () => {
                     />
                     <ProjectCard
                         title="TwentyThreeFiftyNine"
+                        img={require("./images/2359.png")}
                         link={"https://twentythreefiftynine.com"}
                         github="https://github.com/Twenty-Three-Fifty-Nine/grade-tracker"
                         tags={["React", "JS", "DynamoDB", "SES", "APIGateway"]}
