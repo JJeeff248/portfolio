@@ -1,15 +1,3 @@
-"""
-Send an email using AWS Lambda and SES
-
- * Email Format
-
-    * Name: ${name}
-    * Email: ${email}
-    * Message: ${message}
-
-    * reply to: ${email}
-"""
-
 import boto3
 from botocore.exceptions import ClientError
 import json
@@ -77,7 +65,7 @@ def lambda_handler(event, context):
   <body>
     <main>
       <img
-        src="https://csphotography.chris-sa.com/images/logo_300.png"
+        src="https://chris-sa.com/logo_300.png"
         alt="CSPhotography"
       />
       <h2>Contact information:</h2>
