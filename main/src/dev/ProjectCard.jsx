@@ -4,13 +4,13 @@ import { Button, Card, CardActions, CardContent, CardMedia, Chip, Typography } f
 import GitHubIcon from '@mui/icons-material/GitHub';
 
 const ProjectCard = (props) => {
-    const { title, link, github, tags } = props;
+    const { title, link, github, img, tags } = props;
 
     return (
         <Card variant="outlined" sx={{ width: 400, m: 1 }}>
             <CardMedia
                 component="iframe"
-                src={link}
+                src={img ? img : link}
                 frameBorder="0"
                 allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
