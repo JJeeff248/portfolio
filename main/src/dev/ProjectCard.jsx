@@ -1,12 +1,13 @@
 import React from "react";
 import { Button, Card, CardActions, CardContent, CardMedia, Chip, Typography } from "@mui/material";
 
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 const ProjectCard = (props) => {
-    const { title, link, tags } = props;
+    const { title, link, github, tags } = props;
 
     return (
-        <Card variant="outlined" sx={{ width: 350, m: 1 }}>
+        <Card variant="outlined" sx={{ width: 400, m: 1 }}>
             <CardMedia
                 component="iframe"
                 src={link}
@@ -14,9 +15,8 @@ const ProjectCard = (props) => {
                 allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 loading="lazy"
-                // make aspect ratio 16:9
-                width={350}
-                height={170}
+                width={400}
+                height={180}
                 scrolling="no"
                 sx={{ overFlow: "hidden" }}
             />
@@ -30,7 +30,8 @@ const ProjectCard = (props) => {
                 </Typography>
             </CardContent>
             <CardActions sx={{ justifyContent: "flex-end" }}>
-                <Button size="small" color="primary" href={link} target="_blank">View Project</Button>
+                <Button size="small" color="primary" href={link} target="_blank">View</Button>
+                {github && <Button size="small" color="primary" href={github} target="_blank"><GitHubIcon /></Button> }
             </CardActions>
         </Card>
     );

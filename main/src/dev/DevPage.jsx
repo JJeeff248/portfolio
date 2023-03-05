@@ -142,7 +142,8 @@ const DevPage = () => {
                     <ProjectCard
                         title="Cotiss Feedback"
                         link={"./projects/cotiss"}
-                        tags={["PHP", "HTML", "CSS"]}
+                        github="https://github.com/jjeeff248/cotiss-project"
+                        tags={["ElasticBeanstalk", "DynamoDB", "PHP", "CSS"]}
                     />
                 </Box>
             </Box>
