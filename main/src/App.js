@@ -6,7 +6,6 @@ import Navbar from "./Navbar";
 import HomePage from "./HomePage";
 import DevPage from "./dev/DevPage";
 import PhotographyPage from "./photography/PhotographyPage";
-import { useLocation } from "react-router-dom";
 
 const darkTheme = createTheme({
     palette: {
@@ -15,7 +14,6 @@ const darkTheme = createTheme({
 });
 
 function App() {
-    const location = useLocation();
     const [page, setPage] = useState(0);
 
     const handlePageChange = useCallback(
@@ -26,14 +24,14 @@ function App() {
     );
 
     useEffect(() => {
-        const queryParams = new URLSearchParams(location.search);
-        const urlPage = queryParams.get("page");
-
-        setPage(urlPage ? parseInt(urlPage) : 0);
-
-        queryParams.delete("page");
-        window.history.replaceState({}, "", `${location.pathname}`);
-    }, [location.pathname, location.search]);
+        const pages = {
+            "chris-sa": 0,
+            "dev": 1,
+            "photography": 2,
+        };
+        
+        setPage(pages[window.location.host.split(".")[0]]);
+    }, []);
 
     return (
         <ThemeProvider theme={darkTheme}>
