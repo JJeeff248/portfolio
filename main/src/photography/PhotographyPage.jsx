@@ -26,7 +26,9 @@ const PhotographyPage = () => {
         let images = [];
         imageDir.keys().forEach((key) => {
             key = key.replace(/^.*[\\/]/, "");
-            let alt_text = key.replace(/\.jpg$/, "").replace(/_/g, " ");
+            let alt_text = key.replace(/\.jpg$/, "").split("_");
+            alt_text[0] = "";
+            alt_text = alt_text.join(" ");
             images.push(
                 <ImageListItem key={key} onClick={handleImageClick}>
                     <img
@@ -36,7 +38,7 @@ const PhotographyPage = () => {
                 </ImageListItem>
             );
         });
-        images.sort(() => Math.random() - 0.5);
+        images.sort();
         return images;
     }, [handleImageClick]);
 
