@@ -27,10 +27,12 @@ function App() {
         const pages = {
             "chris-sa": 0,
             "dev": 1,
-            "photography": 2,
+            "csphotography": 2,
         };
-        
-        setPage(pages[window.location.host.split(".")[0]]);
+
+        let page = pages[window.location.host.split(".")[0]]
+
+        setPage(page ? page : 0);
     }, []);
 
     return (
