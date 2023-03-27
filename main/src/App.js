@@ -27,9 +27,9 @@ function App() {
         const pages = {
             "chris-sa": 0,
             "dev": 1,
-            "photography": 2,
+            "csphotography": 2,
         };
-        
+
         setPage(pages[window.location.host.split(".")[0]]);
     }, []);
 
