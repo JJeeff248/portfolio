@@ -1,6 +1,8 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { Box } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
+import { isMobile } from "react-device-detect";
 
 import Navbar from "./Navbar";
 import HomePage from "./HomePage";
@@ -40,9 +42,11 @@ function App() {
             <CssBaseline />
             <Navbar page={page} handlePageChange={handlePageChange} />
 
-            {page === 0 && <HomePage />}
-            {page === 1 && <DevPage />}
-            {page === 2 && <PhotographyPage />}
+            <Box  sx={{ mb: isMobile ? 10 : 0 }}>
+                {page === 0 && <HomePage />}
+                {page === 1 && <DevPage />}
+                {page === 2 && <PhotographyPage />}
+            </Box>
         </ThemeProvider>
     );
 }
