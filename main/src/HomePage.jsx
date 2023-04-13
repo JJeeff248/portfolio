@@ -13,7 +13,6 @@ import {
 import EmailIcon from "@mui/icons-material/Email";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import TwitterIcon from "@mui/icons-material/Twitter";
 
 const HomePage = () => {
     const flexCenter = {
@@ -105,26 +104,6 @@ const HomePage = () => {
                                 />
                                 <CardContent>
                                     <Typography variant="h5">GitHub</Typography>
-                                </CardContent>
-                            </CardActionArea>
-                        </Card>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Card>
-                            <CardActionArea
-                                style={flexCenter}
-                                sx={cardSx}
-                                href="https://twitter.com/cybr_chris"
-                                target="_blank"
-                            >
-                                <SvgIcon
-                                    component={TwitterIcon}
-                                    sx={{ width: 50, height: 50 }}
-                                />
-                                <CardContent>
-                                    <Typography variant="h5">
-                                        Twitter
-                                    </Typography>
                                 </CardContent>
                             </CardActionArea>
                         </Card>
