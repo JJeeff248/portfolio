@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from "react";
 import { Container } from "@mui/system";
 import { ImageListItem } from "@mui/material";
+import { isMobile } from "react-device-detect";
 
 import Gallery from "./Gallery";
 import About from "./About";
@@ -46,7 +47,7 @@ const PhotographyPage = () => {
         <>
             <Container
                 maxWidth={"lg"}
-                sx={{ mt: 4, flexGrow: 1, display: "flex", mb: 6 }}
+                sx={{ mt: 4, flexGrow: 1, display: "flex", mb: isMobile ? 15 : 6 }}
             >
                 <MobileNav
                     selectedTab={selectedTab}
