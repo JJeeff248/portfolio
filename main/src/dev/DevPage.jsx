@@ -135,9 +135,11 @@ const DevPage = () => {
                     }}
                 >
                     <ProjectCard
-                        title="Teach Python"
-                        link={"/projects/teach-python/index.html"}
-                        tags={["Python", "HTML", "CSS", "JS"]}
+                        title="Twenty Three Fifty Nine"
+                        img={require("./images/2359.png")}
+                        link={"https://twentythreefiftynine.com"}
+                        github="https://github.com/Twenty-Three-Fifty-Nine/grade-tracker"
+                        tags={["ReactJS", "Lambdas", "DynamoDB", "SES", "APIGateway"]}
                     />
                     <ProjectCard
                         title="Cotiss Feedback"
@@ -146,17 +148,22 @@ const DevPage = () => {
                         tags={["ElasticBeanstalk", "DynamoDB", "PHP", "CSS"]}
                     />
                     <ProjectCard
-                        title="Twenty Three Fifty Nine"
-                        img={require("./images/2359.png")}
-                        link={"https://twentythreefiftynine.com"}
-                        github="https://github.com/Twenty-Three-Fifty-Nine/grade-tracker"
-                        tags={["ReactJS", "Lambdas", "DynamoDB", "SES", "APIGateway"]}
-                    />
-                    <ProjectCard
                         title="Chap's Challenge"
                         img={require("./images/chaps-challenge.png")}
                         github="https://github.com/jjeeff248/chaps-challenge"
                         tags={["Java", "XML", "GIT"]}
+                    />
+                    <ProjectCard
+                        title="Help a Mate"
+                        img={require("./images/helpamate.png")}
+                        link={"http://helpamate.chris-sa.com/"}
+                        github="https://github.com/JJeeff248/HelpAMate"
+                        tags={["PHP", "CSS", "HTML", "JS", "MySQL"]}
+                    />
+                    <ProjectCard
+                        title="Teach Python"
+                        link={"/projects/teach-python/index.html"}
+                        tags={["Python", "HTML", "CSS", "JS"]}
                     />
                 </Box>
             </Box>
