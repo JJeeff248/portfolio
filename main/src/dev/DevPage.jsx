@@ -8,7 +8,7 @@ import ProjectCard from "./ProjectCard.jsx";
 const DevPage = () => {
     return (
         <Container
-            maxWidth="md"
+            maxWidth="lg"
             sx={{
                 display: "flex",
                 alignItems: "center",
@@ -17,7 +17,7 @@ const DevPage = () => {
                 mb: 6,
             }}
         >
-            <Box id="about" width="100%">
+            <Box id="about" width="110%">
                 <Typography variant="h4" textAlign="left" mb={1}>
                     How did I get here?
                 </Typography>
@@ -68,7 +68,7 @@ const DevPage = () => {
                     community, big or small.
                 </Typography>
             </Box>
-            <Box id="languages-tools" mt={5} width="100%">
+            <Box id="languages-tools" mt={5} width="110%">
                 <Typography variant="h4" textAlign="left" mb={1}>
                     Languages and Tools
                 </Typography>
@@ -91,7 +91,7 @@ const DevPage = () => {
                     ))}
                 </Box>
             </Box>
-            <Box id="awards-certifications" mt={5} width="100%">
+            <Box id="awards-certifications" mt={5} width="110%">
                 <Typography variant="h4" textAlign="left" mb={1}>
                     Awards and Certifications
                 </Typography>
@@ -121,7 +121,7 @@ const DevPage = () => {
                     />
                 </Box>
             </Box>
-            <Box id="projects" mt={5} width="100%">
+            <Box id="projects" mt={5} width="110%">
                 <Typography variant="h4" textAlign="left" mb={1}>
                     Projects
                 </Typography>
