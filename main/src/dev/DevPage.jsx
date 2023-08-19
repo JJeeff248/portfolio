@@ -1,23 +1,25 @@
 import React from "react";
-import { Box, Container, Divider, Link, Typography } from "@mui/material";
+import { Box, Divider, Link, Typography } from "@mui/material";
 import languages from "./Languages.js";
 import ProgrammingCard from "./ProgrammingCard";
 import AwardCard from "./AwardCard.jsx";
 import ProjectCard from "./ProjectCard.jsx";
+import { isMobile } from "react-device-detect";
 
 const DevPage = () => {
     return (
-        <Container
-            maxWidth="lg"
+        <Box
             sx={{
                 display: "flex",
                 alignItems: "center",
                 flexDirection: "column",
+                m: "0 auto",
                 mt: 5,
                 mb: 6,
+                maxWidth: isMobile ? "90vw" : "70vw"
             }}
         >
-            <Box id="about" width="110%">
+            <Box id="about" width="100%">
                 <Typography variant="h4" textAlign="left" mb={1}>
                     How did I get here?
                 </Typography>
@@ -51,7 +53,7 @@ const DevPage = () => {
                     community, big or small.
                 </Typography>
             </Box>
-            <Box id="languages-tools" mt={5} width="110%">
+            <Box id="languages-tools" mt={5} width="100%">
                 <Typography variant="h4" textAlign="left" mb={1}>
                     Languages and Tools
                 </Typography>
@@ -60,8 +62,7 @@ const DevPage = () => {
                     sx={{
                         display: "flex",
                         flexWrap: "wrap",
-                        gap: 2,
-                        justifyContent: "center",
+                        gap: 1.5,
                     }}
                 >
                     {languages.map((language) => (
@@ -74,7 +75,7 @@ const DevPage = () => {
                     ))}
                 </Box>
             </Box>
-            <Box id="awards-certifications" mt={5} width="110%">
+            <Box id="awards-certifications" mt={5} width="100%">
                 <Typography variant="h4" textAlign="left" mb={1}>
                     Awards and Certifications
                 </Typography>
@@ -104,7 +105,7 @@ const DevPage = () => {
                     />
                 </Box>
             </Box>
-            <Box id="projects" mt={5} width="110%">
+            <Box id="projects" mt={5} width="100%">
                 <Typography variant="h4" textAlign="left" mb={1}>
                     Projects
                 </Typography>
@@ -149,7 +150,7 @@ const DevPage = () => {
                     />
                 </Box>
             </Box>
-        </Container>
+        </Box>
     );
 };
 

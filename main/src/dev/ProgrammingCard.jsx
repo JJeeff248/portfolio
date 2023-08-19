@@ -31,7 +31,7 @@ const ProgrammingCard = (props) => {
                 display: "flex",
                 alignItems: "center",
                 flexDirection: "column",
-                width: isMobile ? "47%" : 250,
+                width: isMobile ? "47%" : 240,
                 p: 2,
             }}
         >
