@@ -85,7 +85,7 @@ const DevPage = () => {
                         display: "flex",
                         flexWrap: "wrap",
                         gap: 2,
-                        justifyContent: "center",
+                        justifyContent: isMobile ? "center" : "flex-start",
                     }}
                 >
                     <AwardCard
@@ -115,6 +115,7 @@ const DevPage = () => {
                         display: "flex",
                         flexWrap: "wrap",
                         gap: 1,
+                        justifyContent: isMobile ? "center" : "flex-start",
                     }}
                 >
                     <ProjectCard
