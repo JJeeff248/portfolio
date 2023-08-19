@@ -47,12 +47,12 @@ const HomePage = () => {
                 </Typography>
             </Container>
 
-            <Container maxWidth="md" sx={{ mt: 8, mb: 6 }} style={flexCenter}>
+            <Container maxWidth="lg" sx={{ mt: 8, mb: 6 }} style={flexCenter}>
                 <Typography variant="h2" sx={{ mb: 2 }}>
                     Contact
                 </Typography>
                 <Grid container spacing={2}>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                         <Card>
                             <CardActionArea
                                 style={flexCenter}
@@ -70,7 +70,7 @@ const HomePage = () => {
                             </CardActionArea>
                         </Card>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                         <Card>
                             <CardActionArea
                                 style={flexCenter}
@@ -90,7 +90,7 @@ const HomePage = () => {
                             </CardActionArea>
                         </Card>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                         <Card>
                             <CardActionArea
                                 style={flexCenter}
