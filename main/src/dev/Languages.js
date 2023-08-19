@@ -4,12 +4,16 @@ const data = [
         level: 85,
     },
     {
+        title: "CI/CD",
+        level: 75
+    },
+    {
         title: "Python",
-        level: 100,
+        level: 93,
     },
     {
         title: "Java",
-        level: 100,
+        level: 94,
     },
     {
         title: "GIT",
@@ -17,11 +21,15 @@ const data = [
     },
     {
         title: "HTML",
+        level: 95,
+    },
+    {
+        title: "MySQL/ NoSQL",
         level: 90,
     },
     {
-        title: "SQL",
-        level: 100,
+        title: "Docker",
+        level: 65
     },
     {
         title: "React",
@@ -33,15 +41,23 @@ const data = [
     },
     {
         title: "JavaScript",
-        level: 55,
+        level: 78,
     },
     {
         title: "CSS",
         level: 80,
     },
     {
+        title: "C",
+        level: 50,
+    },
+    {
         title: "R",
         level: 50,
+    },
+    {
+        title: "C#",
+        level: 65,
     }
 ]
 

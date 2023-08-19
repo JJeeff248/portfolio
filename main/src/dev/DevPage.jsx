@@ -1,20 +1,22 @@
 import React from "react";
-import { Box, Container, Divider, Link, Typography } from "@mui/material";
+import { Box, Divider, Link, Typography } from "@mui/material";
 import languages from "./Languages.js";
 import ProgrammingCard from "./ProgrammingCard";
 import AwardCard from "./AwardCard.jsx";
 import ProjectCard from "./ProjectCard.jsx";
+import { isMobile } from "react-device-detect";
 
 const DevPage = () => {
     return (
-        <Container
-            maxWidth="md"
+        <Box
             sx={{
                 display: "flex",
                 alignItems: "center",
                 flexDirection: "column",
+                m: "0 auto",
                 mt: 5,
                 mb: 6,
+                maxWidth: isMobile ? "90vw" : "70vw"
             }}
         >
             <Box id="about" width="100%">
@@ -27,19 +29,6 @@ const DevPage = () => {
                     teachers taught me many new skills and helped develop my
                     passion for the industry. I have then continued learning
                     through university and personal projects.
-                </Typography>
-                <Typography variant="body1" mb={2}>
-                    I started learning the structure of code using Scratch and
-                    quickly moved on to Python, where I built small programs and
-                    continued improving my skills through 4 years in high
-                    school. Alongside learning Python, I also began learning web
-                    development, starting with basic HTML, CSS, and JavaScript.
-                    In my later years at high school, I learned about databases
-                    and started building websites using PHP that interacted with
-                    SQL databases. In my final year, I got my first taste of
-                    Java after my teacher got permission to use a university's
-                    course content. You can see many of the projects I built at
-                    high school below.
                 </Typography>
                 <Typography variant="body1" mb={2}>
                     At the end of my second year, I had the opportunity to do a
@@ -55,15 +44,11 @@ const DevPage = () => {
                     saw this as a great way to understand the cloud better. The
                     team at NextWork provided the best content over several
                     weeks, with a real-world project in the mix too. This led me
-                    to sit and{" "}
-                    <Box fontWeight="fontWeightMedium" display="inline" component="span">
-                        pass
-                    </Box>{" "}
-                    the AWS Cloud Practitioner exam.
+                    to sit and pass the AWS Cloud Practitioner exam.
                 </Typography>
                 <Typography variant="body1">
-                    I am now pursuing a job working with AWS, being a full-stack
-                    web developer, or just developing using Python and Java. I
+                    I am now pursuing a job as a full-stack web developer, 
+                    or a back-end developer working with APIs and cloud services. I
                     would love a position where I can enjoy my work and help a
                     community, big or small.
                 </Typography>
@@ -77,8 +62,7 @@ const DevPage = () => {
                     sx={{
                         display: "flex",
                         flexWrap: "wrap",
-                        gap: 2,
-                        justifyContent: "center",
+                        gap: 1.5,
                     }}
                 >
                     {languages.map((language) => (
@@ -101,7 +85,7 @@ const DevPage = () => {
                         display: "flex",
                         flexWrap: "wrap",
                         gap: 2,
-                        justifyContent: "center",
+                        justifyContent: isMobile ? "center" : "flex-start",
                     }}
                 >
                     <AwardCard
@@ -130,8 +114,8 @@ const DevPage = () => {
                     sx={{
                         display: "flex",
                         flexWrap: "wrap",
-                        gap: 2,
-                        justifyContent: "center",
+                        gap: 1,
+                        justifyContent: isMobile ? "center" : "flex-start",
                     }}
                 >
                     <ProjectCard
@@ -139,7 +123,7 @@ const DevPage = () => {
                         img={require("./images/2359.png")}
                         link={"https://twentythreefiftynine.com"}
                         github="https://github.com/Twenty-Three-Fifty-Nine/grade-tracker"
-                        tags={["ReactJS", "Lambdas", "DynamoDB", "SES", "APIGateway"]}
+                        tags={["ReactJS", "Lambdas", "DynamoDB", "SES"]}
                     />
                     <ProjectCard
                         title="Cotiss Feedback"
@@ -167,7 +151,7 @@ const DevPage = () => {
                     />
                 </Box>
             </Box>
-        </Container>
+        </Box>
     );
 };
 
