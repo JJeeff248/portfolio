@@ -139,7 +139,7 @@ const DevPage = () => {
                         img={require("./images/2359.png")}
                         link={"https://twentythreefiftynine.com"}
                         github="https://github.com/Twenty-Three-Fifty-Nine/grade-tracker"
-                        tags={["ReactJS", "Lambdas", "DynamoDB", "SES", "APIGateway"]}
+                        tags={["ReactJS", "Lambdas", "DynamoDB", "SES"]}
                     />
                     <ProjectCard
                         title="Cotiss Feedback"
