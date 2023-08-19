@@ -7,7 +7,7 @@ const ProjectCard = (props) => {
     const { title, link, github, img, tags } = props;
 
     return (
-        <Card variant="outlined" sx={{ width: 400, m: 1 }}>
+        <Card variant="outlined" sx={{ width: 375, m: 1 }}>
             <CardMedia
                 component={img ? "img" : "iframe"}
                 src={img ? img : link}
