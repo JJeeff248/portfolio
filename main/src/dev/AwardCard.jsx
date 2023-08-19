@@ -6,7 +6,7 @@ const AwardCard = (props) => {
     const { title, img, link, addition } = props;
 
     return (
-        <Card sx={{ width: 250 }}>
+        <Card sx={{ width: 300 }}>
             <CardMedia image={img} component="img" alt={title} height={150} />
             <CardContent sx={{ flexGrow: 1, minHeight: 110 }}>
                 <Typography variant="h6" textAlign="left" mb={1}>{title}</Typography>
