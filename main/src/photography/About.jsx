@@ -14,7 +14,7 @@ const About = () => {
             }}
         >
             <img
-                src={require("./images/about.jpg")}
+                src={"https://static.chris-sa.com/about.webp"}
                 alt="Donkey at a petting zoo"
                 loading="lazy"
                 style={{ maxWidth: 500 }}
