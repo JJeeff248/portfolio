@@ -7,6 +7,7 @@ import Gallery from "./Gallery";
 import About from "./About";
 import Contact from "./Contact";
 import MobileNav from "./MobileNav";
+import imageNames from "./imageNames";
 
 const PhotographyPage = () => {
     const [selectedTab, setSelectedTab] = React.useState(0);
@@ -23,19 +24,14 @@ const PhotographyPage = () => {
     );
 
     const images = useMemo(() => {
-        let imageDir = require.context("./images/my_gallery", false, /\.jpg$/);
         let images = [];
-        imageDir.keys().forEach((key) => {
-            key = key.replace(/^.*[\\/]/, "");
-            let alt_text = key.replace(/\.jpg$/, "").split("_");
+        imageNames.forEach((key) => {
+            let alt_text = key.replace(/\.webp$/, "").split("_");
             alt_text[0] = "";
             alt_text = alt_text.join(" ");
             images.push(
                 <ImageListItem key={key} onClick={handleImageClick}>
-                    <img
-                        src={require(`./images/my_gallery/${key}`)}
-                        alt={alt_text}
-                    />
+                    <img src={"https://static.chris-sa.com/gallery/" + key} alt={alt_text} />
                 </ImageListItem>
             );
         });

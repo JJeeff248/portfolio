@@ -105,7 +105,7 @@ const Contact = () => {
             }}
         >
             <img
-                src={require("./images/contact.jpg")}
+                src={"https://static.chris-sa.com/contact.webp"}
                 alt="Close up of fly on a tree"
                 loading="lazy"
                 style={{ maxWidth: 500 }}
