@@ -142,7 +142,7 @@ const DevPage = () => {
                         img={require("./images/helpamate.png")}
                         link={"http://helpamate.chris-sa.com/"}
                         github="https://github.com/JJeeff248/HelpAMate"
-                        tags={["PHP", "CSS", "HTML", "JS", "MySQL"]}
+                        tags={["PHP", "Docker", "GCP", "CSS", "JS", "MySQL"]}
                     />
                     <ProjectCard
                         title="Teach Python"
