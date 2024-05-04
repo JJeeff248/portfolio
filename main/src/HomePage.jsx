@@ -37,8 +37,8 @@ const HomePage = () => {
                     sx={{ width: 150, height: 150, mb: 3 }}
                 />
                 <Typography variant="body1" fontSize={20} sx={{ mb: 2 }}>
-                    I'm a student at Victoria University of Wellington currently
-                    studying Computer Science and Data Science. I started
+                    Hi, I'm Chris! I graduated from Victoria University of Wellington
+                    with a degree in Computer Science and a minor in Data Science. I started
                     programming in 2017 through school and have been learning
                     and loving it ever since. I enjoy learning new
                     things, and I'm always looking to improve my skills. When
