@@ -28,7 +28,7 @@ const DevPage = () => {
                     My tech journey started in high school, where two incredible
                     teachers taught me many new skills and helped develop my
                     passion for the industry. I have then continued learning
-                    through university and personal projects.
+                    through university and personal <Link href="#projects" color="primary.dark">projects</Link>.
                 </Typography>
                 <Typography variant="body1" mb={2}>
                     At the end of my second year, I had the opportunity to do a
@@ -47,10 +47,9 @@ const DevPage = () => {
                     to sit and pass the AWS Cloud Practitioner exam.
                 </Typography>
                 <Typography variant="body1">
-                    I am now pursuing a job as a full-stack web developer, 
-                    or a back-end developer working with APIs and cloud services. I
-                    would love a position where I can enjoy my work and help a
-                    community, big or small.
+                    I am now pursuing a job as a back-end web developer, 
+                    working with a team of amazing people for a company that is
+                    willing to help the next generation of developers learn.
                 </Typography>
             </Box>
             <Box id="languages-tools" mt={5} width="100%">
