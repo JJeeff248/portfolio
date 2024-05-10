@@ -5,7 +5,6 @@ import { isMobile } from "react-device-detect";
 
 import Gallery from "./Gallery";
 import About from "./About";
-import Contact from "./Contact";
 import MobileNav from "./MobileNav";
 import imageNames from "./imageNames";
 
@@ -31,7 +30,10 @@ const PhotographyPage = () => {
             alt_text = alt_text.join(" ");
             images.push(
                 <ImageListItem key={key} onClick={handleImageClick}>
-                    <img src={"https://static.chris-sa.com/gallery/" + key} alt={alt_text} />
+                    <img
+                        src={"https://static.chris-sa.com/gallery/" + key}
+                        alt={alt_text}
+                    />
                 </ImageListItem>
             );
         });
@@ -40,29 +42,26 @@ const PhotographyPage = () => {
     }, [handleImageClick]);
 
     return (
-        <>
-            <Container
-                maxWidth={"lg"}
-                sx={{ mt: 4, flexGrow: 1, display: "flex", mb: isMobile ? 15 : 6 }}
-            >
-                <MobileNav
-                    selectedTab={selectedTab}
-                    handlePageChange={setSelectedTab}
-                />
+        <Container
+            maxWidth={"lg"}
+            sx={{ mt: 4, flexGrow: 1, display: "flex", mb: isMobile ? 15 : 6 }}
+        >
+            <MobileNav
+                selectedTab={selectedTab}
+                handlePageChange={setSelectedTab}
+            />
 
-                {selectedTab === 0 && (
-                    <Gallery
-                        images={images}
-                        selectedImg={selectedImg}
-                        setSelectedImg={setSelectedImg}
-                        setAltText={setAltText}
-                        altText={altText}
-                    />
-                )}
-                {selectedTab === 1 && <About />}
-                {selectedTab === 2 && <Contact />}
-            </Container>
-        </>
+            {selectedTab === 0 && (
+                <Gallery
+                    images={images}
+                    selectedImg={selectedImg}
+                    setSelectedImg={setSelectedImg}
+                    setAltText={setAltText}
+                    altText={altText}
+                />
+            )}
+            {selectedTab === 1 && <About />}
+        </Container>
     );
 };
 
