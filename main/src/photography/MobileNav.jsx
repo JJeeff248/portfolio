@@ -27,7 +27,6 @@ const MobileNav = (props) => {
                 >
                     <Tab label="Gallery" />
                     <Tab label="About" />
-                    <Tab label="Contact" />
                 </Tabs>
             </Toolbar>
         </AppBar>
@@ -40,7 +39,6 @@ const MobileNav = (props) => {
         >
             <Tab label="Gallery" value={0} />
             <Tab label="About" value={1} />
-            <Tab label="Contact" value={2} />
         </Tabs>
     );
 };
