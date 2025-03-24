@@ -22,17 +22,31 @@ const ThemeToggleButton = styled(IconButton)(({ theme }) => ({
     position: "fixed",
     top: theme.spacing(2),
     right: theme.spacing(2),
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor:
+        theme.palette.mode === "light"
+            ? theme.palette.primary.main
+            : theme.palette.background.paper,
+    color:
+        theme.palette.mode === "light"
+            ? theme.palette.common.white
+            : theme.palette.text.primary,
+    boxShadow:
+        theme.palette.mode === "light"
+            ? "0 2px 8px rgba(0, 0, 0, 0.2)"
+            : "none",
     "&:hover": {
         backgroundColor:
             theme.palette.mode === "dark"
                 ? theme.palette.grey[800]
-                : theme.palette.grey[100],
+                : theme.palette.primary.dark,
     },
 }));
 
 const StyledNavLink = styled(NavLink)(({ theme }) => ({
-    color: theme.palette.text.primary,
+    color:
+        theme.palette.mode === "light"
+            ? theme.palette.primary.dark
+            : theme.palette.text.primary,
     textDecoration: "none",
     padding: theme.spacing(1.5),
     fontWeight: 500,
@@ -46,6 +60,7 @@ const StyledNavLink = styled(NavLink)(({ theme }) => ({
     },
     "&.active": {
         color: theme.palette.primary.main,
+        fontWeight: 600,
         backgroundColor:
             theme.palette.mode === "dark"
                 ? "rgba(59, 130, 246, 0.15)"
@@ -54,10 +69,20 @@ const StyledNavLink = styled(NavLink)(({ theme }) => ({
 }));
 
 function Layout({ children }: LayoutProps) {
-    const [isDarkMode, setIsDarkMode] = useState(true);
+    const [isDarkMode, setIsDarkMode] = useState(() => {
+        // Get saved theme preference from localStorage or default to true (dark mode)
+        const savedTheme = localStorage.getItem("theme-preference");
+        return savedTheme ? savedTheme === "dark" : true;
+    });
 
     const toggleTheme = () => {
-        setIsDarkMode(!isDarkMode);
+        const newThemeMode = !isDarkMode;
+        setIsDarkMode(newThemeMode);
+        // Save theme preference to localStorage
+        localStorage.setItem(
+            "theme-preference",
+            newThemeMode ? "dark" : "light"
+        );
     };
 
     return (
@@ -75,7 +100,13 @@ function Layout({ children }: LayoutProps) {
                     position="static"
                     color="transparent"
                     elevation={0}
-                    sx={{ mb: 4 }}
+                    sx={{
+                        mb: 4,
+                        color: (theme) =>
+                            theme.palette.mode === "light"
+                                ? theme.palette.primary.dark
+                                : "inherit",
+                    }}
                 >
                     <Container maxWidth="lg">
                         <Toolbar disableGutters>
@@ -88,7 +119,10 @@ function Layout({ children }: LayoutProps) {
                                     fontWeight: 700,
                                     mr: 4,
                                     textDecoration: "none",
-                                    color: "inherit",
+                                    color: (theme) =>
+                                        theme.palette.mode === "light"
+                                            ? theme.palette.primary.dark
+                                            : "inherit",
                                 }}
                             >
                                 Chris Sa
