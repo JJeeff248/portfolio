@@ -3,7 +3,6 @@ import {
     Container,
     Typography,
     Box,
-    Grid,
     Card,
     CardMedia,
     Modal,
@@ -54,7 +53,7 @@ interface Photo {
     aspectRatio?: number;
 }
 
-const ImageCard = styled(Card)(({ theme }) => ({
+const ImageCard = styled(Card)(() => ({
     width: "100%",
     cursor: "pointer",
     overflow: "hidden",
@@ -68,7 +67,7 @@ const ImageCard = styled(Card)(({ theme }) => ({
     },
 }));
 
-const ModalImage = styled(Box)(({ theme }) => ({
+const ModalImage = styled(Box)(() => ({
     position: "absolute",
     top: "50%",
     left: "50%",
@@ -83,7 +82,7 @@ const ModalImage = styled(Box)(({ theme }) => ({
     justifyContent: "center",
 }));
 
-const NavButton = styled(IconButton)(({ theme }) => ({
+const NavButton = styled(IconButton)(() => ({
     position: "absolute",
     top: "50%",
     transform: "translateY(-50%)",
@@ -200,11 +199,7 @@ function Gallery() {
         window.history.replaceState(null, "", `#photo=${index}`);
     };
 
-    const handleImageLoad = (
-        index: number,
-        event: React.SyntheticEvent<HTMLImageElement>
-    ) => {
-        const img = event.currentTarget;
+    const handleImageLoad = (index: number) => {
         setLoading((prev) => ({ ...prev, [index]: false }));
         setImageLoaded((prev) => ({ ...prev, [index]: true }));
     };
@@ -221,7 +216,7 @@ function Gallery() {
 
         try {
             // Try using the Web Share API first
-            if (navigator.share) {
+            if ("share" in navigator) {
                 await navigator.share({
                     title: title,
                     text: `Check out this photo: ${title}`,
@@ -231,9 +226,22 @@ function Gallery() {
                 setSnackbarOpen(true);
             } else {
                 // Fallback to copying the URL to clipboard
-                await navigator.clipboard.writeText(shareUrl);
-                setSnackbarMessage("Link copied to clipboard!");
-                setSnackbarOpen(true);
+                if ("clipboard" in navigator) {
+                    await (
+                        navigator as Navigator & {
+                            clipboard: {
+                                writeText(text: string): Promise<void>;
+                            };
+                        }
+                    ).clipboard.writeText(shareUrl);
+                    setSnackbarMessage("Link copied to clipboard!");
+                    setSnackbarOpen(true);
+                } else {
+                    setSnackbarMessage(
+                        "Sharing not supported on this browser."
+                    );
+                    setSnackbarOpen(true);
+                }
             }
         } catch (error) {
             console.error("Error sharing:", error);
@@ -285,7 +293,7 @@ function Gallery() {
                                     component="img"
                                     image={photo.src}
                                     alt={photo.title}
-                                    onLoad={(e) => handleImageLoad(index, e)}
+                                    onLoad={() => handleImageLoad(index)}
                                     sx={{
                                         width: "100%",
                                         display: imageLoaded[index]
@@ -346,7 +354,7 @@ function Gallery() {
                                         },
                                     }}
                                 >
-                                    {navigator.share ? (
+                                    {"share" in navigator ? (
                                         <ShareIcon />
                                     ) : (
                                         <ContentCopyIcon />
