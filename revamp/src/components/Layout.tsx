@@ -211,6 +211,9 @@ function Layout({ children }: LayoutProps) {
                                                     ? "translateX(0)"
                                                     : "translateX(-20px)",
                                                 opacity: contactOpen ? 1 : 0,
+                                                pointerEvents: contactOpen
+                                                    ? "auto"
+                                                    : "none",
                                                 transition:
                                                     "transform 0.3s, opacity 0.3s",
                                                 transitionDelay: "0.05s",
@@ -230,6 +233,9 @@ function Layout({ children }: LayoutProps) {
                                                     ? "translateX(0)"
                                                     : "translateX(-20px)",
                                                 opacity: contactOpen ? 1 : 0,
+                                                pointerEvents: contactOpen
+                                                    ? "auto"
+                                                    : "none",
                                                 transition:
                                                     "transform 0.3s, opacity 0.3s",
                                                 transitionDelay: "0.1s",
@@ -247,6 +253,9 @@ function Layout({ children }: LayoutProps) {
                                                     ? "translateX(0)"
                                                     : "translateX(-20px)",
                                                 opacity: contactOpen ? 1 : 0,
+                                                pointerEvents: contactOpen
+                                                    ? "auto"
+                                                    : "none",
                                                 transition:
                                                     "transform 0.3s, opacity 0.3s",
                                                 transitionDelay: "0.15s",
