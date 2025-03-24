@@ -13,6 +13,7 @@ import {
 import { styled } from "@mui/material/styles";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import Layout from "./Layout";
 
 const ProjectImage = styled("img")({
     width: "100%",
@@ -129,124 +130,132 @@ export default function ProjectDetails() {
 
     if (!project) {
         return (
-            <Container>
-                <Typography variant="h4" component="h1" gutterBottom>
-                    Project not found
-                </Typography>
-                <Button
-                    component={Link}
-                    to="/"
-                    startIcon={<ArrowBackIcon />}
-                    sx={{ mt: 2 }}
-                >
-                    Back to Portfolio
-                </Button>
-            </Container>
+            <Layout>
+                <Container>
+                    <Typography variant="h4" component="h1" gutterBottom>
+                        Project not found
+                    </Typography>
+                    <Button
+                        component={Link}
+                        to="/"
+                        startIcon={<ArrowBackIcon />}
+                        sx={{ mt: 2 }}
+                    >
+                        Back to Portfolio
+                    </Button>
+                </Container>
+            </Layout>
         );
     }
 
     return (
-        <Container maxWidth="lg" sx={{ py: 4 }}>
-            <Button
-                component={Link}
-                to="/"
-                startIcon={<ArrowBackIcon />}
-                sx={{ mb: 4 }}
-            >
-                Back to Portfolio
-            </Button>
+        <Layout>
+            <Container maxWidth="lg" sx={{ py: 4 }}>
+                <Button
+                    component={Link}
+                    to="/"
+                    startIcon={<ArrowBackIcon />}
+                    sx={{ mb: 4 }}
+                >
+                    Back to Portfolio
+                </Button>
 
-            <Grid container spacing={4}>
-                <Grid item xs={12} md={8}>
-                    <Typography variant="h2" component="h1" gutterBottom>
-                        {project.title}
-                    </Typography>
-                    <Typography
-                        variant="body1"
-                        color="text.secondary"
-                        paragraph
-                    >
-                        {project.longDescription}
-                    </Typography>
-                    <Typography
-                        variant="h4"
-                        component="h2"
-                        gutterBottom
-                        sx={{ mt: 4 }}
-                    >
-                        Features
-                    </Typography>
-                    <Box component="ul" sx={{ pl: 2 }}>
-                        {project.features?.map((feature, index) => (
-                            <Typography
-                                component="li"
-                                key={index}
-                                variant="body1"
-                                color="text.secondary"
-                                sx={{ mb: 1 }}
-                            >
-                                {feature}
-                            </Typography>
-                        ))}
-                    </Box>
-                </Grid>
-                <Grid item xs={12} md={4}>
-                    <Paper sx={{ p: 3, position: "sticky", top: 24 }}>
-                        <Typography variant="h5" component="h3" gutterBottom>
-                            Technologies Used
+                <Grid container spacing={4}>
+                    <Grid item xs={12} md={8}>
+                        <Typography variant="h2" component="h1" gutterBottom>
+                            {project.title}
                         </Typography>
-                        <Stack
-                            direction="row"
-                            spacing={0}
-                            flexWrap="wrap"
-                            gap={0.5}
-                            sx={{ mt: 1 }}
+                        <Typography
+                            variant="body1"
+                            color="text.secondary"
+                            paragraph
                         >
-                            {project.skills.map((skill, index) => (
-                                <SkillChip
+                            {project.longDescription}
+                        </Typography>
+                        <Typography
+                            variant="h4"
+                            component="h2"
+                            gutterBottom
+                            sx={{ mt: 4 }}
+                        >
+                            Features
+                        </Typography>
+                        <Box component="ul" sx={{ pl: 2 }}>
+                            {project.features?.map((feature, index) => (
+                                <Typography
+                                    component="li"
                                     key={index}
-                                    label={skill}
-                                    size="small"
-                                />
+                                    variant="body1"
+                                    color="text.secondary"
+                                    sx={{ mb: 1 }}
+                                >
+                                    {feature}
+                                </Typography>
                             ))}
-                        </Stack>
-                        <Button
-                            variant="contained"
-                            href={project.htmlPath}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            fullWidth
-                            endIcon={<OpenInNewIcon />}
-                            sx={{ mt: 3 }}
-                        >
-                            View Live Project
-                        </Button>
-                    </Paper>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <Paper sx={{ p: 3, position: "sticky", top: 24 }}>
+                            <Typography
+                                variant="h5"
+                                component="h3"
+                                gutterBottom
+                            >
+                                Technologies Used
+                            </Typography>
+                            <Stack
+                                direction="row"
+                                spacing={0}
+                                flexWrap="wrap"
+                                gap={0.5}
+                                sx={{ mt: 1 }}
+                            >
+                                {project.skills.map((skill, index) => (
+                                    <SkillChip
+                                        key={index}
+                                        label={skill}
+                                        size="small"
+                                    />
+                                ))}
+                            </Stack>
+                            <Button
+                                variant="contained"
+                                href={project.htmlPath}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                fullWidth
+                                endIcon={<OpenInNewIcon />}
+                                sx={{ mt: 3 }}
+                            >
+                                View Live Project
+                            </Button>
+                        </Paper>
+                    </Grid>
                 </Grid>
-            </Grid>
 
-            {project.htmlPath && (
-                <IframeContainer sx={{ mt: 6 }}>
-                    <IframeHeader>
-                        <Typography variant="subtitle1">
-                            Project Preview
-                        </Typography>
-                        <IconButton
-                            href={project.htmlPath}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Open in new tab"
-                            title="Open in new tab"
-                        >
-                            <OpenInNewIcon />
-                        </IconButton>
-                    </IframeHeader>
-                    <ProjectIframe
-                        src={project.htmlPath}
-                        title={project.title}
-                    />
-                </IframeContainer>
-            )}
-        </Container>
+                {project.htmlPath && (
+                    <IframeContainer sx={{ mt: 6 }}>
+                        <IframeHeader>
+                            <Typography variant="subtitle1">
+                                Project Preview
+                            </Typography>
+                            <IconButton
+                                href={project.htmlPath}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="Open in new tab"
+                                title="Open in new tab"
+                            >
+                                <OpenInNewIcon />
+                            </IconButton>
+                        </IframeHeader>
+                        <ProjectIframe
+                            src={project.htmlPath}
+                            title={project.title}
+                        />
+                    </IframeContainer>
+                )}
+            </Container>
+        </Layout>
     );
 }
