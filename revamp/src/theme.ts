@@ -6,13 +6,14 @@ const commonThemeOptions: ThemeOptions = {
     h1: {
       fontSize: '3.5rem',
       fontWeight: 700,
-      background: 'linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%)',
+      background: 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)',
       WebkitBackgroundClip: 'text',
       WebkitTextFillColor: 'transparent',
     },
     h2: {
       fontSize: '2rem',
-      fontWeight: 600,
+      fontWeight: 700,
+      color: 'var(--text)',
     },
     h3: {
       fontSize: '1.25rem',
@@ -54,22 +55,34 @@ export const lightTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#2563eb',
-      light: '#60a5fa',
-      dark: '#1e40af',
+      main: '#375853',
+      light: '#5a7a75',
+      dark: '#263c38',
     },
     secondary: {
-      main: '#4f46e5',
-      light: '#818cf8',
-      dark: '#3730a3',
+      main: '#9991ba',
+      light: '#b2abd0',
+      dark: '#7c7599',
     },
     background: {
-      default: '#f9fafb',
+      default: '#f9fbfb',
       paper: '#ffffff',
     },
     text: {
-      primary: '#1f2937',
-      secondary: '#6b7280',
+      primary: '#0c1211',
+      secondary: '#375853',
+    },
+    error: {
+      main: '#d32f2f',
+    },
+    warning: {
+      main: '#ed6c02',
+    },
+    info: {
+      main: '#0288d1',
+    },
+    success: {
+      main: '#2e7d32',
     },
   },
 });
@@ -79,22 +92,34 @@ export const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#60a5fa',
-      light: '#93c5fd',
-      dark: '#3b82f6',
+      main: '#a7c8c3',
+      light: '#c5dbd8',
+      dark: '#89a5a1',
     },
     secondary: {
-      main: '#818cf8',
-      light: '#a5b4fc',
-      dark: '#6366f1',
+      main: '#4d456e',
+      light: '#6a638b',
+      dark: '#363053',
     },
     background: {
-      default: '#111827',
-      paper: '#1f2937',
+      default: '#040606',
+      paper: '#0c1211',
     },
     text: {
-      primary: '#f9fafb',
-      secondary: '#d1d5db',
+      primary: '#edf3f2',
+      secondary: '#c5d1d0',
+    },
+    error: {
+      main: '#f44336',
+    },
+    warning: {
+      main: '#ff9800',
+    },
+    info: {
+      main: '#29b6f6',
+    },
+    success: {
+      main: '#66bb6a',
     },
   },
 }); 

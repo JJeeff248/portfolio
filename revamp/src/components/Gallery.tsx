@@ -87,7 +87,7 @@ const NavButton = styled(IconButton)(() => ({
     top: "50%",
     transform: "translateY(-50%)",
     backgroundColor: "rgba(0, 0, 0, 0.4)",
-    color: "#fff",
+    color: "white",
     "&:hover": {
         backgroundColor: "rgba(0, 0, 0, 0.6)",
     },
@@ -264,12 +264,21 @@ function Gallery() {
                         marginBottom: 6,
                         textAlign: "center",
                         borderRadius: 2,
+                        background: (theme) =>
+                            theme.palette.mode === "dark"
+                                ? "linear-gradient(135deg, hsl(180, 20.00%, 3.00%) 0%, hsl(170, 20.00%, 6.90%) 100%)"
+                                : "linear-gradient(135deg,hsl(180, 20.00%, 96.00%) 0%,hsl(180, 37.50%, 93.20%) 100%)",
                     }}
                 >
                     <Typography variant="h1" component="h1" gutterBottom>
                         Photography
                     </Typography>
-                    <Typography variant="subtitle1" color="text.secondary">
+                    <Typography
+                        variant="subtitle1"
+                        sx={{
+                            color: (theme) => theme.palette.text.primary,
+                        }}
+                    >
                         A collection of moments captured through my lens
                     </Typography>
                 </Paper>

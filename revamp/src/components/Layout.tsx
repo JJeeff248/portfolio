@@ -65,12 +65,15 @@ const StyledNavLink = styled(NavLink)(({ theme }) => ({
                 : "rgba(0, 0, 0, 0.04)",
     },
     "&.active": {
-        color: theme.palette.primary.main,
+        color:
+            theme.palette.mode === "light"
+                ? theme.palette.primary.dark
+                : theme.palette.primary.main,
         fontWeight: 600,
         backgroundColor:
             theme.palette.mode === "dark"
-                ? "rgba(59, 130, 246, 0.15)"
-                : "rgba(37, 99, 235, 0.1)",
+                ? "rgba(167, 200, 195, 0.15)"
+                : "rgba(55, 88, 83, 0.1)",
     },
 }));
 
@@ -139,7 +142,7 @@ function Layout({ children }: LayoutProps) {
                             >
                                 Chris Sa
                             </Typography>
-                            <Box sx={{ flexGrow: 1, display: "flex" }}>
+                            <Box sx={{ flexGrow: 1, display: "flex", gap: 1 }}>
                                 <StyledNavLink to="/" end>
                                     Projects
                                 </StyledNavLink>
@@ -170,8 +173,8 @@ function Layout({ children }: LayoutProps) {
                                                 ? (theme) =>
                                                       theme.palette.mode ===
                                                       "dark"
-                                                          ? "rgba(59, 130, 246, 0.15)"
-                                                          : "rgba(37, 99, 235, 0.1)"
+                                                          ? "rgba(167, 200, 195, 0.15)"
+                                                          : "rgba(55, 88, 83, 0.1)"
                                                 : "transparent",
                                             "&:hover": {
                                                 backgroundColor: (theme) =>
