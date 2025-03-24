@@ -15,13 +15,6 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Layout from "./Layout";
 
-const ProjectImage = styled("img")({
-    width: "100%",
-    height: "auto",
-    borderRadius: "8px",
-    marginBottom: "2rem",
-});
-
 const SkillChip = styled(Chip)(({ theme }) => ({
     backgroundColor:
         theme.palette.mode === "dark"
@@ -218,17 +211,19 @@ export default function ProjectDetails() {
                                     />
                                 ))}
                             </Stack>
-                            <Button
-                                variant="contained"
-                                href={project.htmlPath}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                fullWidth
-                                endIcon={<OpenInNewIcon />}
-                                sx={{ mt: 3 }}
-                            >
-                                View Live Project
-                            </Button>
+                            {project.htmlPath && (
+                                <Button
+                                    variant="contained"
+                                    href={project.htmlPath}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    fullWidth
+                                    endIcon={<OpenInNewIcon />}
+                                    sx={{ mt: 3 }}
+                                >
+                                    View Live Project
+                                </Button>
+                            )}
                         </Paper>
                     </Grid>
                 </Grid>
