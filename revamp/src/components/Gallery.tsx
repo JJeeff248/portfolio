@@ -10,13 +10,19 @@ import {
     IconButton,
     Paper,
     Skeleton,
+    Tooltip,
+    Snackbar,
+    Alert,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ShareIcon from "@mui/icons-material/Share";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Masonry from "@mui/lab/Masonry";
 import Layout from "./Layout";
+import { useLocation } from "react-router-dom";
 
 const imageNames = [
     "00_Bee_sitting_on_a_purple_flower.webp",
@@ -102,11 +108,14 @@ const ImageCaption = styled(Box)(({ theme }) => ({
 }));
 
 function Gallery() {
+    const location = useLocation();
     const [openModal, setOpenModal] = useState(false);
     const [selectedImage, setSelectedImage] = useState<number | null>(null);
     const [loading, setLoading] = useState<Record<number, boolean>>({});
     const [photos, setPhotos] = useState<Photo[]>([]);
     const [imageLoaded, setImageLoaded] = useState<Record<number, boolean>>({});
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState("");
 
     // Process image names to get titles
     useEffect(() => {
@@ -134,12 +143,36 @@ function Gallery() {
         setImageLoaded(initialLoadedState);
     }, []);
 
+    // Check for hash parameter and open modal if present
+    useEffect(() => {
+        const hash = location.hash;
+        if (hash && hash.startsWith("#photo=")) {
+            const photoIndex = parseInt(hash.substring(7), 10);
+            if (
+                !isNaN(photoIndex) &&
+                photoIndex >= 0 &&
+                photoIndex < imageNames.length
+            ) {
+                setSelectedImage(photoIndex);
+                setOpenModal(true);
+            }
+        }
+    }, [location.hash, photos]);
+
     const handleImageClick = (index: number) => {
         setSelectedImage(index);
         setOpenModal(true);
     };
 
     const handleCloseModal = () => {
+        // Clear the hash when closing the modal
+        if (location.hash.startsWith("#photo=")) {
+            window.history.pushState(
+                "",
+                document.title,
+                window.location.pathname + window.location.search
+            );
+        }
         setOpenModal(false);
     };
 
@@ -147,7 +180,9 @@ function Gallery() {
         event.stopPropagation();
         setSelectedImage((prev) => {
             if (prev === null) return null;
-            return prev === 0 ? photos.length - 1 : prev - 1;
+            const newIndex = prev === 0 ? photos.length - 1 : prev - 1;
+            updateUrlHash(newIndex);
+            return newIndex;
         });
     };
 
@@ -155,8 +190,14 @@ function Gallery() {
         event.stopPropagation();
         setSelectedImage((prev) => {
             if (prev === null) return null;
-            return prev === photos.length - 1 ? 0 : prev + 1;
+            const newIndex = prev === photos.length - 1 ? 0 : prev + 1;
+            updateUrlHash(newIndex);
+            return newIndex;
         });
+    };
+
+    const updateUrlHash = (index: number) => {
+        window.history.replaceState(null, "", `#photo=${index}`);
     };
 
     const handleImageLoad = (
@@ -166,6 +207,43 @@ function Gallery() {
         const img = event.currentTarget;
         setLoading((prev) => ({ ...prev, [index]: false }));
         setImageLoaded((prev) => ({ ...prev, [index]: true }));
+    };
+
+    const handleShare = async (event: React.MouseEvent) => {
+        event.stopPropagation();
+
+        if (selectedImage === null) return;
+
+        const title = photos[selectedImage].title;
+
+        // Create a shareable URL that points back to this gallery with the correct photo selected
+        const shareUrl = `${window.location.origin}${window.location.pathname}#photo=${selectedImage}`;
+
+        try {
+            // Try using the Web Share API first
+            if (navigator.share) {
+                await navigator.share({
+                    title: title,
+                    text: `Check out this photo: ${title}`,
+                    url: shareUrl,
+                });
+                setSnackbarMessage("Shared successfully!");
+                setSnackbarOpen(true);
+            } else {
+                // Fallback to copying the URL to clipboard
+                await navigator.clipboard.writeText(shareUrl);
+                setSnackbarMessage("Link copied to clipboard!");
+                setSnackbarOpen(true);
+            }
+        } catch (error) {
+            console.error("Error sharing:", error);
+            setSnackbarMessage("Failed to share. Try copying the URL instead.");
+            setSnackbarOpen(true);
+        }
+    };
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
     };
 
     return (
@@ -246,22 +324,48 @@ function Gallery() {
                             justifyContent: "center",
                         }}
                     >
-                        <IconButton
-                            onClick={handleCloseModal}
+                        <Box
                             sx={{
                                 position: "absolute",
                                 top: "-40px",
                                 right: 0,
-                                color: "white",
-                                backgroundColor: "rgba(0, 0, 0, 0.4)",
-                                "&:hover": {
-                                    backgroundColor: "rgba(0, 0, 0, 0.6)",
-                                },
+                                display: "flex",
+                                gap: 1,
                                 zIndex: 10,
                             }}
                         >
-                            <CloseIcon />
-                        </IconButton>
+                            <Tooltip title="Share image">
+                                <IconButton
+                                    onClick={handleShare}
+                                    sx={{
+                                        color: "white",
+                                        backgroundColor: "rgba(0, 0, 0, 0.4)",
+                                        "&:hover": {
+                                            backgroundColor:
+                                                "rgba(0, 0, 0, 0.6)",
+                                        },
+                                    }}
+                                >
+                                    {navigator.share ? (
+                                        <ShareIcon />
+                                    ) : (
+                                        <ContentCopyIcon />
+                                    )}
+                                </IconButton>
+                            </Tooltip>
+                            <IconButton
+                                onClick={handleCloseModal}
+                                sx={{
+                                    color: "white",
+                                    backgroundColor: "rgba(0, 0, 0, 0.4)",
+                                    "&:hover": {
+                                        backgroundColor: "rgba(0, 0, 0, 0.6)",
+                                    },
+                                }}
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                        </Box>
 
                         {selectedImage !== null && (
                             <>
@@ -331,6 +435,22 @@ function Gallery() {
                     </Box>
                 </ModalImage>
             </Modal>
+
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={3000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            >
+                <Alert
+                    onClose={handleSnackbarClose}
+                    severity="success"
+                    variant="filled"
+                    sx={{ width: "100%" }}
+                >
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </Layout>
     );
 }
