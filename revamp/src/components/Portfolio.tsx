@@ -12,9 +12,11 @@ import {
     Stack,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { Link } from "react-router-dom";
 import Layout from "./Layout";
 import { projects } from "../data/projects";
+import { awards } from "../data/awards";
 
 const ProjectCard = styled(Card)(() => ({
     height: "100%",
@@ -192,6 +194,149 @@ function Portfolio() {
                                     </Stack>
                                 </CardContent>
                             </ProjectCard>
+                        </Grid>
+                    ))}
+                </Grid>
+
+                <Typography
+                    variant="h2"
+                    component="h2"
+                    align="center"
+                    gutterBottom
+                    sx={{
+                        mt: 8,
+                        mb: 4,
+                        color: (theme) => theme.palette.text.primary,
+                        fontWeight: 700,
+                    }}
+                >
+                    Awards & Certifications
+                </Typography>
+
+                <Grid container spacing={4}>
+                    {awards.map((award, index) => (
+                        <Grid item xs={12} md={6} key={index}>
+                            <Card
+                                sx={{
+                                    height: "100%",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                }}
+                            >
+                                {award.image && (
+                                    <Box
+                                        sx={{
+                                            position: "relative",
+                                            height: 200,
+                                            overflow: "hidden",
+                                        }}
+                                    >
+                                        <CardMedia
+                                            component="img"
+                                            height="200"
+                                            image={award.image}
+                                            alt={award.title}
+                                            sx={{
+                                                objectFit: "contain",
+                                                backgroundColor: (theme) =>
+                                                    theme.palette.mode ===
+                                                    "dark"
+                                                        ? "rgba(167, 200, 195, 0.05)"
+                                                        : "rgba(55, 88, 83, 0.05)",
+                                                transition:
+                                                    "transform 0.3s ease",
+                                            }}
+                                        />
+                                    </Box>
+                                )}
+                                <CardContent sx={{ flexGrow: 1 }}>
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            alignItems: "flex-start",
+                                            mb: 1,
+                                        }}
+                                    >
+                                        <Typography
+                                            variant="h5"
+                                            component="h3"
+                                            gutterBottom
+                                            sx={{ mb: 0 }}
+                                        >
+                                            {award.title}
+                                        </Typography>
+                                        <Typography
+                                            variant="body2"
+                                            color="text.secondary"
+                                            sx={{
+                                                ml: 2,
+                                                fontStyle: "italic",
+                                                backgroundColor: (theme) =>
+                                                    theme.palette.mode ===
+                                                    "dark"
+                                                        ? "rgba(167, 200, 195, 0.07)"
+                                                        : "rgba(55, 88, 83, 0.07)",
+                                                px: 1,
+                                                py: 0.5,
+                                                borderRadius: 1,
+                                            }}
+                                        >
+                                            {award.date}
+                                        </Typography>
+                                    </Box>
+                                    <Typography
+                                        variant="subtitle1"
+                                        color="text.secondary"
+                                        gutterBottom
+                                    >
+                                        {award.issuer}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        {award.description}
+                                    </Typography>
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            alignItems: "center",
+                                            mt: 2,
+                                        }}
+                                    >
+                                        {award.tags && award.tags.length > 0 ? (
+                                            <Stack
+                                                direction="row"
+                                                spacing={0}
+                                                flexWrap="wrap"
+                                                gap={0.5}
+                                            >
+                                                {award.tags.map(
+                                                    (tag, tagIndex) => (
+                                                        <SkillChip
+                                                            key={tagIndex}
+                                                            label={tag}
+                                                            size="small"
+                                                        />
+                                                    )
+                                                )}
+                                            </Stack>
+                                        ) : (
+                                            <Box />
+                                        )}
+                                        {award.url && (
+                                            <Button
+                                                href={award.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                variant="text"
+                                                endIcon={<OpenInNewIcon />}
+                                            >
+                                                View Certificate
+                                            </Button>
+                                        )}
+                                    </Box>
+                                </CardContent>
+                            </Card>
                         </Grid>
                     ))}
                 </Grid>

@@ -109,7 +109,12 @@ export default function ProjectDetails() {
 
                 <Grid container spacing={4}>
                     <Grid item xs={12} md={8}>
-                        <Typography variant="h2" component="h1" gutterBottom>
+                        <Typography
+                            variant="h2"
+                            component="h1"
+                            gutterBottom
+                            sx={{ color: "text.primary" }}
+                        >
                             {project.title}
                         </Typography>
                         <Typography
@@ -123,7 +128,7 @@ export default function ProjectDetails() {
                             variant="h4"
                             component="h2"
                             gutterBottom
-                            sx={{ mt: 4 }}
+                            sx={{ mt: 4, color: "text.primary" }}
                         >
                             Features
                         </Typography>

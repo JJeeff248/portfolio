@@ -141,9 +141,9 @@ function Layout({ children }: LayoutProps) {
                                 component={Link}
                                 to="/"
                                 sx={{
-                                    flexGrow: 1,
                                     fontWeight: 700,
                                     textDecoration: "none",
+                                    marginRight: 3,
                                     color: (theme) =>
                                         theme.palette.mode === "light"
                                             ? theme.palette.primary.dark
@@ -157,6 +157,7 @@ function Layout({ children }: LayoutProps) {
                                 sx={{
                                     display: "flex",
                                     gap: 1,
+                                    flexGrow: 1,
                                 }}
                             >
                                 <StyledNavLink to="/" end>
