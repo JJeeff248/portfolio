@@ -51,6 +51,7 @@ interface Project {
     longDescription?: string;
     features?: string[];
     htmlPath?: string;
+    externalUrl?: string;
 }
 
 const IframeContainer = styled(Box)(({ theme }) => ({
@@ -113,6 +114,24 @@ const projects: Project[] = [
             "Real-time analytics and reporting",
             "Secure user authentication and authorization",
             "Cloud-based deployment with AWS",
+        ],
+    },
+    {
+        title: "Help a Mate",
+        description:
+            "A fundraising platform to help individuals raise funds for causes",
+        image: "/projects/helpamate/preview.jpg",
+        link: "/projects/helpamate",
+        externalUrl: "http://helpamate.chris-sa.com/",
+        skills: ["HTML", "CSS", "JavaScript", "Responsive Design"],
+        longDescription:
+            "Help a Mate is a platform that enables individuals to create fundraising campaigns for various causes. Users can create campaigns, share their stories, set funding goals, and track progress. Visitors can browse campaigns and contribute to causes they care about.",
+        features: [
+            "Campaign creation and management",
+            "Progress tracking with visual indicators",
+            "User profiles and campaign listings",
+            "Responsive design for all devices",
+            "Mock donation system for demonstration purposes",
         ],
     },
 ];
@@ -211,10 +230,14 @@ export default function ProjectDetails() {
                                     />
                                 ))}
                             </Stack>
-                            {project.htmlPath && (
+                            {(project.htmlPath || project.externalUrl) && (
                                 <Button
                                     variant="contained"
-                                    href={project.htmlPath}
+                                    href={
+                                        project.externalUrl ||
+                                        project.htmlPath ||
+                                        ""
+                                    }
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     fullWidth
@@ -228,14 +251,18 @@ export default function ProjectDetails() {
                     </Grid>
                 </Grid>
 
-                {project.htmlPath && (
+                {(project.htmlPath || project.externalUrl) && (
                     <IframeContainer sx={{ mt: 6 }}>
                         <IframeHeader>
                             <Typography variant="subtitle1">
                                 Project Preview
                             </Typography>
                             <IconButton
-                                href={project.htmlPath}
+                                href={
+                                    project.externalUrl ||
+                                    project.htmlPath ||
+                                    ""
+                                }
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label="Open in new tab"
@@ -245,7 +272,7 @@ export default function ProjectDetails() {
                             </IconButton>
                         </IframeHeader>
                         <ProjectIframe
-                            src={project.htmlPath}
+                            src={project.externalUrl || project.htmlPath || ""}
                             title={project.title}
                         />
                     </IframeContainer>

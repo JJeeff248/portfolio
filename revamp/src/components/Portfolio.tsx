@@ -15,6 +15,7 @@ import {
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import Layout from "./Layout";
+import helpamate from "../assets/helpamate.png";
 
 interface Project {
     title: string;
@@ -22,6 +23,7 @@ interface Project {
     image: string;
     link: string;
     skills: string[];
+    externalUrl?: string;
 }
 
 const ProjectCard = styled(Card)(() => ({
@@ -97,6 +99,15 @@ function Portfolio() {
             image: "/projects/cotiss/preview.png",
             link: "/projects/cotiss",
             skills: ["React", "Node.js", "PostgreSQL", "Docker", "AWS"],
+        },
+        {
+            title: "Help a Mate",
+            description:
+                "A fundraising platform to help individuals raise funds for causes",
+            image: helpamate,
+            link: "/projects/helpamate",
+            externalUrl: "http://helpamate.chris-sa.com/",
+            skills: ["PHP", "GCP", "Docker", "JavaScript", "SQL"],
         },
     ]);
 
