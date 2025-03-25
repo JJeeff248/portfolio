@@ -105,7 +105,7 @@ function Portfolio() {
                     >
                         <Avatar
                             src={headshot}
-                            alt="Chris Sa"
+                            alt="Chris S&aacute;"
                             sx={{
                                 width: { xs: 150, sm: 180, md: 200 },
                                 height: { xs: 150, sm: 180, md: 200 },
@@ -127,7 +127,7 @@ function Portfolio() {
                                     textAlign: { xs: "center", sm: "left" },
                                 }}
                             >
-                                Chris Sa
+                                Chris S&aacute;
                             </Typography>
                             <Typography
                                 variant="subtitle1"

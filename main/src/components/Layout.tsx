@@ -150,7 +150,7 @@ function Layout({ children }: LayoutProps) {
                                             : "inherit",
                                 }}
                             >
-                                Chris Sa
+                                Chris S&aacute;
                             </Typography>
 
                             <Box
@@ -309,7 +309,7 @@ function Layout({ children }: LayoutProps) {
                                     : "inherit",
                         }}
                     >
-                        Chris Sa
+                        Chris S&aacute;
                     </Typography>
                 </Box>
 
@@ -365,8 +365,8 @@ function Layout({ children }: LayoutProps) {
                             </Tooltip>
                         </Stack>
                         <Typography variant="body2" color="text.secondary">
-                            &copy; {new Date().getFullYear()} Chris Sa. All
-                            rights reserved.
+                            &copy; {new Date().getFullYear()} Chris S&aacute;.
+                            All rights reserved.
                         </Typography>
                     </Box>
                 </Container>
