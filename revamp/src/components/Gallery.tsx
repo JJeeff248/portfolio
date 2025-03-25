@@ -67,7 +67,7 @@ const ImageCard = styled(Card)(() => ({
     },
 }));
 
-const ModalImage = styled(Box)(() => ({
+const ModalImage = styled(Box)(({ theme }) => ({
     position: "absolute",
     top: "50%",
     left: "50%",
@@ -80,9 +80,12 @@ const ModalImage = styled(Box)(() => ({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
+    [theme.breakpoints.down("sm")]: {
+        width: "95%",
+    },
 }));
 
-const NavButton = styled(IconButton)(() => ({
+const NavButton = styled(IconButton)(({ theme }) => ({
     position: "absolute",
     top: "50%",
     transform: "translateY(-50%)",
@@ -92,6 +95,11 @@ const NavButton = styled(IconButton)(() => ({
         backgroundColor: "rgba(0, 0, 0, 0.6)",
     },
     zIndex: 10,
+    [theme.breakpoints.down("sm")]: {
+        top: "50%",
+        width: 48,
+        height: 48,
+    },
 }));
 
 const ImageCaption = styled(Box)(({ theme }) => ({
@@ -256,11 +264,18 @@ function Gallery() {
 
     return (
         <Layout>
-            <Container maxWidth="lg" sx={{ py: 4 }}>
+            <Container
+                maxWidth="lg"
+                sx={{
+                    py: 4,
+                    px: { xs: 2, sm: 3 }, // Reduced padding on small screens
+                    overflow: "hidden", // Prevent horizontal scroll
+                }}
+            >
                 <Paper
                     elevation={0}
                     sx={{
-                        padding: 4,
+                        padding: { xs: 2, sm: 4 }, // Reduced padding on mobile
                         marginBottom: 6,
                         textAlign: "center",
                         borderRadius: 2,
@@ -270,7 +285,14 @@ function Gallery() {
                                 : "linear-gradient(135deg,hsl(180, 20.00%, 96.00%) 0%,hsl(180, 37.50%, 93.20%) 100%)",
                     }}
                 >
-                    <Typography variant="h1" component="h1" gutterBottom>
+                    <Typography
+                        variant="h1"
+                        component="h1"
+                        gutterBottom
+                        sx={{
+                            fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" }, // Responsive font size
+                        }}
+                    >
                         Photography
                     </Typography>
                     <Typography
@@ -283,11 +305,18 @@ function Gallery() {
                     </Typography>
                 </Paper>
 
-                <Masonry columns={{ xs: 1, sm: 2, md: 3 }} spacing={3}>
+                <Masonry
+                    columns={{ xs: 2, sm: 2, md: 3 }}
+                    spacing={{ xs: 2, sm: 3 }} // Reduced spacing on mobile
+                >
                     {photos.map((photo, index) => (
                         <Box
                             key={index}
-                            sx={{ width: "100%", display: "block" }}
+                            sx={{
+                                width: "100%",
+                                display: "block",
+                                maxWidth: "100%", // Ensure no overflow
+                            }}
                         >
                             <ImageCard onClick={() => handleImageClick(index)}>
                                 {loading[index] && (
@@ -308,6 +337,7 @@ function Gallery() {
                                         display: imageLoaded[index]
                                             ? "block"
                                             : "none",
+                                        maxWidth: "100%", // Ensure image doesn't overflow
                                     }}
                                 />
                                 {imageLoaded[index] && (
@@ -327,7 +357,10 @@ function Gallery() {
                 open={openModal}
                 onClose={handleCloseModal}
                 aria-labelledby="image-modal"
-                sx={{ backdropFilter: "blur(5px)" }}
+                sx={{
+                    backdropFilter: "blur(5px)",
+                    zIndex: 1050, // Make sure it's below the bottom navigation
+                }}
             >
                 <ModalImage onClick={handleCloseModal}>
                     <Box
@@ -344,8 +377,8 @@ function Gallery() {
                         <Box
                             sx={{
                                 position: "absolute",
-                                top: "-40px",
-                                right: 0,
+                                top: { xs: 10, sm: "-40px" },
+                                right: { xs: 10, sm: 0 },
                                 display: "flex",
                                 gap: 1,
                                 zIndex: 10,
@@ -388,10 +421,16 @@ function Gallery() {
                             <>
                                 <NavButton
                                     onClick={handlePrevImage}
-                                    sx={{ left: 10 }}
+                                    sx={{
+                                        left: { xs: 10, sm: 10 },
+                                    }}
                                     aria-label="previous image"
                                 >
-                                    <ArrowBackIosNewIcon />
+                                    <ArrowBackIosNewIcon
+                                        sx={{
+                                            fontSize: { xs: 24, sm: 30 },
+                                        }}
+                                    />
                                 </NavButton>
                                 <Box
                                     sx={{
@@ -399,7 +438,10 @@ function Gallery() {
                                         justifyContent: "center",
                                         alignItems: "center",
                                         width: "100%",
-                                        height: "calc(80vh - 80px)",
+                                        height: {
+                                            xs: "calc(75vh - 120px)",
+                                            sm: "calc(80vh - 80px)",
+                                        },
                                     }}
                                 >
                                     <Box
@@ -417,29 +459,41 @@ function Gallery() {
                                 </Box>
                                 <NavButton
                                     onClick={handleNextImage}
-                                    sx={{ right: 10 }}
+                                    sx={{
+                                        right: { xs: 10, sm: 10 },
+                                    }}
                                     aria-label="next image"
                                 >
-                                    <ArrowForwardIosIcon />
+                                    <ArrowForwardIosIcon
+                                        sx={{
+                                            fontSize: { xs: 24, sm: 30 },
+                                        }}
+                                    />
                                 </NavButton>
                                 <Box
                                     sx={{
                                         backgroundColor: "rgba(0, 0, 0, 0.75)",
                                         color: "white",
-                                        padding: 2,
-                                        paddingX: 3,
+                                        padding: { xs: 1.5, sm: 2 },
+                                        paddingX: { xs: 2, sm: 3 },
                                         width: "auto",
                                         maxWidth: "90%",
                                         marginTop: 2,
+                                        marginBottom: { xs: 4, sm: 0 },
                                         borderRadius: 1,
                                         textAlign: "center",
                                         boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                                        zIndex: 1,
                                     }}
                                 >
                                     <Typography
                                         variant="h6"
                                         sx={{
                                             fontWeight: 500,
+                                            fontSize: {
+                                                xs: "0.9rem",
+                                                sm: "1.25rem",
+                                            },
                                             textShadow:
                                                 "0 1px 2px rgba(0,0,0,0.3)",
                                         }}
@@ -458,11 +512,11 @@ function Gallery() {
                 autoHideDuration={3000}
                 onClose={handleSnackbarClose}
                 anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                sx={{ mb: { xs: 7, sm: 0 } }} // Add bottom margin on mobile to avoid bottom nav
             >
                 <Alert
                     onClose={handleSnackbarClose}
                     severity="success"
-                    variant="filled"
                     sx={{ width: "100%" }}
                 >
                     {snackbarMessage}

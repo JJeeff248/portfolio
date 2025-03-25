@@ -108,6 +108,8 @@ function Layout({ children }: LayoutProps) {
                     minHeight: "100vh",
                     bgcolor: "background.default",
                     pb: { xs: 7, sm: 0 },
+                    overflowX: "hidden",
+                    position: "relative",
                 }}
             >
                 <ThemeToggleButton
@@ -376,8 +378,9 @@ function Layout({ children }: LayoutProps) {
                         left: 0,
                         right: 0,
                         display: { xs: "block", sm: "none" },
-                        zIndex: 1000,
+                        zIndex: 1100,
                         boxShadow: 3,
+                        width: "100%",
                     }}
                     elevation={3}
                 >
