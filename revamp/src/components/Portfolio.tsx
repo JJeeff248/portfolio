@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
     Container,
     Typography,
@@ -15,16 +14,7 @@ import {
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import Layout from "./Layout";
-import helpamate from "../assets/helpamate.png";
-
-interface Project {
-    title: string;
-    description: string;
-    image: string;
-    link: string;
-    skills: string[];
-    externalUrl?: string;
-}
+import { projects } from "../data/projects";
 
 const ProjectCard = styled(Card)(() => ({
     height: "100%",
@@ -84,33 +74,6 @@ const SkillChip = styled(Chip)(({ theme }) => ({
 }));
 
 function Portfolio() {
-    const [projects] = useState<Project[]>([
-        {
-            title: "Teach Python",
-            description:
-                "An interactive platform for learning Python programming",
-            image: "/projects/teach-python/images/HeaderImg.jpg",
-            link: "/projects/teach-python",
-            skills: ["Python", "React", "TypeScript", "MongoDB", "Express"],
-        },
-        {
-            title: "Cotiss",
-            description: "A modern web application for business management",
-            image: "/projects/cotiss/preview.png",
-            link: "/projects/cotiss",
-            skills: ["React", "Node.js", "PostgreSQL", "Docker", "AWS"],
-        },
-        {
-            title: "Help a Mate",
-            description:
-                "A fundraising platform to help individuals raise funds for causes",
-            image: helpamate,
-            link: "/projects/helpamate",
-            externalUrl: "http://helpamate.chris-sa.com/",
-            skills: ["PHP", "GCP", "Docker", "JavaScript", "SQL"],
-        },
-    ]);
-
     return (
         <Layout>
             <Container maxWidth="lg" sx={{ py: 4 }}>

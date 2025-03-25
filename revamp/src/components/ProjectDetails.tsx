@@ -13,7 +13,9 @@ import {
 import { styled } from "@mui/material/styles";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import GitHubIcon from "@mui/icons-material/GitHub";
 import Layout from "./Layout";
+import { projects } from "../data/projects";
 
 const SkillChip = styled(Chip)(({ theme }) => ({
     backgroundColor:
@@ -42,18 +44,6 @@ const SkillChip = styled(Chip)(({ theme }) => ({
     },
 }));
 
-interface Project {
-    title: string;
-    description: string;
-    image: string;
-    link: string;
-    skills: string[];
-    longDescription?: string;
-    features?: string[];
-    htmlPath?: string;
-    externalUrl?: string;
-}
-
 const IframeContainer = styled(Box)(({ theme }) => ({
     width: "100%",
     marginTop: theme.spacing(4),
@@ -80,61 +70,6 @@ const ProjectIframe = styled("iframe")({
     height: "800px",
     border: "none",
 });
-
-const projects: Project[] = [
-    {
-        title: "Teach Python",
-        description: "An interactive platform for learning Python programming",
-        image: "/projects/teach-python/images/HeaderImg.jpg",
-        link: "/projects/teach-python",
-        htmlPath: "/projects/teach-python/index.html",
-        skills: ["Python", "React", "TypeScript", "MongoDB", "Express"],
-        longDescription:
-            "Teach Python is an interactive learning platform designed to help users master Python programming through hands-on exercises, real-world projects, and comprehensive tutorials. The platform features a modern, user-friendly interface and provides immediate feedback on code execution.",
-        features: [
-            "Interactive code editor with real-time execution",
-            "Comprehensive Python tutorials and exercises",
-            "Progress tracking and achievement system",
-            "Community features for sharing and collaboration",
-            "Mobile-responsive design for learning on the go",
-        ],
-    },
-    {
-        title: "Cotiss",
-        description: "A modern web application for business management",
-        image: "/projects/cotiss/preview.png",
-        link: "/projects/cotiss",
-        htmlPath: "/projects/cotiss/index.html",
-        skills: ["React", "Node.js", "PostgreSQL", "Docker", "AWS"],
-        longDescription:
-            "Cotiss is a comprehensive business management solution that helps organizations streamline their operations, manage resources efficiently, and make data-driven decisions. The application provides a suite of tools for project management, resource allocation, and business analytics.",
-        features: [
-            "Project management and task tracking",
-            "Resource allocation and team management",
-            "Real-time analytics and reporting",
-            "Secure user authentication and authorization",
-            "Cloud-based deployment with AWS",
-        ],
-    },
-    {
-        title: "Help a Mate",
-        description:
-            "A fundraising platform to help individuals raise funds for causes",
-        image: "/projects/helpamate/preview.jpg",
-        link: "/projects/helpamate",
-        externalUrl: "http://helpamate.chris-sa.com/",
-        skills: ["HTML", "CSS", "JavaScript", "Responsive Design"],
-        longDescription:
-            "Help a Mate is a platform that enables individuals to create fundraising campaigns for various causes. Users can create campaigns, share their stories, set funding goals, and track progress. Visitors can browse campaigns and contribute to causes they care about.",
-        features: [
-            "Campaign creation and management",
-            "Progress tracking with visual indicators",
-            "User profiles and campaign listings",
-            "Responsive design for all devices",
-            "Mock donation system for demonstration purposes",
-        ],
-    },
-];
 
 export default function ProjectDetails() {
     const { projectId } = useParams<{ projectId: string }>();
@@ -182,7 +117,7 @@ export default function ProjectDetails() {
                             color="text.secondary"
                             paragraph
                         >
-                            {project.longDescription}
+                            {project.longDescription || project.description}
                         </Typography>
                         <Typography
                             variant="h4"
@@ -230,28 +165,41 @@ export default function ProjectDetails() {
                                     />
                                 ))}
                             </Stack>
-                            {(project.htmlPath || project.externalUrl) && (
-                                <Button
-                                    variant="contained"
-                                    href={
-                                        project.externalUrl ||
-                                        project.htmlPath ||
-                                        ""
-                                    }
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    fullWidth
-                                    endIcon={<OpenInNewIcon />}
-                                    sx={{ mt: 3 }}
-                                >
-                                    View Live Project
-                                </Button>
-                            )}
+                            <Stack spacing={2} sx={{ mt: 3 }}>
+                                {project.githubUrl && (
+                                    <Button
+                                        variant="outlined"
+                                        href={project.githubUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        fullWidth
+                                        startIcon={<GitHubIcon />}
+                                    >
+                                        View on GitHub
+                                    </Button>
+                                )}
+                                {(project.htmlPath || project.externalUrl) && (
+                                    <Button
+                                        variant="contained"
+                                        href={
+                                            project.externalUrl ||
+                                            project.htmlPath ||
+                                            ""
+                                        }
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        fullWidth
+                                        endIcon={<OpenInNewIcon />}
+                                    >
+                                        View Live Project
+                                    </Button>
+                                )}
+                            </Stack>
                         </Paper>
                     </Grid>
                 </Grid>
 
-                {(project.htmlPath || project.externalUrl) && (
+                {project.htmlPath || project.externalUrl ? (
                     <IframeContainer sx={{ mt: 6 }}>
                         <IframeHeader>
                             <Typography variant="subtitle1">
@@ -276,6 +224,24 @@ export default function ProjectDetails() {
                             title={project.title}
                         />
                     </IframeContainer>
+                ) : (
+                    <Box sx={{ mt: 6, textAlign: "center" }}>
+                        <Typography variant="h5" gutterBottom>
+                            Project Preview
+                        </Typography>
+                        <Box
+                            component="img"
+                            src={project.image}
+                            alt={project.title}
+                            sx={{
+                                maxWidth: "100%",
+                                maxHeight: "800px",
+                                borderRadius: "8px",
+                                border: (theme) =>
+                                    `1px solid ${theme.palette.divider}`,
+                            }}
+                        />
+                    </Box>
                 )}
             </Container>
         </Layout>
