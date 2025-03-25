@@ -10,6 +10,7 @@ import {
     Paper,
     Chip,
     Stack,
+    Avatar,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
@@ -17,6 +18,7 @@ import { Link } from "react-router-dom";
 import Layout from "./Layout";
 import { projects } from "../data/projects";
 import { awards } from "../data/awards";
+import headshot from "../assets/headshot.png";
 
 const ProjectCard = styled(Card)(() => ({
     height: "100%",
@@ -92,17 +94,52 @@ function Portfolio() {
                                 : "linear-gradient(135deg,hsl(180, 20.00%, 96.00%) 0%,hsl(180, 37.50%, 93.20%) 100%)",
                     }}
                 >
-                    <Typography variant="h1" component="h1" gutterBottom>
-                        Chris Sa
-                    </Typography>
-                    <Typography
-                        variant="subtitle1"
+                    <Box
                         sx={{
-                            color: (theme) => theme.palette.text.primary,
+                            display: "flex",
+                            flexDirection: { xs: "column", sm: "row" },
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: 4,
                         }}
                     >
-                        Software Developer & Creative Problem Solver
-                    </Typography>
+                        <Avatar
+                            src={headshot}
+                            alt="Chris Sa"
+                            sx={{
+                                width: { xs: 150, sm: 180, md: 200 },
+                                height: { xs: 150, sm: 180, md: 200 },
+                                border: (theme) =>
+                                    `4px solid ${
+                                        theme.palette.mode === "dark"
+                                            ? "rgba(167, 200, 195, 0.3)"
+                                            : "rgba(55, 88, 83, 0.2)"
+                                    }`,
+                                boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+                            }}
+                        />
+                        <Box>
+                            <Typography
+                                variant="h1"
+                                component="h1"
+                                gutterBottom
+                                sx={{
+                                    textAlign: { xs: "center", sm: "left" },
+                                }}
+                            >
+                                Chris Sa
+                            </Typography>
+                            <Typography
+                                variant="subtitle1"
+                                sx={{
+                                    color: (theme) =>
+                                        theme.palette.text.primary,
+                                }}
+                            >
+                                Software Developer & Creative Problem Solver
+                            </Typography>
+                        </Box>
+                    </Box>
                 </Paper>
 
                 <Typography

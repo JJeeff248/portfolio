@@ -4,7 +4,7 @@ import scouts from "../assets/scouts-logo.png";
 
 export interface Award {
     title: string;
-    issuer: string;
+    issuer?: string;
     date: string;
     description?: string;
     image?: string;
@@ -15,14 +15,12 @@ export interface Award {
 export const awards: Award[] = [
     {
         title: "AWS Certified Cloud Practitioner",
-        issuer: "Amazon Web Services Training and Certification",
         date: "2023",
         image: awsCert,
         url: "https://www.credly.com/badges/abd5711a-990c-4b6b-a43e-bf6cf300bb03/public_url"
     },
     {
         title: "Certificate of Approval (Security Guard)",
-        issuer: "Ministry of Justice NZ",
         date: "2021",
         image: moj,
         tags: ["ID: 21-082641"],
@@ -30,7 +28,6 @@ export const awards: Award[] = [
     },
     {
         title: "Queen's Scout Award",
-        issuer: "Scouts Aotearoa",
         date: "2021",
         image: scouts,
     }
