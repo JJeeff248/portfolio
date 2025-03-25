@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - revamp
 
 env:
   BUCKET_NAME : "chris-sa-portfolio"
@@ -28,7 +27,7 @@ jobs:
           node-version: '20'
 
       - name: Build
-        run: cd revamp && npm ci && npm run build
+        run: cd main && npm ci && npm run build
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4.0.2
@@ -37,7 +36,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Upload to S3
-        run: aws s3 sync ./revamp/dist s3://${{ env.BUCKET_NAME }}/ --delete --quiet
+        run: aws s3 sync ./main/dist s3://${{ env.BUCKET_NAME }}/ --delete --quiet
         
       - name: Invalidate CloudFront
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_ID }} --paths '/*'
