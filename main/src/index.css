@@ -1,0 +1,103 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+:root[data-theme="light"] {
+    --text: #0c1211;
+    --background: #f9fbfb;
+    --primary: #375853;
+    --secondary: #9991ba;
+    --accent: #7c588d;
+}
+
+:root[data-theme="dark"] {
+    --text: #edf3f2;
+    --background: #040606;
+    --primary: #a7c8c3;
+    --secondary: #4d456e;
+    --accent: #9672a7;
+}
+
+:root {
+    --text: #0c1211;
+    --background: #f9fbfb;
+    --primary: #375853;
+    --secondary: #9991ba;
+    --accent: #7c588d;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text: #edf3f2;
+        --background: #040606;
+        --primary: #a7c8c3;
+        --secondary: #4d456e;
+        --accent: #9672a7;
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+        "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--background);
+    color: var(--text);
+    line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--secondary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+}
