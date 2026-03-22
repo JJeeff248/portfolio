@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import {
     Container,
     Typography,
@@ -21,7 +21,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Masonry from "@mui/lab/Masonry";
 import Layout from "./Layout";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const imageNames = [
     "00_Bee_sitting_on_a_purple_flower.webp",
@@ -52,6 +52,26 @@ interface Photo {
     title: string;
     aspectRatio?: number;
 }
+
+function buildGalleryPhotos(): Photo[] {
+    return imageNames.map((name) => {
+        const title = name.split(".")[0].substring(3).replace(/_/g, " ");
+        return {
+            src: `${baseUrl}${name}`,
+            title,
+        };
+    });
+}
+
+function indexRecord(length: number, value: boolean): Record<number, boolean> {
+    const record: Record<number, boolean> = {};
+    for (let i = 0; i < length; i++) {
+        record[i] = value;
+    }
+    return record;
+}
+
+const galleryPhotos = buildGalleryPhotos();
 
 const ImageCard = styled(Card)(() => ({
     width: "100%",
@@ -116,95 +136,73 @@ const ImageCaption = styled(Box)(({ theme }) => ({
 
 function Gallery() {
     const location = useLocation();
-    const [openModal, setOpenModal] = useState(false);
-    const [selectedImage, setSelectedImage] = useState<number | null>(null);
-    const [loading, setLoading] = useState<Record<number, boolean>>({});
-    const [photos, setPhotos] = useState<Photo[]>([]);
-    const [imageLoaded, setImageLoaded] = useState<Record<number, boolean>>({});
+    const navigate = useNavigate();
+
+    const photoIndex = useMemo(() => {
+        const hash = location.hash;
+        if (!hash.startsWith("#photo=")) return null;
+        const n = parseInt(hash.substring(7), 10);
+        if (
+            Number.isNaN(n) ||
+            n < 0 ||
+            n >= imageNames.length
+        ) {
+            return null;
+        }
+        return n;
+    }, [location.hash]);
+
+    const openModal = photoIndex !== null;
+
+    const [loading, setLoading] = useState<Record<number, boolean>>(() =>
+        indexRecord(galleryPhotos.length, true)
+    );
+    const [imageLoaded, setImageLoaded] = useState<Record<number, boolean>>(
+        () => indexRecord(galleryPhotos.length, false)
+    );
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
 
-    // Process image names to get titles
-    useEffect(() => {
-        const processedPhotos = imageNames.map((name) => {
-            const title = name.split(".")[0].substring(3).replace(/_/g, " ");
-            return {
-                src: `${baseUrl}${name}`,
-                title,
-            };
-        });
-        setPhotos(processedPhotos);
-
-        // Initialize loading state for all images
-        const initialLoadingState: Record<number, boolean> = {};
-        processedPhotos.forEach((_, index) => {
-            initialLoadingState[index] = true;
-        });
-        setLoading(initialLoadingState);
-
-        // Initialize loaded state
-        const initialLoadedState: Record<number, boolean> = {};
-        processedPhotos.forEach((_, index) => {
-            initialLoadedState[index] = false;
-        });
-        setImageLoaded(initialLoadedState);
-    }, []);
-
-    // Check for hash parameter and open modal if present
-    useEffect(() => {
-        const hash = location.hash;
-        if (hash && hash.startsWith("#photo=")) {
-            const photoIndex = parseInt(hash.substring(7), 10);
-            if (
-                !isNaN(photoIndex) &&
-                photoIndex >= 0 &&
-                photoIndex < imageNames.length
-            ) {
-                setSelectedImage(photoIndex);
-                setOpenModal(true);
-            }
-        }
-    }, [location.hash, photos]);
+    const goToPhotoHash = (index: number) => {
+        navigate(
+            {
+                pathname: location.pathname,
+                search: location.search,
+                hash: `#photo=${index}`,
+            },
+            { replace: true }
+        );
+    };
 
     const handleImageClick = (index: number) => {
-        setSelectedImage(index);
-        setOpenModal(true);
+        goToPhotoHash(index);
     };
 
     const handleCloseModal = () => {
-        // Clear the hash when closing the modal
-        if (location.hash.startsWith("#photo=")) {
-            window.history.pushState(
-                "",
-                document.title,
-                window.location.pathname + window.location.search
-            );
-        }
-        setOpenModal(false);
+        navigate(
+            {
+                pathname: location.pathname,
+                search: location.search,
+                hash: "",
+            },
+            { replace: true }
+        );
     };
 
     const handlePrevImage = (event: React.MouseEvent) => {
         event.stopPropagation();
-        setSelectedImage((prev) => {
-            if (prev === null) return null;
-            const newIndex = prev === 0 ? photos.length - 1 : prev - 1;
-            updateUrlHash(newIndex);
-            return newIndex;
-        });
+        if (photoIndex === null) return;
+        const newIndex =
+            photoIndex === 0 ? galleryPhotos.length - 1 : photoIndex - 1;
+        goToPhotoHash(newIndex);
     };
 
     const handleNextImage = (event: React.MouseEvent) => {
         event.stopPropagation();
-        setSelectedImage((prev) => {
-            if (prev === null) return null;
-            const newIndex = prev === photos.length - 1 ? 0 : prev + 1;
-            updateUrlHash(newIndex);
-            return newIndex;
-        });
-    };
-
-    const updateUrlHash = (index: number) => {
-        window.history.replaceState(null, "", `#photo=${index}`);
+        if (photoIndex === null) return;
+        const newIndex =
+            photoIndex === galleryPhotos.length - 1 ? 0 : photoIndex + 1;
+        goToPhotoHash(newIndex);
     };
 
     const handleImageLoad = (index: number) => {
@@ -215,12 +213,12 @@ function Gallery() {
     const handleShare = async (event: React.MouseEvent) => {
         event.stopPropagation();
 
-        if (selectedImage === null) return;
+        if (photoIndex === null) return;
 
-        const title = photos[selectedImage].title;
+        const title = galleryPhotos[photoIndex].title;
 
         // Create a shareable URL that points back to this gallery with the correct photo selected
-        const shareUrl = `${window.location.origin}${window.location.pathname}#photo=${selectedImage}`;
+        const shareUrl = `${window.location.origin}${window.location.pathname}#photo=${photoIndex}`;
 
         try {
             // Try using the Web Share API first
@@ -309,7 +307,7 @@ function Gallery() {
                     columns={{ xs: 2, sm: 2, md: 3 }}
                     spacing={{ xs: 2, sm: 3 }} // Reduced spacing on mobile
                 >
-                    {photos.map((photo, index) => (
+                    {galleryPhotos.map((photo, index) => (
                         <Box
                             key={index}
                             sx={{
@@ -417,7 +415,7 @@ function Gallery() {
                             </IconButton>
                         </Box>
 
-                        {selectedImage !== null && (
+                        {photoIndex !== null && (
                             <>
                                 <NavButton
                                     onClick={handlePrevImage}
@@ -453,8 +451,8 @@ function Gallery() {
                                             boxShadow:
                                                 "0 4px 20px rgba(0,0,0,0.2)",
                                         }}
-                                        src={photos[selectedImage].src}
-                                        alt={photos[selectedImage].title}
+                                        src={galleryPhotos[photoIndex].src}
+                                        alt={galleryPhotos[photoIndex].title}
                                     />
                                 </Box>
                                 <NavButton
@@ -498,7 +496,7 @@ function Gallery() {
                                                 "0 1px 2px rgba(0,0,0,0.3)",
                                         }}
                                     >
-                                        {photos[selectedImage].title}
+                                        {galleryPhotos[photoIndex].title}
                                     </Typography>
                                 </Box>
                             </>
