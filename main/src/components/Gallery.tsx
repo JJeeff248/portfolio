@@ -5,13 +5,11 @@ import {
     Box,
     CardMedia,
     Paper,
-    Skeleton,
 } from "@mui/material";
 import Masonry from "@mui/lab/Masonry";
 import Layout from "./Layout";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
-    imageNames,
     galleryPhotos,
     indexRecord,
 } from "./gallery/galleryData";
@@ -29,7 +27,7 @@ function Gallery() {
         if (
             Number.isNaN(n) ||
             n < 0 ||
-            n >= imageNames.length
+            n >= galleryPhotos.length
         ) {
             return null;
         }
@@ -38,9 +36,6 @@ function Gallery() {
 
     const openModal = photoIndex !== null;
 
-    const [loading, setLoading] = useState<Record<number, boolean>>(() =>
-        indexRecord(galleryPhotos.length, true)
-    );
     const [imageLoaded, setImageLoaded] = useState<Record<number, boolean>>(
         () => indexRecord(galleryPhotos.length, false)
     );
@@ -90,7 +85,6 @@ function Gallery() {
     };
 
     const handleImageLoad = (index: number) => {
-        setLoading((prev) => ({ ...prev, [index]: false }));
         setImageLoaded((prev) => ({ ...prev, [index]: true }));
     };
 
@@ -198,27 +192,37 @@ function Gallery() {
                             }}
                         >
                             <ImageCard onClick={() => handleImageClick(index)}>
-                                {loading[index] && (
-                                    <Skeleton
-                                        variant="rectangular"
-                                        width="100%"
-                                        height={200}
-                                        animation="wave"
-                                    />
-                                )}
-                                <CardMedia
-                                    component="img"
-                                    image={photo.src}
-                                    alt={photo.title}
-                                    onLoad={() => handleImageLoad(index)}
+                                <Box
                                     sx={{
+                                        position: "relative",
                                         width: "100%",
-                                        display: imageLoaded[index]
-                                            ? "block"
-                                            : "none",
-                                        maxWidth: "100%",
+                                        aspectRatio: photo.aspectRatio,
+                                        overflow: "hidden",
+                                        backgroundColor: (theme) =>
+                                            theme.palette.mode === "dark"
+                                                ? "hsl(180, 10%, 12%)"
+                                                : "hsl(180, 10%, 88%)",
                                     }}
-                                />
+                                >
+                                    <CardMedia
+                                        component="img"
+                                        image={photo.src}
+                                        alt={photo.title}
+                                        loading={index < 6 ? "eager" : "lazy"}
+                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                        {...(index < 3 ? { fetchPriority: "high" } as any : {})}
+                                        onLoad={() => handleImageLoad(index)}
+                                        sx={{
+                                            position: "absolute",
+                                            inset: 0,
+                                            width: "100%",
+                                            height: "100%",
+                                            objectFit: "cover",
+                                            opacity: imageLoaded[index] ? 1 : 0,
+                                            transition: "opacity 0.3s ease",
+                                        }}
+                                    />
+                                </Box>
                                 {imageLoaded[index] && (
                                     <ImageCaption className="image-caption">
                                         <Typography variant="body2">
