@@ -98,7 +98,7 @@ jobs:
           ")
 
           if [ "$CURRENT_ARN" = "$FUNCTION_ARN" ]; then
-            echo "Function already associated with distribution — skipping."
+            echo "Function already associated with distribution - skipping."
           else
             echo "Associating function with distribution..."
             node -e "
