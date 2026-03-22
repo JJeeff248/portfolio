@@ -87,44 +87,38 @@ jobs:
             --region $CF_REGION \
             --query 'FunctionSummary.FunctionMetadata.FunctionARN' --output text)
 
-          CONFIG_JSON=$(aws cloudfront get-distribution-config \
-            --id "$DIST_ID" --region $CF_REGION)
+          aws cloudfront get-distribution-config \
+            --id "$DIST_ID" --region $CF_REGION > /tmp/dist-config.json
 
-          CURRENT_ARN=$(echo "$CONFIG_JSON" | \
-            python3 -c "
-          import sys, json
-          c = json.load(sys.stdin)
-          behaviors = c['DistributionConfig']['DefaultCacheBehavior']
-          assocs = behaviors.get('FunctionAssociations', {}).get('Items', [])
-          for a in assocs:
-              if a.get('EventType') == 'viewer-response':
-                  print(a.get('FunctionARN', ''))
-                  sys.exit(0)
-          print('')
+          CURRENT_ARN=$(node -e "
+            const c = JSON.parse(require('fs').readFileSync('/tmp/dist-config.json','utf8'));
+            const items = c.DistributionConfig.DefaultCacheBehavior.FunctionAssociations?.Items || [];
+            const match = items.find(a => a.EventType === 'viewer-response');
+            process.stdout.write(match ? match.FunctionARN : '');
           ")
 
           if [ "$CURRENT_ARN" = "$FUNCTION_ARN" ]; then
             echo "Function already associated with distribution — skipping."
           else
             echo "Associating function with distribution..."
-            DIST_ETAG=$(echo "$CONFIG_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin)['ETag'])")
-            PATCHED=$(echo "$CONFIG_JSON" | \
-              python3 -c "
-          import sys, json
-          c = json.load(sys.stdin)
-          fn_arn = '$FUNCTION_ARN'
-          dcb = c['DistributionConfig']['DefaultCacheBehavior']
-          fa = dcb.setdefault('FunctionAssociations', {'Quantity': 0, 'Items': []})
-          fa['Items'] = [a for a in fa['Items'] if a.get('EventType') != 'viewer-response']
-          fa['Items'].append({'FunctionARN': fn_arn, 'EventType': 'viewer-response'})
-          fa['Quantity'] = len(fa['Items'])
-          print(json.dumps(c['DistributionConfig']))
-          ")
+            node -e "
+              const fs = require('fs');
+              const fn_arn = process.argv[1];
+              const c = JSON.parse(fs.readFileSync('/tmp/dist-config.json','utf8'));
+              const dcb = c.DistributionConfig.DefaultCacheBehavior;
+              if (!dcb.FunctionAssociations) dcb.FunctionAssociations = { Quantity: 0, Items: [] };
+              if (!dcb.FunctionAssociations.Items) dcb.FunctionAssociations.Items = [];
+              dcb.FunctionAssociations.Items = dcb.FunctionAssociations.Items.filter(a => a.EventType !== 'viewer-response');
+              dcb.FunctionAssociations.Items.push({ FunctionARN: fn_arn, EventType: 'viewer-response' });
+              dcb.FunctionAssociations.Quantity = dcb.FunctionAssociations.Items.length;
+              fs.writeFileSync('/tmp/patched-config.json', JSON.stringify(c.DistributionConfig));
+              process.stdout.write(c.ETag);
+            " "$FUNCTION_ARN" > /tmp/dist-etag.txt
 
             aws cloudfront update-distribution \
               --id "$DIST_ID" \
-              --if-match "$DIST_ETAG" \
-              --distribution-config "$PATCHED" \
+              --if-match "$(cat /tmp/dist-etag.txt)" \
+              --distribution-config "file:///tmp/patched-config.json" \
               --region $CF_REGION
           fi
 
