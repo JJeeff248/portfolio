@@ -90,27 +90,37 @@ jobs:
           aws cloudfront get-distribution-config \
             --id "$DIST_ID" --region $CF_REGION > /tmp/dist-config.json
 
-          CURRENT_ARN=$(node -e "
+          NEEDS_UPDATE=$(node -e "
             const c = JSON.parse(require('fs').readFileSync('/tmp/dist-config.json','utf8'));
-            const items = c.DistributionConfig.DefaultCacheBehavior.FunctionAssociations?.Items || [];
-            const match = items.find(a => a.EventType === 'viewer-request');
-            process.stdout.write(match ? match.FunctionARN : '');
-          ")
+            const fn_arn = process.argv[1];
+            const behaviors = [
+              c.DistributionConfig.DefaultCacheBehavior,
+              ...(c.DistributionConfig.CacheBehaviors?.Items || [])
+            ];
+            const allMatch = behaviors.every(b => {
+              const items = b.FunctionAssociations?.Items || [];
+              return items.some(a => a.EventType === 'viewer-request' && a.FunctionARN === fn_arn);
+            });
+            process.stdout.write(allMatch ? 'no' : 'yes');
+          " "$FUNCTION_ARN")
 
-          if [ "$CURRENT_ARN" = "$FUNCTION_ARN" ]; then
-            echo "Function already associated with distribution - skipping."
+          if [ "$NEEDS_UPDATE" = "no" ]; then
+            echo "Function already associated with all cache behaviors - skipping."
           else
-            echo "Associating function with distribution..."
+            echo "Associating function with all cache behaviors..."
             node -e "
               const fs = require('fs');
               const fn_arn = process.argv[1];
               const c = JSON.parse(fs.readFileSync('/tmp/dist-config.json','utf8'));
-              const dcb = c.DistributionConfig.DefaultCacheBehavior;
-              if (!dcb.FunctionAssociations) dcb.FunctionAssociations = { Quantity: 0, Items: [] };
-              if (!dcb.FunctionAssociations.Items) dcb.FunctionAssociations.Items = [];
-              dcb.FunctionAssociations.Items = dcb.FunctionAssociations.Items.filter(a => a.EventType !== 'viewer-request');
-              dcb.FunctionAssociations.Items.push({ FunctionARN: fn_arn, EventType: 'viewer-request' });
-              dcb.FunctionAssociations.Quantity = dcb.FunctionAssociations.Items.length;
+              const patch = (b) => {
+                if (!b.FunctionAssociations) b.FunctionAssociations = { Quantity: 0, Items: [] };
+                if (!b.FunctionAssociations.Items) b.FunctionAssociations.Items = [];
+                b.FunctionAssociations.Items = b.FunctionAssociations.Items.filter(a => a.EventType !== 'viewer-request');
+                b.FunctionAssociations.Items.push({ FunctionARN: fn_arn, EventType: 'viewer-request' });
+                b.FunctionAssociations.Quantity = b.FunctionAssociations.Items.length;
+              };
+              patch(c.DistributionConfig.DefaultCacheBehavior);
+              (c.DistributionConfig.CacheBehaviors?.Items || []).forEach(patch);
               fs.writeFileSync('/tmp/patched-config.json', JSON.stringify(c.DistributionConfig));
               process.stdout.write(c.ETag);
             " "$FUNCTION_ARN" > /tmp/dist-etag.txt
