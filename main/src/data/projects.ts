@@ -58,7 +58,7 @@ export const projects: Project[] = [
             "A fundraising platform to help individuals raise funds for causes",
         image: helpamate,
         link: "/projects/helpamate",
-        externalUrl: "http://helpamate.chris-sa.com/",
+        externalUrl: "https://helpamate.chris-sa.com/",
         skills: ["PHP", "GCP", "Docker", "JavaScript", "SQL"],
         githubUrl: "https://github.com/JJeeff248/HelpAMate",
         longDescription:
