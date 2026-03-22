@@ -209,8 +209,7 @@ function Gallery() {
                                         image={photo.src}
                                         alt={photo.title}
                                         loading={index < 6 ? "eager" : "lazy"}
-                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                        {...(index < 3 ? { fetchPriority: "high" } as any : {})}
+                                        fetchPriority={index < 3 ? "high" : "auto"}
                                         onLoad={() => handleImageLoad(index)}
                                         sx={{
                                             position: "absolute",
