@@ -48,6 +48,7 @@ jobs:
           # Get the current ETag of the function if it already exists
           ETAG=$(aws cloudfront describe-function \
             --name $CF_FUNCTION_NAME \
+            --stage DEVELOPMENT \
             --region $CF_REGION \
             --query 'ETag' --output text 2>/dev/null || echo "")
 
@@ -111,15 +112,14 @@ jobs:
               python3 -c "
           import sys, json
           c = json.load(sys.stdin)
-          import os
-          fn_arn = os.environ['FUNCTION_ARN']
+          fn_arn = '$FUNCTION_ARN'
           dcb = c['DistributionConfig']['DefaultCacheBehavior']
           fa = dcb.setdefault('FunctionAssociations', {'Quantity': 0, 'Items': []})
           fa['Items'] = [a for a in fa['Items'] if a.get('EventType') != 'viewer-response']
           fa['Items'].append({'FunctionARN': fn_arn, 'EventType': 'viewer-response'})
           fa['Quantity'] = len(fa['Items'])
           print(json.dumps(c['DistributionConfig']))
-          " FUNCTION_ARN="$FUNCTION_ARN")
+          ")
 
             aws cloudfront update-distribution \
               --id "$DIST_ID" \
