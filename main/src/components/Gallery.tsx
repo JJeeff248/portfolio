@@ -21,9 +21,9 @@ function Gallery() {
     const navigate = useNavigate();
 
     const photoIndex = useMemo(() => {
-        const hash = location.hash;
-        if (!hash.startsWith("#photo=")) return null;
-        const n = parseInt(hash.substring(7), 10);
+        const param = new URLSearchParams(location.search).get("photo");
+        if (param === null) return null;
+        const n = parseInt(param, 10);
         if (
             Number.isNaN(n) ||
             n < 0 ||
@@ -32,7 +32,7 @@ function Gallery() {
             return null;
         }
         return n;
-    }, [location.hash]);
+    }, [location.search]);
 
     const openModal = photoIndex !== null;
 
@@ -42,26 +42,26 @@ function Gallery() {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
 
-    const goToPhotoHash = (index: number) => {
+    const goToPhotoParam = (index: number) => {
         navigate(
             {
                 pathname: location.pathname,
-                search: location.search,
-                hash: `#photo=${index}`,
+                search: `?photo=${index}`,
+                hash: "",
             },
             { replace: true }
         );
     };
 
     const handleImageClick = (index: number) => {
-        goToPhotoHash(index);
+        goToPhotoParam(index);
     };
 
     const handleCloseModal = () => {
         navigate(
             {
                 pathname: location.pathname,
-                search: location.search,
+                search: "",
                 hash: "",
             },
             { replace: true }
@@ -73,7 +73,7 @@ function Gallery() {
         if (photoIndex === null) return;
         const newIndex =
             photoIndex === 0 ? galleryPhotos.length - 1 : photoIndex - 1;
-        goToPhotoHash(newIndex);
+        goToPhotoParam(newIndex);
     };
 
     const handleNextImage = (event: React.MouseEvent) => {
@@ -81,7 +81,7 @@ function Gallery() {
         if (photoIndex === null) return;
         const newIndex =
             photoIndex === galleryPhotos.length - 1 ? 0 : photoIndex + 1;
-        goToPhotoHash(newIndex);
+        goToPhotoParam(newIndex);
     };
 
     const handleImageLoad = (index: number) => {
@@ -95,7 +95,7 @@ function Gallery() {
 
         const title = galleryPhotos[photoIndex].title;
 
-        const shareUrl = `${window.location.origin}${window.location.pathname}#photo=${photoIndex}`;
+        const shareUrl = `${window.location.origin}${window.location.pathname}?photo=${photoIndex}`;
 
         try {
             if ("share" in navigator) {

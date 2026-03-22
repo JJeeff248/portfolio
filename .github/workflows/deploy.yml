@@ -6,8 +6,11 @@ on:
       - main
 
 env:
-  BUCKET_NAME : "chris-sa-portfolio"
-  AWS_REGION : "ap-southeast-2"
+  BUCKET_NAME: "chris-sa-portfolio"
+  AWS_REGION: "ap-southeast-2"
+  # CloudFront Functions must always be managed in us-east-1
+  CF_REGION: "us-east-1"
+  CF_FUNCTION_NAME: "og-injector"
 
 permissions:
     id-token: write
@@ -37,6 +40,93 @@ jobs:
 
       - name: Upload to S3
         run: aws s3 sync ./main/dist s3://${{ env.BUCKET_NAME }}/ --delete --quiet
-        
+
+      - name: Deploy CloudFront Function
+        env:
+          DIST_ID: ${{ secrets.DISTRIBUTION_ID }}
+        run: |
+          # Get the current ETag of the function if it already exists
+          ETAG=$(aws cloudfront describe-function \
+            --name $CF_FUNCTION_NAME \
+            --region $CF_REGION \
+            --query 'ETag' --output text 2>/dev/null || echo "")
+
+          if [ -z "$ETAG" ]; then
+            # First deploy: create and publish
+            echo "Creating CloudFront Function for the first time..."
+            ETAG=$(aws cloudfront create-function \
+              --name $CF_FUNCTION_NAME \
+              --function-config '{"Comment":"Inject per-page OG tags","Runtime":"cloudfront-js-2.0"}' \
+              --function-code fileb://cloudfront/og-injector.js \
+              --region $CF_REGION \
+              --query 'ETag' --output text)
+          else
+            # Subsequent deploys: update existing function code
+            echo "Updating existing CloudFront Function..."
+            ETAG=$(aws cloudfront update-function \
+              --name $CF_FUNCTION_NAME \
+              --function-config '{"Comment":"Inject per-page OG tags","Runtime":"cloudfront-js-2.0"}' \
+              --function-code fileb://cloudfront/og-injector.js \
+              --if-match "$ETAG" \
+              --region $CF_REGION \
+              --query 'ETag' --output text)
+          fi
+
+          # Publish the function (makes it live)
+          aws cloudfront publish-function \
+            --name $CF_FUNCTION_NAME \
+            --if-match "$ETAG" \
+            --region $CF_REGION
+
+          # Associate with the distribution if not already linked.
+          # This block is idempotent: it only patches the config when the
+          # viewer-response association is missing or points elsewhere.
+          FUNCTION_ARN=$(aws cloudfront describe-function \
+            --name $CF_FUNCTION_NAME \
+            --region $CF_REGION \
+            --query 'FunctionSummary.FunctionMetadata.FunctionARN' --output text)
+
+          CONFIG_JSON=$(aws cloudfront get-distribution-config \
+            --id "$DIST_ID" --region $CF_REGION)
+
+          CURRENT_ARN=$(echo "$CONFIG_JSON" | \
+            python3 -c "
+          import sys, json
+          c = json.load(sys.stdin)
+          behaviors = c['DistributionConfig']['DefaultCacheBehavior']
+          assocs = behaviors.get('FunctionAssociations', {}).get('Items', [])
+          for a in assocs:
+              if a.get('EventType') == 'viewer-response':
+                  print(a.get('FunctionARN', ''))
+                  sys.exit(0)
+          print('')
+          ")
+
+          if [ "$CURRENT_ARN" = "$FUNCTION_ARN" ]; then
+            echo "Function already associated with distribution — skipping."
+          else
+            echo "Associating function with distribution..."
+            DIST_ETAG=$(echo "$CONFIG_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin)['ETag'])")
+            PATCHED=$(echo "$CONFIG_JSON" | \
+              python3 -c "
+          import sys, json
+          c = json.load(sys.stdin)
+          import os
+          fn_arn = os.environ['FUNCTION_ARN']
+          dcb = c['DistributionConfig']['DefaultCacheBehavior']
+          fa = dcb.setdefault('FunctionAssociations', {'Quantity': 0, 'Items': []})
+          fa['Items'] = [a for a in fa['Items'] if a.get('EventType') != 'viewer-response']
+          fa['Items'].append({'FunctionARN': fn_arn, 'EventType': 'viewer-response'})
+          fa['Quantity'] = len(fa['Items'])
+          print(json.dumps(c['DistributionConfig']))
+          " FUNCTION_ARN="$FUNCTION_ARN")
+
+            aws cloudfront update-distribution \
+              --id "$DIST_ID" \
+              --if-match "$DIST_ETAG" \
+              --distribution-config "$PATCHED" \
+              --region $CF_REGION
+          fi
+
       - name: Invalidate CloudFront
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_ID }} --paths '/*'
