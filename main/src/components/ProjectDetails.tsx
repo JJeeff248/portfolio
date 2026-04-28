@@ -120,7 +120,8 @@ export default function ProjectDetails() {
                         <Typography
                             variant="body1"
                             color="text.secondary"
-                            paragraph
+                            component="p"
+                            sx={{ mb: 2 }}
                         >
                             {project.longDescription || project.description}
                         </Typography>
@@ -158,9 +159,11 @@ export default function ProjectDetails() {
                             <Stack
                                 direction="row"
                                 spacing={0}
-                                flexWrap="wrap"
-                                gap={0.5}
-                                sx={{ mt: 1 }}
+                                sx={{
+                                    mt: 1,
+                                    flexWrap: "wrap",
+                                    gap: 0.5,
+                                }}
                             >
                                 {project.skills.map((skill, index) => (
                                     <SkillChip

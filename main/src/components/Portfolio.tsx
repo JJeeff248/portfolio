@@ -215,9 +215,11 @@ function Portfolio() {
                                     <Stack
                                         direction="row"
                                         spacing={0}
-                                        flexWrap="wrap"
-                                        gap={0.5}
-                                        sx={{ mt: 1 }}
+                                        sx={{
+                                            mt: 1,
+                                            flexWrap: "wrap",
+                                            gap: 0.5,
+                                        }}
                                     >
                                         {project.skills.map(
                                             (skill, skillIndex) => (
@@ -344,8 +346,10 @@ function Portfolio() {
                                             <Stack
                                                 direction="row"
                                                 spacing={0}
-                                                flexWrap="wrap"
-                                                gap={0.5}
+                                                sx={{
+                                                    flexWrap: "wrap",
+                                                    gap: 0.5,
+                                                }}
                                             >
                                                 {award.tags.map(
                                                     (tag, tagIndex) => (

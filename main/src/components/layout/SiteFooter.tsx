@@ -26,8 +26,7 @@ function SiteFooter() {
                 <Stack
                     direction="row"
                     spacing={2}
-                    justifyContent="center"
-                    sx={{ mb: 2 }}
+                    sx={{ mb: 2, justifyContent: "center" }}
                 >
                     <Tooltip title="LinkedIn">
                         <IconButton

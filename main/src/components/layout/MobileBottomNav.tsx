@@ -113,7 +113,7 @@ function MobileBottomNav({
                     <Stack
                         direction="row"
                         spacing={4}
-                        justifyContent="center"
+                        sx={{ justifyContent: "center" }}
                     >
                         <Tooltip title="LinkedIn">
                             <IconButton
