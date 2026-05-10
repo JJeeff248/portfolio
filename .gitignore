@@ -8,3 +8,4 @@ admin/.env.local
 .next
 *.db
 *.db-journal
+*.tsbuildinfo
