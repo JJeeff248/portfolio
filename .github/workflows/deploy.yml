@@ -8,13 +8,10 @@ on:
 env:
   BUCKET_NAME: "chris-sa-portfolio"
   AWS_REGION: "ap-southeast-2"
-  # CloudFront Functions must always be managed in us-east-1
-  CF_REGION: "us-east-1"
-  CF_FUNCTION_NAME: "og-injector"
 
 permissions:
-    id-token: write
-    contents: read
+  id-token: write
+  contents: read
 
 jobs:
   Build-and-upload-S3:
@@ -27,10 +24,12 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4.0.2
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Build
         run: cd main && npm ci && npm run build
+        env:
+          GALLERY_MANIFEST_URL: ${{ secrets.GALLERY_MANIFEST_URL }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4.0.2
@@ -38,99 +37,8 @@ jobs:
           role-to-assume: arn:aws:iam::618566478002:role/GithubActionPortfolioDeploy
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Upload to S3
+      - name: Upload site assets to S3
         run: aws s3 sync ./main/dist s3://${{ env.BUCKET_NAME }}/ --delete --quiet
-
-      - name: Deploy CloudFront Function
-        env:
-          DIST_ID: ${{ secrets.DISTRIBUTION_ID }}
-        run: |
-          # Get the current ETag of the function if it already exists
-          ETAG=$(aws cloudfront describe-function \
-            --name $CF_FUNCTION_NAME \
-            --stage DEVELOPMENT \
-            --region $CF_REGION \
-            --query 'ETag' --output text 2>/dev/null || echo "")
-
-          if [ -z "$ETAG" ]; then
-            # First deploy: create and publish
-            echo "Creating CloudFront Function for the first time..."
-            ETAG=$(aws cloudfront create-function \
-              --name $CF_FUNCTION_NAME \
-              --function-config '{"Comment":"Rewrite crawler URIs to prerendered OG HTML","Runtime":"cloudfront-js-2.0"}' \
-              --function-code fileb://cloudfront/og-injector.js \
-              --region $CF_REGION \
-              --query 'ETag' --output text)
-          else
-            # Subsequent deploys: update existing function code
-            echo "Updating existing CloudFront Function..."
-            ETAG=$(aws cloudfront update-function \
-              --name $CF_FUNCTION_NAME \
-              --function-config '{"Comment":"Rewrite crawler URIs to prerendered OG HTML","Runtime":"cloudfront-js-2.0"}' \
-              --function-code fileb://cloudfront/og-injector.js \
-              --if-match "$ETAG" \
-              --region $CF_REGION \
-              --query 'ETag' --output text)
-          fi
-
-          # Publish the function (makes it live)
-          aws cloudfront publish-function \
-            --name $CF_FUNCTION_NAME \
-            --if-match "$ETAG" \
-            --region $CF_REGION
-
-          # Associate with the distribution if not already linked.
-          # This block is idempotent: it only patches the config when the
-          # viewer-request association is missing or points elsewhere.
-          FUNCTION_ARN=$(aws cloudfront describe-function \
-            --name $CF_FUNCTION_NAME \
-            --region $CF_REGION \
-            --query 'FunctionSummary.FunctionMetadata.FunctionARN' --output text)
-
-          aws cloudfront get-distribution-config \
-            --id "$DIST_ID" --region $CF_REGION > /tmp/dist-config.json
-
-          NEEDS_UPDATE=$(node -e "
-            const c = JSON.parse(require('fs').readFileSync('/tmp/dist-config.json','utf8'));
-            const fn_arn = process.argv[1];
-            const behaviors = [
-              c.DistributionConfig.DefaultCacheBehavior,
-              ...(c.DistributionConfig.CacheBehaviors?.Items || [])
-            ];
-            const allMatch = behaviors.every(b => {
-              const items = b.FunctionAssociations?.Items || [];
-              return items.some(a => a.EventType === 'viewer-request' && a.FunctionARN === fn_arn);
-            });
-            process.stdout.write(allMatch ? 'no' : 'yes');
-          " "$FUNCTION_ARN")
-
-          if [ "$NEEDS_UPDATE" = "no" ]; then
-            echo "Function already associated with all cache behaviors - skipping."
-          else
-            echo "Associating function with all cache behaviors..."
-            node -e "
-              const fs = require('fs');
-              const fn_arn = process.argv[1];
-              const c = JSON.parse(fs.readFileSync('/tmp/dist-config.json','utf8'));
-              const patch = (b) => {
-                if (!b.FunctionAssociations) b.FunctionAssociations = { Quantity: 0, Items: [] };
-                if (!b.FunctionAssociations.Items) b.FunctionAssociations.Items = [];
-                b.FunctionAssociations.Items = b.FunctionAssociations.Items.filter(a => a.EventType !== 'viewer-request');
-                b.FunctionAssociations.Items.push({ FunctionARN: fn_arn, EventType: 'viewer-request' });
-                b.FunctionAssociations.Quantity = b.FunctionAssociations.Items.length;
-              };
-              patch(c.DistributionConfig.DefaultCacheBehavior);
-              (c.DistributionConfig.CacheBehaviors?.Items || []).forEach(patch);
-              fs.writeFileSync('/tmp/patched-config.json', JSON.stringify(c.DistributionConfig));
-              process.stdout.write(c.ETag);
-            " "$FUNCTION_ARN" > /tmp/dist-etag.txt
-
-            aws cloudfront update-distribution \
-              --id "$DIST_ID" \
-              --if-match "$(cat /tmp/dist-etag.txt)" \
-              --distribution-config "file:///tmp/patched-config.json" \
-              --region $CF_REGION
-          fi
 
       - name: Invalidate CloudFront
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_ID }} --paths '/*'
