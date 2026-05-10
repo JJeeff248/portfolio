@@ -1,0 +1,5 @@
+{
+    "name": "chris-sa-monorepo",
+    "private": true,
+    "workspaces": ["main", "admin", "packages/shared"]
+}

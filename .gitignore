@@ -1,2 +1,10 @@
-/main/node_modules
-/main/build
+node_modules
+build
+dist
+lambdas/*.zip
+admin/dist
+admin/.env
+admin/.env.local
+.next
+*.db
+*.db-journal

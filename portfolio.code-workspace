@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../blog"
+		},
+		{
+			"path": "../../aws_infra"
+		}
+	],
+	"settings": {}
+}
