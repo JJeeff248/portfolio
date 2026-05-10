@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
     Box,
     IconButton,
@@ -12,8 +13,32 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ShareIcon from "@mui/icons-material/Share";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import type { Photo } from "./galleryData";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import type { Photo, GalleryExif } from "./galleryData";
 import { ModalImage, NavButton } from "./galleryStyled";
+
+function formatExifLine(exif: GalleryExif): string[] {
+    const lines: string[] = [];
+    if (exif.camera) lines.push(exif.camera);
+    if (exif.lens) lines.push(exif.lens);
+    const exposure: string[] = [];
+    if (exif.focalLengthMm != null) {
+        exposure.push(`${exif.focalLengthMm}mm`);
+    }
+    if (exif.aperture != null) exposure.push(`ƒ/${exif.aperture}`);
+    if (exif.exposureSeconds != null) {
+        exposure.push(
+            exif.exposureSeconds >= 1
+                ? `${exif.exposureSeconds}s`
+                : `1/${Math.round(1 / exif.exposureSeconds)}s`
+        );
+    }
+    if (exif.iso != null) exposure.push(`ISO ${exif.iso}`);
+    if (exposure.length > 0) lines.push(exposure.join(" · "));
+    if (exif.capturedAt) lines.push(exif.capturedAt);
+    if (exif.rawNote && lines.length === 0) lines.push(exif.rawNote);
+    return lines;
+}
 
 interface GalleryLightboxProps {
     open: boolean;
@@ -40,6 +65,19 @@ function GalleryLightbox({
     snackbarMessage,
     onSnackbarClose,
 }: GalleryLightboxProps) {
+    const current = photoIndex !== null ? photos[photoIndex] : null;
+    const hasExif =
+        current?.exif &&
+        Object.keys(current.exif).length > 0 &&
+        formatExifLine(current.exif).length > 0;
+
+    const [exifOpen, setExifOpen] = useState(true);
+    const [prevPhotoIndex, setPrevPhotoIndex] = useState<number | null>(photoIndex);
+    if (prevPhotoIndex !== photoIndex) {
+        setPrevPhotoIndex(photoIndex);
+        setExifOpen(photoIndex !== null ? (photos[photoIndex]?.showExifDefault ?? true) : true);
+    }
+
     return (
         <>
             <Modal
@@ -73,12 +111,38 @@ function GalleryLightbox({
                                 zIndex: 10,
                             }}
                         >
+                            {photoIndex !== null && hasExif && (
+                                <Tooltip
+                                    title={
+                                        exifOpen ? "Hide camera info" : "Show camera info"
+                                    }
+                                >
+                                    <IconButton
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setExifOpen((v) => !v);
+                                        }}
+                                        sx={{
+                                            color: "white",
+                                            backgroundColor:
+                                                "rgba(0, 0, 0, 0.4)",
+                                            "&:hover": {
+                                                backgroundColor:
+                                                    "rgba(0, 0, 0, 0.6)",
+                                            },
+                                        }}
+                                    >
+                                        <InfoOutlinedIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            )}
                             <Tooltip title="Share image">
                                 <IconButton
                                     onClick={onShare}
                                     sx={{
                                         color: "white",
-                                        backgroundColor: "rgba(0, 0, 0, 0.4)",
+                                        backgroundColor:
+                                            "rgba(0, 0, 0, 0.4)",
                                         "&:hover": {
                                             backgroundColor:
                                                 "rgba(0, 0, 0, 0.6)",
@@ -96,7 +160,8 @@ function GalleryLightbox({
                                 onClick={onClose}
                                 sx={{
                                     color: "white",
-                                    backgroundColor: "rgba(0, 0, 0, 0.4)",
+                                    backgroundColor:
+                                        "rgba(0, 0, 0, 0.4)",
                                     "&:hover": {
                                         backgroundColor:
                                             "rgba(0, 0, 0, 0.6)",
@@ -162,7 +227,8 @@ function GalleryLightbox({
                                 </NavButton>
                                 <Box
                                     sx={{
-                                        backgroundColor: "rgba(0, 0, 0, 0.75)",
+                                        backgroundColor:
+                                            "rgba(0, 0, 0, 0.75)",
                                         color: "white",
                                         padding: { xs: 1.5, sm: 2 },
                                         paddingX: { xs: 2, sm: 3 },
@@ -172,7 +238,8 @@ function GalleryLightbox({
                                         marginBottom: { xs: 4, sm: 0 },
                                         borderRadius: 1,
                                         textAlign: "center",
-                                        boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                                        boxShadow:
+                                            "0 4px 8px rgba(0,0,0,0.2)",
                                         zIndex: 1,
                                     }}
                                 >
@@ -191,6 +258,40 @@ function GalleryLightbox({
                                         {photos[photoIndex].title}
                                     </Typography>
                                 </Box>
+
+                                {hasExif && current?.exif && exifOpen && (
+                                    <Box
+                                        onClick={(e) => e.stopPropagation()}
+                                        sx={{
+                                            backgroundColor:
+                                                "rgba(0, 0, 0, 0.65)",
+                                            color: "rgba(255,255,255,0.92)",
+                                            padding: 1.5,
+                                            paddingX: 2,
+                                            maxWidth: "min(90%, 520px)",
+                                            marginTop: 1,
+                                            marginBottom: { xs: 3, sm: 0 },
+                                            borderRadius: 1,
+                                            textAlign: "left",
+                                            alignSelf: "center",
+                                        }}
+                                    >
+                                        {formatExifLine(current.exif).map(
+                                            (line, i) => (
+                                                <Typography
+                                                    key={i}
+                                                    variant="body2"
+                                                    sx={{
+                                                        opacity: 0.95,
+                                                        lineHeight: 1.5,
+                                                    }}
+                                                >
+                                                    {line}
+                                                </Typography>
+                                            )
+                                        )}
+                                    </Box>
+                                )}
                             </>
                         )}
                     </Box>

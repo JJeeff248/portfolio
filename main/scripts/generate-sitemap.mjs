@@ -6,6 +6,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
 const BASE = "https://chris-sa.com";
 
+const manifestPath = path.join(ROOT, "src", "generated", "galleryManifest.json");
+const manifestRaw = fs.readFileSync(manifestPath, "utf8");
+const manifest = JSON.parse(manifestRaw);
+
 const projectsSource = fs.readFileSync(
     path.join(ROOT, "src/data/projects.ts"),
     "utf8"
@@ -21,7 +25,19 @@ const extraPaths = [
     "/projects/teach-python/functions.html",
 ];
 
-const paths = [...new Set(["/", "/gallery", ...projectLinks, ...extraPaths])];
+const galleryPhotoPaths = (manifest.photos ?? []).map(
+    (p) => `/gallery/photo/${encodeURIComponent(p.slug)}/`
+);
+
+const paths = [
+    ...new Set([
+        "/",
+        "/gallery",
+        ...galleryPhotoPaths,
+        ...projectLinks,
+        ...extraPaths,
+    ]),
+];
 paths.sort((a, b) => a.localeCompare(b));
 
 function escapeXml(s) {

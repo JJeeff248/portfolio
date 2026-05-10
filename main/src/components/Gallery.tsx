@@ -12,6 +12,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
     galleryPhotos,
     indexRecord,
+    getPhotoIndexBySlug,
 } from "./gallery/galleryData";
 import { ImageCard, ImageCaption } from "./gallery/galleryStyled";
 import GalleryLightbox from "./gallery/GalleryLightbox";
@@ -20,19 +21,14 @@ function Gallery() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const photoIndex = useMemo(() => {
-        const param = new URLSearchParams(location.search).get("photo");
-        if (param === null) return null;
-        const n = parseInt(param, 10);
-        if (
-            Number.isNaN(n) ||
-            n < 0 ||
-            n >= galleryPhotos.length
-        ) {
-            return null;
-        }
-        return n;
-    }, [location.search]);
+    const rawPhoto = useMemo(
+        () => new URLSearchParams(location.search).get("photo"),
+        [location.search]
+    );
+    const photoIndex = useMemo(
+        () => getPhotoIndexBySlug(rawPhoto?.trim() ?? null),
+        [rawPhoto]
+    );
 
     const openModal = photoIndex !== null;
 
@@ -42,11 +38,11 @@ function Gallery() {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
 
-    const goToPhotoParam = (index: number) => {
+    const goToPhotoParam = (slug: string) => {
         navigate(
             {
                 pathname: location.pathname,
-                search: `?photo=${index}`,
+                search: `?photo=${encodeURIComponent(slug)}`,
                 hash: "",
             },
             { replace: true }
@@ -54,7 +50,7 @@ function Gallery() {
     };
 
     const handleImageClick = (index: number) => {
-        goToPhotoParam(index);
+        goToPhotoParam(galleryPhotos[index].slug);
     };
 
     const handleCloseModal = () => {
@@ -73,7 +69,7 @@ function Gallery() {
         if (photoIndex === null) return;
         const newIndex =
             photoIndex === 0 ? galleryPhotos.length - 1 : photoIndex - 1;
-        goToPhotoParam(newIndex);
+        goToPhotoParam(galleryPhotos[newIndex].slug);
     };
 
     const handleNextImage = (event: React.MouseEvent) => {
@@ -81,7 +77,7 @@ function Gallery() {
         if (photoIndex === null) return;
         const newIndex =
             photoIndex === galleryPhotos.length - 1 ? 0 : photoIndex + 1;
-        goToPhotoParam(newIndex);
+        goToPhotoParam(galleryPhotos[newIndex].slug);
     };
 
     const handleImageLoad = (index: number) => {
@@ -94,8 +90,9 @@ function Gallery() {
         if (photoIndex === null) return;
 
         const title = galleryPhotos[photoIndex].title;
+        const slug = galleryPhotos[photoIndex].slug;
 
-        const shareUrl = `${window.location.origin}${window.location.pathname}?photo=${photoIndex}`;
+        const shareUrl = `${window.location.origin}${window.location.pathname}?photo=${encodeURIComponent(slug)}`;
 
         try {
             if ("share" in navigator) {
@@ -184,7 +181,7 @@ function Gallery() {
                 >
                     {galleryPhotos.map((photo, index) => (
                         <Box
-                            key={index}
+                            key={photo.slug}
                             sx={{
                                 width: "100%",
                                 display: "block",
@@ -209,7 +206,9 @@ function Gallery() {
                                         image={photo.src}
                                         alt={photo.title}
                                         loading={index < 6 ? "eager" : "lazy"}
-                                        fetchPriority={index < 3 ? "high" : "auto"}
+                                        fetchPriority={
+                                            index < 3 ? "high" : "auto"
+                                        }
                                         onLoad={() => handleImageLoad(index)}
                                         sx={{
                                             position: "absolute",
