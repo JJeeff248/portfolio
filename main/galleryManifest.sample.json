@@ -1,0 +1,224 @@
+{
+    "version": 1,
+    "generatedAt": "1970-01-01T00:00:00.000Z",
+    "albums": [],
+    "photos": [
+        {
+            "slug": "bee-sitting-on-a-purple-flower",
+            "title": "Bee sitting on a purple flower",
+            "src": "https://static.chris-sa.com/gallery/00_Bee_sitting_on_a_purple_flower.webp",
+            "width": 2395,
+            "height": 2993,
+            "aspectRatio": 0.798529903106915,
+            "tags": [],
+            "showExifDefault": true,
+            "exif": null
+        },
+        {
+            "slug": "sunset-over-makara-hills-with-windmill-silhouettes",
+            "title": "Sunset over Makara hills with windmill silhouettes",
+            "src": "https://static.chris-sa.com/gallery/01_Sunset_over_Makara_hills_with_windmill_silhouettes.webp",
+            "width": 5184,
+            "height": 2749,
+            "aspectRatio": 1.88577664605311,
+            "tags": [],
+            "showExifDefault": true,
+            "exif": null
+        },
+        {
+            "slug": "capybara-at-wellington-zoo",
+            "title": "Capybara at Wellington zoo",
+            "src": "https://static.chris-sa.com/gallery/02_Capybara_at_Wellington_zoo.webp",
+            "width": 3833,
+            "height": 2556,
+            "aspectRatio": 1.49960876682316,
+            "tags": [],
+            "showExifDefault": true,
+            "exif": null
+        },
+        {
+            "slug": "fruit-splash",
+            "title": "Fruit Splash",
+            "src": "https://static.chris-sa.com/gallery/08_Fruit_Splash.webp",
+            "width": 2849,
+            "height": 3744,
+            "aspectRatio": 0.760951923076923,
+            "tags": [],
+            "showExifDefault": true,
+            "exif": null
+        },
+        {
+            "slug": "a-leaf",
+            "title": "A leaf",
+            "src": "https://static.chris-sa.com/gallery/09_A_leaf.webp",
+            "width": 2302,
+            "height": 1866,
+            "aspectRatio": 1.23365487781351,
+            "tags": [],
+            "showExifDefault": true,
+            "exif": null
+        },
+        {
+            "slug": "happy-otter-napping",
+            "title": "Happy otter napping",
+            "src": "https://static.chris-sa.com/gallery/10_Happy_otter_napping.webp",
+            "width": 5185,
+            "height": 3457,
+            "aspectRatio": 1.49985536592421,
+            "tags": [],
+            "showExifDefault": false,
+            "exif": {
+                "camera": "Demonstration metadata",
+                "lens": "Sample lens",
+                "focalLengthMm": 50,
+                "aperture": 2.8,
+                "iso": 400,
+                "exposureSeconds": 0.004,
+                "capturedAt": "Sample date"
+            }
+        },
+        {
+            "slug": "tui-hanging-upside-down-in-a-kowhai-tree",
+            "title": "Tui hanging upside down in a kowhai tree",
+            "src": "https://static.chris-sa.com/gallery/11_Tui_hanging_upside_down_in_a_kowhai_tree.webp",
+            "width": 4219,
+            "height": 2950,
+            "aspectRatio": 1.43016949152542,
+            "tags": [],
+            "showExifDefault": true,
+            "exif": null
+        },
+        {
+            "slug": "gas-burner-in-love",
+            "title": "Gas burner in love",
+            "src": "https://static.chris-sa.com/gallery/12_Gas_burner_in_love.webp",
+            "width": 3496,
+            "height": 2127,
+            "aspectRatio": 1.64358251057828,
+            "tags": [],
+            "showExifDefault": true,
+            "exif": null
+        },
+        {
+            "slug": "stunning-seagull",
+            "title": "Stunning seagull",
+            "src": "https://static.chris-sa.com/gallery/13_Stunning_seagull.webp",
+            "width": 2849,
+            "height": 4273,
+            "aspectRatio": 0.666743505733676,
+            "tags": [],
+            "showExifDefault": true,
+            "exif": null
+        },
+        {
+            "slug": "crab-chilling-under-some-water",
+            "title": "Crab chilling under some water",
+            "src": "https://static.chris-sa.com/gallery/14_Crab_chilling_under_some_water.webp",
+            "width": 5185,
+            "height": 3457,
+            "aspectRatio": 1.49985536592421,
+            "tags": [],
+            "showExifDefault": true,
+            "exif": null
+        },
+        {
+            "slug": "the-glowing-man",
+            "title": "The glowing man",
+            "src": "https://static.chris-sa.com/gallery/15_The_glowing_man.webp",
+            "width": 1120,
+            "height": 1899,
+            "aspectRatio": 0.589783043707214,
+            "tags": [],
+            "showExifDefault": true,
+            "exif": null
+        },
+        {
+            "slug": "wood-fire-burning-hot",
+            "title": "Wood fire burning hot",
+            "src": "https://static.chris-sa.com/gallery/16_Wood_fire_burning_hot.webp",
+            "width": 5185,
+            "height": 3457,
+            "aspectRatio": 1.49985536592421,
+            "tags": [],
+            "showExifDefault": true,
+            "exif": null
+        },
+        {
+            "slug": "huka-falls",
+            "title": "Huka falls",
+            "src": "https://static.chris-sa.com/gallery/17_Huka_falls.webp",
+            "width": 5185,
+            "height": 3457,
+            "aspectRatio": 1.49985536592421,
+            "tags": [],
+            "showExifDefault": true,
+            "exif": null
+        },
+        {
+            "slug": "fly-on-a-tree",
+            "title": "Fly on a tree",
+            "src": "https://static.chris-sa.com/gallery/18_Fly_on_a_tree.webp",
+            "width": 5185,
+            "height": 3457,
+            "aspectRatio": 1.49985536592421,
+            "tags": [],
+            "showExifDefault": true,
+            "exif": null
+        },
+        {
+            "slug": "morning-frost-on-a-green-wooden-railing",
+            "title": "Morning frost on a green wooden railing",
+            "src": "https://static.chris-sa.com/gallery/19_Morning_frost_on_a_green_wooden_railing.webp",
+            "width": 3649,
+            "height": 1587,
+            "aspectRatio": 2.29930749842596,
+            "tags": [],
+            "showExifDefault": true,
+            "exif": null
+        },
+        {
+            "slug": "train-platform",
+            "title": "Train Platform",
+            "src": "https://static.chris-sa.com/gallery/20_Train_Platform.webp",
+            "width": 4228,
+            "height": 2224,
+            "aspectRatio": 1.90107913669065,
+            "tags": [],
+            "showExifDefault": true,
+            "exif": null
+        },
+        {
+            "slug": "otters-sleeping",
+            "title": "Otters sleeping",
+            "src": "https://static.chris-sa.com/gallery/21_Otters_sleeping.webp",
+            "width": 5185,
+            "height": 3457,
+            "aspectRatio": 1.49985536592421,
+            "tags": [],
+            "showExifDefault": true,
+            "exif": null
+        },
+        {
+            "slug": "is-there-a-ghost",
+            "title": "Is there a ghost",
+            "src": "https://static.chris-sa.com/gallery/22_Is_there_a_ghost.webp",
+            "width": 3865,
+            "height": 2521,
+            "aspectRatio": 1.53332011106704,
+            "tags": [],
+            "showExifDefault": true,
+            "exif": null
+        },
+        {
+            "slug": "donkey-at-a-petting-zoo",
+            "title": "Donkey at a petting zoo",
+            "src": "https://static.chris-sa.com/gallery/23_Donkey_at_a_petting_zoo.webp",
+            "width": 2849,
+            "height": 4273,
+            "aspectRatio": 0.666743505733676,
+            "tags": [],
+            "showExifDefault": true,
+            "exif": null
+        }
+    ]
+}
