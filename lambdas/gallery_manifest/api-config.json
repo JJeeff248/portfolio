@@ -1,0 +1,5 @@
+{
+    "endpoint": "/portfolio/gallery-manifest",
+    "method": "GET",
+    "requiresAuth": false
+}
