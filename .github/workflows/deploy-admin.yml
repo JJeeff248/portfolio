@@ -1,0 +1,54 @@
+name: Deploy Gallery Admin
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "admin/**"
+      - "packages/shared/**"
+      - ".github/workflows/deploy-admin.yml"
+      - "package.json"
+      - "package-lock.json"
+  workflow_dispatch:
+
+env:
+  BUCKET_NAME: "chris-sa-gallery-admin"
+  AWS_REGION: "ap-southeast-2"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+
+      - name: Build admin
+        run: npm ci && npm run build:admin
+        env:
+          VITE_API_BASE_URL: https://api.chris-sa.com
+          VITE_COGNITO_AUTHORITY: https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_St23ruM3O
+          VITE_COGNITO_CLIENT_ID: 3sdu7tsp90v0ecbclo8ofh2mr6
+          VITE_COGNITO_REDIRECT_URI: https://admin.chris-sa.com
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::618566478002:role/GithubActionPortfolioDeploy
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Upload admin assets to S3
+        run: aws s3 sync ./admin/dist s3://${{ env.BUCKET_NAME }}/ --delete --quiet
+
+      - name: Invalidate CloudFront
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.ADMIN_DISTRIBUTION_ID }} --paths '/*'
