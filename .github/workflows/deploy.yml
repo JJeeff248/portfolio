@@ -27,7 +27,7 @@ jobs:
           node-version: "20"
 
       - name: Build
-        run: cd main && npm ci && npm run build
+        run: npm ci && npm run build:main
         env:
           GALLERY_MANIFEST_URL: ${{ secrets.GALLERY_MANIFEST_URL }}
 

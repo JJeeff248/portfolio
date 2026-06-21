@@ -19,6 +19,9 @@ async function main() {
         }
         text = await res.text();
     } else {
+        if (process.env.CI) {
+            throw new Error("GALLERY_MANIFEST_URL is required in CI");
+        }
         if (!fs.existsSync(fallback)) {
             throw new Error(`Missing ${fallback} and GALLERY_MANIFEST_URL`);
         }

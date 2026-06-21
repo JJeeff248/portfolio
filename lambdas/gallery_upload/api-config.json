@@ -1,5 +1,0 @@
-{
-    "endpoint": "/portfolio/gallery-upload",
-    "method": "POST",
-    "requiresAuth": true
-}

@@ -1,5 +1,16 @@
 {
     "name": "chris-sa-monorepo",
     "private": true,
-    "workspaces": ["main", "admin", "packages/shared"]
+    "workspaces": [
+        "main",
+        "admin",
+        "lambdas",
+        "lambdas/*",
+        "packages/shared"
+    ],
+    "scripts": {
+        "build:main": "npm --workspace main run build",
+        "build:admin": "npm --workspace admin run build",
+        "test:lambdas": "npm --workspace portfolio-lambdas run test"
+    }
 }
