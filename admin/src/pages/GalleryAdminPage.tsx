@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import {
     Alert,
     AppBar,
+    Box,
     Button,
     Container,
     Tab,
@@ -62,17 +63,34 @@ function GalleryAdminPage() {
     );
 
     return (
-        <>
-            <AppBar position="static" color="default" elevation={1}>
+        <Box sx={{ minHeight: "100vh", bgcolor: "background.default" }}>
+            <AppBar
+                position="static"
+                color="transparent"
+                elevation={0}
+                sx={{
+                    borderBottom: 1,
+                    borderColor: "divider",
+                    bgcolor: "background.paper",
+                }}
+            >
                 <Toolbar>
-                    <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                    <Typography
+                        variant="h6"
+                        sx={{ flexGrow: 1, color: "text.primary", fontWeight: 700 }}
+                    >
                         Gallery admin
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ mr: 2 }}>
+                    <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mr: 2, display: { xs: "none", sm: "block" } }}
+                    >
                         {photos.length} photos · {publishedCount} published
                     </Typography>
                     <Button
                         color="inherit"
+                        sx={{ color: "text.secondary" }}
                         onClick={() => void load()}
                         disabled={busy}
                     >
@@ -80,11 +98,8 @@ function GalleryAdminPage() {
                     </Button>
                     <Button
                         color="inherit"
-                        onClick={() =>
-                            void auth.signoutRedirect({
-                                post_logout_redirect_uri: window.location.origin,
-                            })
-                        }
+                        sx={{ color: "text.secondary" }}
+                        onClick={() => void auth.removeUser()}
                     >
                         Sign out
                     </Button>
@@ -133,7 +148,7 @@ function GalleryAdminPage() {
                 )}
                 {tab === 3 && <ManifestPanel />}
             </Container>
-        </>
+        </Box>
     );
 }
 

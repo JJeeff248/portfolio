@@ -1,16 +1,13 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import { AuthContextProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GalleryAdminPage from "./pages/GalleryAdminPage";
-
-const theme = createTheme({
-    palette: { mode: "light" },
-});
+import { darkTheme } from "./theme";
 
 function App() {
     return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={darkTheme}>
             <CssBaseline />
             <AuthContextProvider>
                 <BrowserRouter>

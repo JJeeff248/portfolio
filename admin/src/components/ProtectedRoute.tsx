@@ -13,8 +13,16 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
     if (auth.isLoading) {
         return (
-            <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
-                <CircularProgress />
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    minHeight: "100vh",
+                    bgcolor: "background.default",
+                }}
+            >
+                <CircularProgress color="primary" />
             </Box>
         );
     }
@@ -29,14 +37,26 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
                     justifyContent: "center",
                     minHeight: "100vh",
                     gap: 2,
+                    bgcolor: "background.default",
+                    px: 2,
                 }}
             >
-                <LockOutlinedIcon sx={{ fontSize: 48, color: "text.secondary" }} />
-                <Typography variant="h6" color="text.secondary">
+                <LockOutlinedIcon
+                    sx={{ fontSize: 48, color: "primary.main" }}
+                />
+                <Typography variant="h6" color="text.primary">
                     Sign in to manage the gallery
+                </Typography>
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    textAlign="center"
+                >
+                    Gallery admin for chris-sa.com
                 </Typography>
                 <Button
                     variant="contained"
+                    color="primary"
                     onClick={() =>
                         auth.signinRedirect({
                             state: { returnTo: location.pathname },
