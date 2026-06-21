@@ -137,7 +137,6 @@ function Gallery() {
                 sx={{
                     py: 4,
                     px: { xs: 2, sm: 3 },
-                    overflow: "hidden",
                 }}
             >
                 <Paper
@@ -195,6 +194,7 @@ function Gallery() {
                                         width: "100%",
                                         aspectRatio: photo.aspectRatio,
                                         overflow: "hidden",
+                                        borderRadius: 2,
                                         backgroundColor: (theme) =>
                                             theme.palette.mode === "dark"
                                                 ? "hsl(180, 10%, 12%)"

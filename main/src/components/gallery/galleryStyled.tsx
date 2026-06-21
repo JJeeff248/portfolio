@@ -5,6 +5,7 @@ export const ImageCard = styled(Card)(() => ({
     width: "100%",
     cursor: "pointer",
     overflow: "hidden",
+    borderRadius: "1rem",
     transition: "transform 0.3s ease",
     position: "relative",
     "&:hover": {
