@@ -1,0 +1,75 @@
+name: Deploy Lambdas
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "lambdas/**"
+      - ".github/workflows/deploy-lambdas.yml"
+      - "package.json"
+      - "package-lock.json"
+  workflow_dispatch:
+
+env:
+  AWS_REGION: "ap-southeast-2"
+  AWS_ROLE_ARN: "arn:aws:iam::618566478002:role/GithubActionPortfolioDeploy"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - function_name: gallery_manifest
+            package_path: lambdas/gallery_manifest
+          - function_name: gallery_photos
+            package_path: lambdas/gallery_photos
+          - function_name: gallery_upload
+            package_path: lambdas/gallery_upload
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.6
+
+      - name: Setup Node
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: "22"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4.0.2
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Package Lambda
+        run: |
+          set -euo pipefail
+          build_dir="$(mktemp -d)"
+          cp "${{ matrix.package_path }}/package.json" "$build_dir/package.json"
+          cp "${{ matrix.package_path }}/index.mjs" "$build_dir/index.mjs"
+          (
+            cd "$build_dir"
+            npm install --omit=dev --package-lock=false --no-audit --no-fund
+            zip -qr "$GITHUB_WORKSPACE/${{ matrix.function_name }}.zip" .
+          )
+
+      - name: Deploy Lambda code
+        run: |
+          aws lambda update-function-code \
+            --function-name "${{ matrix.function_name }}" \
+            --zip-file "fileb://${{ matrix.function_name }}.zip" \
+            --region "${{ env.AWS_REGION }}"
+
+      - name: Wait for update
+        run: |
+          aws lambda wait function-updated \
+            --function-name "${{ matrix.function_name }}" \
+            --region "${{ env.AWS_REGION }}"
