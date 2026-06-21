@@ -53,8 +53,10 @@ export const handler = async (event) => {
                     ["photo", "album"].includes(i.itemType)
                 ) ?? [];
             return json(200, {
-                items: items.sort((a, b) =>
-                    String(a.slug ?? "").localeCompare(String(b.slug ?? ""))
+                items: items.sort(
+                    (a, b) =>
+                        (a.sortOrder ?? 0) - (b.sortOrder ?? 0) ||
+                        String(a.slug ?? "").localeCompare(String(b.slug ?? ""))
                 ),
             });
         }

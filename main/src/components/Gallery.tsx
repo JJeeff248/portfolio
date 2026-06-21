@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
     Container,
     Typography,
@@ -9,31 +9,29 @@ import {
 import Masonry from "@mui/lab/Masonry";
 import Layout from "./Layout";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-    galleryPhotos,
-    indexRecord,
-    getPhotoIndexBySlug,
-} from "./gallery/galleryData";
+import { getPhotoIndexBySlug } from "./gallery/galleryData";
+import { useGalleryManifest } from "./gallery/useGalleryManifest";
 import { ImageCard, ImageCaption } from "./gallery/galleryStyled";
 import GalleryLightbox from "./gallery/GalleryLightbox";
 
 function Gallery() {
     const location = useLocation();
     const navigate = useNavigate();
+    const { photos } = useGalleryManifest();
 
     const rawPhoto = useMemo(
         () => new URLSearchParams(location.search).get("photo"),
         [location.search]
     );
     const photoIndex = useMemo(
-        () => getPhotoIndexBySlug(rawPhoto?.trim() ?? null),
-        [rawPhoto]
+        () => getPhotoIndexBySlug(photos, rawPhoto?.trim() ?? null),
+        [photos, rawPhoto]
     );
 
     const openModal = photoIndex !== null;
 
-    const [imageLoaded, setImageLoaded] = useState<Record<number, boolean>>(
-        () => indexRecord(galleryPhotos.length, false)
+    const [imageLoaded, setImageLoaded] = useState<Record<string, boolean>>(
+        {}
     );
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -49,8 +47,8 @@ function Gallery() {
         );
     };
 
-    const handleImageClick = (index: number) => {
-        goToPhotoParam(galleryPhotos[index].slug);
+    const handleImageClick = (slug: string) => {
+        goToPhotoParam(slug);
     };
 
     const handleCloseModal = () => {
@@ -66,22 +64,22 @@ function Gallery() {
 
     const handlePrevImage = (event: React.MouseEvent) => {
         event.stopPropagation();
-        if (photoIndex === null) return;
+        if (photoIndex === null || photos.length === 0) return;
         const newIndex =
-            photoIndex === 0 ? galleryPhotos.length - 1 : photoIndex - 1;
-        goToPhotoParam(galleryPhotos[newIndex].slug);
+            photoIndex === 0 ? photos.length - 1 : photoIndex - 1;
+        goToPhotoParam(photos[newIndex].slug);
     };
 
     const handleNextImage = (event: React.MouseEvent) => {
         event.stopPropagation();
-        if (photoIndex === null) return;
+        if (photoIndex === null || photos.length === 0) return;
         const newIndex =
-            photoIndex === galleryPhotos.length - 1 ? 0 : photoIndex + 1;
-        goToPhotoParam(galleryPhotos[newIndex].slug);
+            photoIndex === photos.length - 1 ? 0 : photoIndex + 1;
+        goToPhotoParam(photos[newIndex].slug);
     };
 
-    const handleImageLoad = (index: number) => {
-        setImageLoaded((prev) => ({ ...prev, [index]: true }));
+    const handleImageLoad = (slug: string) => {
+        setImageLoaded((prev) => ({ ...prev, [slug]: true }));
     };
 
     const handleShare = async (event: React.MouseEvent) => {
@@ -89,8 +87,8 @@ function Gallery() {
 
         if (photoIndex === null) return;
 
-        const title = galleryPhotos[photoIndex].title;
-        const slug = galleryPhotos[photoIndex].slug;
+        const title = photos[photoIndex].title;
+        const slug = photos[photoIndex].slug;
 
         const shareUrl = `${window.location.origin}${window.location.pathname}?photo=${encodeURIComponent(slug)}`;
 
@@ -179,7 +177,7 @@ function Gallery() {
                     columns={{ xs: 2, sm: 2, md: 3 }}
                     spacing={{ xs: 2, sm: 3 }}
                 >
-                    {galleryPhotos.map((photo, index) => (
+                    {photos.map((photo, index) => (
                         <Box
                             key={photo.slug}
                             sx={{
@@ -188,7 +186,9 @@ function Gallery() {
                                 maxWidth: "100%",
                             }}
                         >
-                            <ImageCard onClick={() => handleImageClick(index)}>
+                            <ImageCard
+                                onClick={() => handleImageClick(photo.slug)}
+                            >
                                 <Box
                                     sx={{
                                         position: "relative",
@@ -209,19 +209,23 @@ function Gallery() {
                                         fetchPriority={
                                             index < 3 ? "high" : "auto"
                                         }
-                                        onLoad={() => handleImageLoad(index)}
+                                        onLoad={() =>
+                                            handleImageLoad(photo.slug)
+                                        }
                                         sx={{
                                             position: "absolute",
                                             inset: 0,
                                             width: "100%",
                                             height: "100%",
                                             objectFit: "cover",
-                                            opacity: imageLoaded[index] ? 1 : 0,
+                                            opacity: imageLoaded[photo.slug]
+                                                ? 1
+                                                : 0,
                                             transition: "opacity 0.3s ease",
                                         }}
                                     />
                                 </Box>
-                                {imageLoaded[index] && (
+                                {imageLoaded[photo.slug] && (
                                     <ImageCaption className="image-caption">
                                         <Typography variant="body2">
                                             {photo.title}
@@ -237,7 +241,7 @@ function Gallery() {
             <GalleryLightbox
                 open={openModal}
                 photoIndex={photoIndex}
-                photos={galleryPhotos}
+                photos={photos}
                 onClose={handleCloseModal}
                 onPrev={handlePrevImage}
                 onNext={handleNextImage}

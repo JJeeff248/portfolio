@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
     DndContext,
     KeyboardSensor,
@@ -53,6 +53,7 @@ type PhotosPanelProps = {
     photos: GalleryPhotoRow[];
     albums: GalleryAlbumRow[];
     onChanged: () => void;
+    onPhotosReordered: (photos: GalleryPhotoRow[]) => void;
 };
 
 type EditState = {
@@ -74,6 +75,17 @@ function sortPhotos(photos: GalleryPhotoRow[]): GalleryPhotoRow[] {
             (a.sortOrder ?? 0) - (b.sortOrder ?? 0) ||
             a.slug.localeCompare(b.slug)
     );
+}
+
+function withSortOrders(photos: GalleryPhotoRow[]): GalleryPhotoRow[] {
+    return photos.map((photo, index) => ({
+        ...photo,
+        sortOrder: index * 10,
+    }));
+}
+
+function orderSignature(photos: GalleryPhotoRow[]): string {
+    return photos.map((p) => `${p.photoId}:${p.sortOrder ?? 0}`).join("|");
 }
 
 type SortablePhotoRowProps = {
@@ -203,6 +215,7 @@ export function PhotosPanel({
     photos,
     albums,
     onChanged,
+    onPhotosReordered,
 }: PhotosPanelProps) {
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -214,8 +227,12 @@ export function PhotosPanel({
     const [ordered, setOrdered] = useState<GalleryPhotoRow[]>(() =>
         sortPhotos(photos)
     );
+    const orderSigRef = useRef(orderSignature(sortPhotos(photos)));
 
     useEffect(() => {
+        const sig = orderSignature(sortPhotos(photos));
+        if (sig === orderSigRef.current) return;
+        orderSigRef.current = sig;
         setOrdered(sortPhotos(photos));
     }, [photos]);
 
@@ -232,14 +249,10 @@ export function PhotosPanel({
     );
 
     const persistOrder = async (next: GalleryPhotoRow[]) => {
-        const updates = next
-            .map((photo, index) => ({
-                photo,
-                sortOrder: index * 10,
-            }))
-            .filter(
-                ({ photo, sortOrder }) => (photo.sortOrder ?? 0) !== sortOrder
-            );
+        const withOrder = withSortOrders(next);
+        const updates = withOrder.filter(
+            (photo, index) => (next[index].sortOrder ?? 0) !== photo.sortOrder
+        );
 
         if (updates.length === 0) return;
 
@@ -247,13 +260,18 @@ export function PhotosPanel({
         setError(null);
         try {
             await Promise.all(
-                updates.map(({ photo, sortOrder }) =>
-                    patchPhoto(accessToken, photo.photoId, { sortOrder })
+                updates.map((photo) =>
+                    patchPhoto(accessToken, photo.photoId, {
+                        sortOrder: photo.sortOrder,
+                    })
                 )
             );
-            onChanged();
+            orderSigRef.current = orderSignature(withOrder);
+            setOrdered(withOrder);
+            onPhotosReordered(withOrder);
         } catch (e: unknown) {
             setOrdered(sortPhotos(photos));
+            orderSigRef.current = orderSignature(sortPhotos(photos));
             setError(e instanceof Error ? e.message : String(e));
         } finally {
             setBusy(false);
@@ -356,8 +374,8 @@ export function PhotosPanel({
                 Photos ({photos.length})
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                Drag rows to set gallery order (top appears first on the public
-                site).
+                Drag rows to set gallery order. The public site picks up changes
+                on the next gallery page load.
             </Typography>
             {error && (
                 <Alert severity="error" sx={{ mb: 2 }}>

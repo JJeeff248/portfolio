@@ -137,6 +137,7 @@ function GalleryAdminPage() {
                         photos={photos}
                         albums={albums}
                         onChanged={() => void load()}
+                        onPhotosReordered={setPhotos}
                     />
                 )}
                 {tab === 2 && (

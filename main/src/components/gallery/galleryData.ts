@@ -10,11 +10,18 @@ export type Photo = GP;
 
 export type { GalleryExif } from "@chris-sa/gallery-manifest";
 
-export const galleryPhotos: Photo[] = manifest.photos;
+/** Baked at build time; used until live manifest loads (and as offline fallback). */
+export const fallbackGalleryPhotos: Photo[] = manifest.photos;
 
-export function getPhotoIndexBySlug(slug: string | null): number | null {
+/** @deprecated use fallbackGalleryPhotos or useGalleryManifest */
+export const galleryPhotos: Photo[] = fallbackGalleryPhotos;
+
+export function getPhotoIndexBySlug(
+    photos: Photo[],
+    slug: string | null
+): number | null {
     if (!slug || slug.trim() === "") return null;
-    const i = galleryPhotos.findIndex((p) => p.slug === slug);
+    const i = photos.findIndex((p) => p.slug === slug);
     return i === -1 ? null : i;
 }
 
