@@ -52,7 +52,11 @@ type PhotosPanelProps = {
     accessToken: string;
     photos: GalleryPhotoRow[];
     albums: GalleryAlbumRow[];
-    onChanged: () => void;
+    onPhotoPatched: (
+        photoId: string,
+        patch: Partial<GalleryPhotoRow>
+    ) => void;
+    onPhotoRemoved: (photoId: string) => void;
     onPhotosReordered: (photos: GalleryPhotoRow[]) => void;
 };
 
@@ -214,7 +218,8 @@ export function PhotosPanel({
     accessToken,
     photos,
     albums,
-    onChanged,
+    onPhotoPatched,
+    onPhotoRemoved,
     onPhotosReordered,
 }: PhotosPanelProps) {
     const [busy, setBusy] = useState(false);
@@ -230,11 +235,42 @@ export function PhotosPanel({
     const orderSigRef = useRef(orderSignature(sortPhotos(photos)));
 
     useEffect(() => {
-        const sig = orderSignature(sortPhotos(photos));
-        if (sig === orderSigRef.current) return;
-        orderSigRef.current = sig;
-        setOrdered(sortPhotos(photos));
+        const photoMap = new Map(photos.map((p) => [p.photoId, p]));
+        const serverSorted = sortPhotos(photos);
+        const serverSig = orderSignature(serverSorted);
+
+        setOrdered((prev) => {
+            if (prev.length === 0 && photos.length > 0) {
+                orderSigRef.current = serverSig;
+                return serverSorted;
+            }
+
+            const hasNew = photos.some(
+                (p) => !prev.some((x) => x.photoId === p.photoId)
+            );
+            const hasRemoved = prev.some((p) => !photoMap.has(p.photoId));
+            const orderChanged = serverSig !== orderSigRef.current;
+
+            if (orderChanged || hasNew || hasRemoved) {
+                orderSigRef.current = serverSig;
+                return serverSorted;
+            }
+
+            return prev
+                .map((p) => photoMap.get(p.photoId) ?? p)
+                .filter((p) => photoMap.has(p.photoId));
+        });
     }, [photos]);
+
+    const patchLocal = (
+        photoId: string,
+        patch: Partial<GalleryPhotoRow>
+    ) => {
+        setOrdered((prev) =>
+            prev.map((p) => (p.photoId === photoId ? { ...p, ...patch } : p))
+        );
+        onPhotoPatched(photoId, patch);
+    };
 
     const photoIds = useMemo(
         () => ordered.map((p) => p.photoId),
@@ -307,20 +343,21 @@ export function PhotosPanel({
         if (!edit) return;
         setBusy(true);
         setError(null);
+        const tags = edit.tagsText
+            .split(",")
+            .map((t) => t.trim())
+            .filter(Boolean);
+        const patch = {
+            title: edit.title.trim(),
+            tags,
+            albumSlug: edit.albumSlug || null,
+            published: edit.published,
+            showExifDefault: edit.showExifDefault,
+        };
         try {
-            const tags = edit.tagsText
-                .split(",")
-                .map((t) => t.trim())
-                .filter(Boolean);
-            await patchPhoto(accessToken, edit.photo.photoId, {
-                title: edit.title.trim(),
-                tags,
-                albumSlug: edit.albumSlug || null,
-                published: edit.published,
-                showExifDefault: edit.showExifDefault,
-            });
+            await patchPhoto(accessToken, edit.photo.photoId, patch);
+            patchLocal(edit.photo.photoId, patch);
             setEdit(null);
-            onChanged();
         } catch (e: unknown) {
             setError(e instanceof Error ? e.message : String(e));
         } finally {
@@ -330,12 +367,14 @@ export function PhotosPanel({
 
     const confirmDelete = async () => {
         if (!deleteTarget) return;
+        const { photoId } = deleteTarget;
         setBusy(true);
         setError(null);
         try {
-            await deletePhoto(accessToken, deleteTarget.photoId);
+            await deletePhoto(accessToken, photoId);
+            setOrdered((prev) => prev.filter((p) => p.photoId !== photoId));
+            onPhotoRemoved(photoId);
             setDeleteTarget(null);
-            onChanged();
         } catch (e: unknown) {
             setError(e instanceof Error ? e.message : String(e));
         } finally {
@@ -344,17 +383,14 @@ export function PhotosPanel({
     };
 
     const togglePublished = async (photo: GalleryPhotoRow) => {
-        setBusy(true);
+        const next = !photo.published;
+        patchLocal(photo.photoId, { published: next });
         setError(null);
         try {
-            await patchPhoto(accessToken, photo.photoId, {
-                published: !photo.published,
-            });
-            onChanged();
+            await patchPhoto(accessToken, photo.photoId, { published: next });
         } catch (e: unknown) {
+            patchLocal(photo.photoId, { published: photo.published });
             setError(e instanceof Error ? e.message : String(e));
-        } finally {
-            setBusy(false);
         }
     };
 

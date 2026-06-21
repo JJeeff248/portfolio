@@ -18,13 +18,13 @@ import { slugify } from "../utils/slugify";
 type AlbumsPanelProps = {
     accessToken: string;
     albums: GalleryAlbumRow[];
-    onChanged: () => void;
+    onAlbumCreated: (album: GalleryAlbumRow) => void;
 };
 
 export function AlbumsPanel({
     accessToken,
     albums,
-    onChanged,
+    onAlbumCreated,
 }: AlbumsPanelProps) {
     const [title, setTitle] = useState("");
     const [slug, setSlug] = useState("");
@@ -44,17 +44,24 @@ export function AlbumsPanel({
         setError(null);
         setSuccess(null);
         try {
+            const finalSort = Number(sortOrder) || 0;
             await createAlbum(accessToken, {
                 slug: finalSlug,
                 title: title.trim(),
-                sortOrder: Number(sortOrder) || 0,
+                sortOrder: finalSort,
+            });
+            onAlbumCreated({
+                id: `album#${finalSlug}`,
+                itemType: "album",
+                slug: finalSlug,
+                title: title.trim(),
+                sortOrder: finalSort,
             });
             setTitle("");
             setSlug("");
             setSlugTouched(false);
             setSortOrder("0");
             setSuccess(`Album "${title.trim()}" created.`);
-            onChanged();
         } catch (e: unknown) {
             setError(e instanceof Error ? e.message : String(e));
         } finally {

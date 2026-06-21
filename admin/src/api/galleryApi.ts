@@ -118,13 +118,13 @@ export type CreatePhotoInput = {
 export async function createPhoto(
     accessToken: string,
     input: CreatePhotoInput
-): Promise<{ photoId: string; slug: string }> {
+): Promise<{ photoId: string; slug: string; id: string }> {
     const res = await apiFetch("portfolio/gallery/photos", accessToken, {
         method: "POST",
         body: JSON.stringify(input),
     });
     if (!res.ok) throw new Error(await parseError(res));
-    return (await res.json()) as { photoId: string; slug: string };
+    return (await res.json()) as { photoId: string; slug: string; id: string };
 }
 
 export type PatchPhotoInput = Partial<

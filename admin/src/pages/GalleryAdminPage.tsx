@@ -62,6 +62,29 @@ function GalleryAdminPage() {
         [photos]
     );
 
+    const patchPhotoInState = useCallback(
+        (photoId: string, patch: Partial<GalleryPhotoRow>) => {
+            setPhotos((prev) =>
+                prev.map((p) =>
+                    p.photoId === photoId ? { ...p, ...patch } : p
+                )
+            );
+        },
+        []
+    );
+
+    const removePhotoFromState = useCallback((photoId: string) => {
+        setPhotos((prev) => prev.filter((p) => p.photoId !== photoId));
+    }, []);
+
+    const addPhotoToState = useCallback((photo: GalleryPhotoRow) => {
+        setPhotos((prev) => [...prev, photo]);
+    }, []);
+
+    const addAlbumToState = useCallback((album: GalleryAlbumRow) => {
+        setAlbums((prev) => [...prev, album]);
+    }, []);
+
     return (
         <Box sx={{ minHeight: "100vh", bgcolor: "background.default" }}>
             <AppBar
@@ -124,30 +147,33 @@ function GalleryAdminPage() {
                     <Tab label="Manifest" />
                 </Tabs>
 
-                {tab === 0 && (
+                <Box sx={{ display: tab === 0 ? "block" : "none" }}>
                     <UploadPanel
                         accessToken={accessToken}
                         albums={albums}
-                        onUploaded={() => void load()}
+                        onUploaded={addPhotoToState}
                     />
-                )}
-                {tab === 1 && (
+                </Box>
+                <Box sx={{ display: tab === 1 ? "block" : "none" }}>
                     <PhotosPanel
                         accessToken={accessToken}
                         photos={photos}
                         albums={albums}
-                        onChanged={() => void load()}
+                        onPhotoPatched={patchPhotoInState}
+                        onPhotoRemoved={removePhotoFromState}
                         onPhotosReordered={setPhotos}
                     />
-                )}
-                {tab === 2 && (
+                </Box>
+                <Box sx={{ display: tab === 2 ? "block" : "none" }}>
                     <AlbumsPanel
                         accessToken={accessToken}
                         albums={albums}
-                        onChanged={() => void load()}
+                        onAlbumCreated={addAlbumToState}
                     />
-                )}
-                {tab === 3 && <ManifestPanel />}
+                </Box>
+                <Box sx={{ display: tab === 3 ? "block" : "none" }}>
+                    <ManifestPanel />
+                </Box>
             </Container>
         </Box>
     );

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Alert,
     Box,
@@ -37,6 +37,10 @@ export function ManifestPanel() {
             setBusy(false);
         }
     };
+
+    useEffect(() => {
+        void load();
+    }, []);
 
     return (
         <Box sx={{ maxWidth: 640 }}>

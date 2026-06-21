@@ -14,7 +14,7 @@ import {
     Typography,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import type { GalleryAlbumRow } from "../api/galleryApi";
+import type { GalleryAlbumRow, GalleryPhotoRow } from "../api/galleryApi";
 import {
     createPhoto,
     presignUpload,
@@ -30,7 +30,7 @@ import {
 type UploadPanelProps = {
     accessToken: string;
     albums: GalleryAlbumRow[];
-    onUploaded: () => void;
+    onUploaded: (photo: GalleryPhotoRow) => void;
 };
 
 type UploadStep = "idle" | "presign" | "upload" | "create" | "done";
@@ -118,7 +118,8 @@ export function UploadPanel({
                 .map((t) => t.trim())
                 .filter(Boolean);
 
-            await createPhoto(accessToken, {
+            const sortOrder = Date.now();
+            const result = await createPhoto(accessToken, {
                 slug: finalSlug,
                 title: title.trim(),
                 src: fileUrl,
@@ -129,10 +130,27 @@ export function UploadPanel({
                 tags,
                 albumSlug: albumSlug || null,
                 exif,
+                sortOrder,
+            });
+
+            onUploaded({
+                id: result.id,
+                itemType: "photo",
+                photoId: result.photoId,
+                slug: result.slug,
+                title: title.trim(),
+                src: fileUrl,
+                width: dims.width,
+                height: dims.height,
+                sortOrder,
+                published,
+                showExifDefault,
+                tags,
+                albumSlug: albumSlug || null,
+                exif,
             });
 
             setStep("done");
-            onUploaded();
             resetForm();
         } catch (e: unknown) {
             setStep("idle");
@@ -236,7 +254,7 @@ export function UploadPanel({
                     setSlugTouched(true);
                     setSlug(e.target.value);
                 }}
-                helperText="/gallery/photo/{slug}/"
+                helperText="?photo={slug} on chris-sa.com/gallery"
             />
             <TextField
                 label="Tags (comma-separated)"
